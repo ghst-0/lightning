@@ -1,5 +1,9 @@
 # Versions
 
+## 11.0.1
+
+- Add support for LND 0.20.1
+
 ## 11.0.0
 
 ### Breaking Changes
