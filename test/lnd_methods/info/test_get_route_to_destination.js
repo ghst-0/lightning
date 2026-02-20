@@ -1,10 +1,8 @@
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import EventEmitter from 'node:events';
-import 'node:assert';
 import test from 'node:test';
-import BN from 'bn.js';
-import { getInfoResponse } from './../fixtures/index.js';
-import { getRouteToDestination } from './../../../index.js';
+import { getInfoResponse } from '../fixtures/index.js';
+import { getRouteToDestination } from '../../../index.js';
 
 const customRecords = {};
 
@@ -43,7 +41,7 @@ const makeLnd = ({custom, err, res}) => {
     },
     default: {
       getInfo: ({}, cbk) => cbk(null, getInfoResponse),
-      queryRoutes: ({}, cbk) => cbk(err, res !== undefined ? res : response),
+      queryRoutes: ({}, cbk) => cbk(err, res === undefined ? response : res),
     },
   };
 };
@@ -64,14 +62,16 @@ const makeArgs = override => {
     total_mtokens: '1',
   };
 
-  Object.keys(override).forEach(key => args[key] = override[key]);
+  for (const key of Object.keys(override)) {
+    args[key] = override[key]
+  }
 
   return args;
 };
 
 const tests = [
   {
-    args: makeArgs({confidence: NaN}),
+    args: makeArgs({confidence: Number.NaN}),
     description: 'Valid confidence is required',
     error: [400, 'ExpectedConfidenceInPartsPerMillionForQuery'],
   },
@@ -221,14 +221,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getRouteToDestination(args), error, 'Got error');
     } else {
       deepStrictEqual(await getRouteToDestination(args), expected, 'Got res');
     }
-
-    return;
   });
-});
+}

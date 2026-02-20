@@ -1,6 +1,6 @@
 import rpcHopFromHop from './rpc_hop_from_hop.js';
 
-const isNumber = n => !Number.isNaN(n);
+const isNumber = n => !isNaN(n);
 
 /** RPC formatted route from a route
 

@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getChannels } from './../../../index.js';
+import { getChannels } from '../../../index.js';
 
 const makeExpected = overrides => {
   const expectedChannel = {
@@ -59,7 +58,9 @@ const makeExpected = overrides => {
     unsettled_balance: 1,
   };
 
-  Object.keys(overrides).forEach(k => expectedChannel[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    expectedChannel[k] = overrides[k]
+  }
 
   return expectedChannel;
 };
@@ -114,7 +115,9 @@ const makeLnd = overrides => {
     uptime: 1,
   };
 
-  Object.keys(overrides).forEach(key => channel[key] = overrides[key]);
+  for (const key of Object.keys(overrides)) {
+    channel[key] = overrides[key]
+  }
 
   return {
     default: {listChannels: ({}, cbk) => cbk(null, {channels: [channel]})},
@@ -288,8 +291,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getChannels(args), error, 'Got expected error');
     } else {
@@ -299,7 +302,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(channel, expected.channel, 'Got expected channel');
     }
-
-    return;
   });
-});
+}

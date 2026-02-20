@@ -1,9 +1,6 @@
-import 'node:assert';
-import EventEmitter from 'node:events';
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, strictEqual } from 'node:assert/strict';
 import test from 'node:test';
-import { payViaRoutes } from './../../../index.js';
+import { payViaRoutes } from '../../../index.js';
 
 const preimage = Buffer.alloc(32);
 
@@ -388,8 +385,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       try {
         await payViaRoutes(args);
@@ -422,7 +419,5 @@ tests.forEach(({args, description, error, expected}) => {
     strictEqual(paid.mtokens, expected.mtokens, 'Mtokens are returned');
     strictEqual(paid.secret, expected.secret, 'Payment results in delivery');
     strictEqual(paid.tokens, expected.tokens, 'Tokens are returned');
-
-    return;
   });
-});
+}

@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { fundPsbt } from './../../../lnd_methods/index.js';
+import { fundPsbt } from '../../../lnd_methods/index.js';
 
 const psbt = '70736274ff01009a020000000258e87a21b56daf0c23be8e7070456c336f7cbaa5c8757924f545887bb2abdd750000000000ffffffff838d0427d0ec650a68aa46bb0b098aea4422c071b2ca78352a077959d07cea1d0100000000ffffffff0270aaf00800000000160014d85c2b71d0060b09c9886aeb815e50991dda124d00e1f5050000000016001400aea9a2e5f0f876a588df5546e8742d1d87008f000000000000000000';
 const unsupported = {details: 'unknown method for service walletrpc.WalletKit'};
@@ -20,7 +19,9 @@ const makeLnd = overrides => {
     }],
   };
 
-  Object.keys(overrides).forEach(k => res[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    res[k] = overrides[k]
+  }
 
   return {wallet: {fundPsbt: (args, cbk) => cbk(null, res)}};
 };
@@ -31,7 +32,9 @@ const makeArgs = overrides => {
     outputs: [{address: 'address', tokens: 1}],
   };
 
-  Object.keys(overrides).forEach(key => args[key] = overrides[key]);
+  for (const key of Object.keys(overrides)) {
+    args[key] = overrides[key]
+  }
 
   return args;
 };
@@ -67,7 +70,9 @@ const makeExpected = overrides => {
     psbt: '70736274ff01009a020000000258e87a21b56daf0c23be8e7070456c336f7cbaa5c8757924f545887bb2abdd750000000000ffffffff838d0427d0ec650a68aa46bb0b098aea4422c071b2ca78352a077959d07cea1d0100000000ffffffff0270aaf00800000000160014d85c2b71d0060b09c9886aeb815e50991dda124d00e1f5050000000016001400aea9a2e5f0f876a588df5546e8742d1d87008f000000000000000000',
   };
 
-  Object.keys(overrides).forEach(k => expected[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    expected[k] = overrides[k]
+  }
 
   return expected;
 };
@@ -180,8 +185,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(fundPsbt(args), error, 'Got error');
     } else {
@@ -189,7 +194,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(got, expected, 'Got expected result');
     }
-
-    return;
   });
-});
+}

@@ -1,11 +1,13 @@
 import { featureFlagDetails } from 'bolt09';
-import { syncTypes } from './constants';
 
+import constants from './constants.json' with { type: 'json'};
+
+const { syncTypes } = constants;
 const {ceil} = Math;
 const date = n => new Date(Number(BigInt(n) / BigInt(1e6))).toISOString();
 const isActiveSync = n => [syncTypes.active, syncTypes.pinned].includes(n);
 const isBool = n => n === false || n === true;
-const isNumber = n => !Number.isNaN(n);
+const isNumber = n => !isNaN(n);
 const isString = n => typeof n === 'string';
 const isZero = n => n === '0';
 const {keys} = Object;

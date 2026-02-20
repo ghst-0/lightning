@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import rpcHtlcAsPayment from './../../lnd_responses/rpc_htlc_as_payment.js';
+import rpcHtlcAsPayment from '../../lnd_responses/rpc_htlc_as_payment.js';
 
 const makeInput = overrides => {
   const response = {
@@ -11,7 +10,9 @@ const makeInput = overrides => {
     incoming: true,
   };
 
-  Object.keys(overrides || {}).forEach(key => response[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    response[key] = overrides[key]
+  }
 
   return response;
 };
@@ -31,7 +32,9 @@ const makeExpected = overrides => {
     tokens: 1,
   };
 
-  Object.keys(overrides || {}).forEach(key => expected[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    expected[key] = overrides[key]
+  }
 
   return expected;
 };
@@ -97,7 +100,7 @@ const tests = [
       htlc_index: '1',
       incoming: false,
     }),
-    description: 'Outoing forward HTLC is mapped to payment',
+    description: 'Outgoing forward HTLC is mapped to payment',
     expected: makeExpected({
       in_channel: '0x0x1',
       in_payment: 1,
@@ -108,8 +111,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => rpcHtlcAsPayment(args), new Error(error), 'Got err');
     } else {
@@ -118,4 +121,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

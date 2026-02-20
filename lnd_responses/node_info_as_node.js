@@ -1,8 +1,6 @@
 import channelEdgeAsChannel from './channel_edge_as_channel.js';
 import rpcNodeAsNode from './rpc_node_as_node.js';
 
-const {isArray} = Array;
-
 /** Derive node details from RPC node info
 
   {

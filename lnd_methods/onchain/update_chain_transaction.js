@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const isHash = n => !!n && /^[0-9A-F]{64}$/i.test(n);
 const method = 'labelTransaction';

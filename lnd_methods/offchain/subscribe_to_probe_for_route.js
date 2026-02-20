@@ -2,9 +2,9 @@ import EventEmitter from 'node:events';
 import asyncAuto from 'async/auto.js';
 import asyncWhilst from 'async/whilst.js';
 
-import { getRouteToDestination, getIdentity } from './../info/index.js';
-import { isLnd } from './../../lnd_requests/index.js';
-import { mtokensAmount } from './../../bolt00/index.js';
+import { getRouteToDestination, getIdentity } from '../info/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
+import { mtokensAmount } from '../../bolt00/index.js';
 import subscribeToPayViaRoutes from './subscribe_to_pay_via_routes.js';
 
 const defaultPathTimeoutMs = 1000 * 60;

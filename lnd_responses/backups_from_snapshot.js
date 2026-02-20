@@ -58,8 +58,6 @@ export default args => {
     if (outpoint.output_index === undefined) {
       throw new Error('ExpectedOutpointVoutInSnapshotMultiBackup');
     }
-
-    return;
   });
 
   if (!args.single_chan_backups) {
@@ -91,8 +89,6 @@ export default args => {
     if (backup.chan_point.output_index === undefined) {
       throw new Error('ExpectedSnapshotChannelFundingOutputIndex');
     }
-
-    return;
   });
 
   return {

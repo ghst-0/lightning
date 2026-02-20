@@ -135,8 +135,6 @@ export default chan => {
   const zeroConfId = chan.zero_conf_confirmed_scid;
 
   const closeTxId = !hasCloseTx ? undefined : chan.closing_tx_hash;
-  const isLocalCooperativeClose = closer === initiatorLocal;
-  const isRemoteCooperativeClose = closer === initiatorRemote;
   const number = !!Number(zeroConfId) ? zeroConfId : chan.chan_id;
 
   const chanId = !hasId ? null : chanFormat({number});

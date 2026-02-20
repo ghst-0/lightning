@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getChannelBalance } from './../../../index.js';
+import { getChannelBalance } from '../../../index.js';
 
 const makeLnd = overrides => {
   const res = {
@@ -15,7 +14,9 @@ const makeLnd = overrides => {
     unsettled_remote_balance: {msat: '1000', sat: '1'},
   };
 
-  Object.keys(overrides).forEach(k => res[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    res[k] = overrides[k]
+  }
 
   return {default: {channelBalance: ({}, cbk) => cbk(null, res)}};
 };
@@ -152,8 +153,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getChannelBalance(args), error, 'Got error');
     } else {
@@ -161,7 +162,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(balances, expected, 'Got channel balances');
     }
-
-    return;
   });
-});
+}

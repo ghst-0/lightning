@@ -1,8 +1,10 @@
-import { createHash } from 'crypto';
+import { createHash } from 'node:crypto';
 import { chanFormat } from 'bolt07';
-import { attemptStates } from './constants';
-import { safeTokens } from './../bolt00/index.js';
 
+import constants from './constants.json' with { type: 'json'};
+import { safeTokens } from '../bolt00/index.js';
+
+const { attemptStates } = constants;
 const {confirmed} = attemptStates;
 const hexFromBuffer = buffer => buffer.toString('hex');
 const {isArray} = Array;
@@ -117,15 +119,15 @@ export default ({htlcs, preimage, route}) => {
     throw new Error('ExpectedPreimageBufferToDeriveConfirmFromPaymentStatus');
   }
 
-  if (!route && !htlcs.length) {
+  if (!route && htlcs.length === 0) {
     throw new Error('ExpectedEitherRouteOrAttemptHtlcs');
   }
 
-  if (!!htlcs.length && !htlcs.filter(n => n.status === confirmed).length) {
+  if (htlcs.length > 0 && htlcs.filter(n => n.status === confirmed).length === 0) {
     throw new Error('ExpectedSuccessfulHtlcAttemptForConfirmedStatus');
   }
 
-  const hasHtlcs = !!htlcs.length;
+  const hasHtlcs = htlcs.length > 0;
   const id = sha256(preimage).toString('hex');
   const secret = preimage.toString('hex');
   const successHtlcs = htlcs.filter(n => n.status === attemptStates.confirmed);

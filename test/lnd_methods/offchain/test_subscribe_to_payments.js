@@ -1,8 +1,7 @@
-import 'node:assert';
+import { throws, deepStrictEqual } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import test from 'node:test';
-import 'node:assert';
-import { subscribeToPayments } from './../../../index.js';
+import { subscribeToPayments } from '../../../index.js';
 
 const tick = () => new Promise(resolve => process.nextTick(resolve));
 
@@ -143,8 +142,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       throws(() => subscribeToPayments(args), new Error(error), 'Got err');
     } else {
@@ -162,7 +161,5 @@ tests.forEach(({args, description, error, expected}) => {
       deepStrictEqual(confirmed, expected.confirmed, 'Got expected payments');
       deepStrictEqual(errors, expected.errors, 'Got expected errors');
     }
-
-    return;
   });
-});
+}

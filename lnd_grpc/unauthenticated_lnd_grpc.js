@@ -8,13 +8,13 @@ import {
   protoFiles,
   protosDir,
   unauthenticatedServiceTypes
-} from './../grpc/index.js';
+} from '../grpc/index.js';
 import grpcOptions from './grpc_options.js';
 import grpcSsl from './grpc_ssl.js';
 
 const {GRPC_SSL_CIPHER_SUITES} = process.env;
 const {keys} = Object;
-const pathToProto = file => join(__dirname, protosDir, file);
+const pathToProto = file => join(import.meta.dirname, protosDir, file);
 
 /** Unauthenticated gRPC interface to the Lightning Network Daemon (lnd).
 

@@ -8,12 +8,12 @@ import {
   protoFiles,
   protosDir,
   serviceTypes
-} from './../grpc/index.js';
+} from '../grpc/index.js';
 import grpcCredentials from './grpc_credentials.js';
 
 const {GRPC_SSL_CIPHER_SUITES} = process.env;
 const {keys} = Object;
-const pathForProto = proto => join(__dirname, protosDir, proto);
+const pathForProto = proto => join(import.meta.dirname, protosDir, proto);
 
 /** Initiate a gRPC API Methods Object for authenticated methods
 

@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getWalletVersion } from './../../../index.js';
+import { getWalletVersion } from '../../../index.js';
 
 const makeResponse = overrides => {
   const response = {
@@ -11,7 +10,9 @@ const makeResponse = overrides => {
     commit_hash: Buffer.alloc(20).toString('hex'),
   };
 
-  Object.keys(overrides).forEach(k => response[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    response[k] = overrides[k]
+  }
 
   return response;
 };
@@ -21,7 +22,7 @@ const makeLnd = ({err, res}) => {
 
   return {
     version: {
-      getVersion: ({}, cbk) => cbk(err, res !== undefined ? res : response),
+      getVersion: ({}, cbk) => cbk(err, res === undefined ? response : res),
     },
   };
 };
@@ -85,14 +86,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getWalletVersion(args), error, 'Got error');
     } else {
       deepStrictEqual(await getWalletVersion(args), expected, 'Got info');
     }
-
-    return;
   });
-});
+}

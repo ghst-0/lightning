@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getSettlementStatus } from './../../../index.js';
+import { getSettlementStatus } from '../../../index.js';
 
 const makeLnd = ({err, res}) => {
   const result = res === undefined ? {offchain: true, settled: true} : res;
@@ -12,7 +11,9 @@ const makeLnd = ({err, res}) => {
 const makeArgs = overrides => {
   const args = {channel: '0x0x0', lnd: makeLnd({}), payment: 0};
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -87,8 +88,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(getSettlementStatus(args), error, 'Got expected error');
     } else {
@@ -96,7 +97,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(res, expected, 'Got expected result');
     }
-
-    return;
   });
-});
+}

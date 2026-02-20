@@ -1,6 +1,6 @@
-import 'node:assert';
+import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { addPeer } from './../../../index.js';
+import { addPeer } from '../../../index.js';
 
 const makeLnd = args => {
   const peersRes = {
@@ -56,7 +56,9 @@ const makeArgs = overrides => {
     socket: 'socket',
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -130,14 +132,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error}) => {
-  return test(description, async () => {
+for (const { args, description, error } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(addPeer(args), error, 'Got expected error');
     } else {
       await addPeer(args);
     }
-
-    return;
   });
-});
+}

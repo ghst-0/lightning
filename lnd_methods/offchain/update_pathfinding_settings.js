@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const asFloat = n => n / 1e6;
 const getMethod = 'getMissionControlConfig';

@@ -1,11 +1,10 @@
 import EventEmitter from 'node:events';
-import { promisify } from 'util';
-import 'node:assert';
-import 'node:assert';
+import { promisify } from 'node:util';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
+import { subscribeToRpcRequests } from '../../../lnd_methods/index.js';
 
 const nextTick = promisify(process.nextTick);
-import { subscribeToRpcRequests } from './../../../lnd_methods/index.js';
 
 const makeArgs = overrides => {
   const args = {
@@ -40,7 +39,9 @@ const makeArgs = overrides => {
     },
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -79,7 +80,7 @@ const tests = [
 
             emitter.cancel = () => {};
             emitter.write = (args, cbk) => {
-              if (!!args.feedback) {
+              if (args.feedback) {
                 return cbk('err');
               }
 
@@ -212,8 +213,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => subscribeToRpcRequests(args), error, 'Got err');
     } else {
@@ -237,14 +238,12 @@ tests.forEach(({args, description, error, expected}) => {
 
       await nextTick();
 
-      if (!!expected.intercepts) {
+      if (expected.intercepts) {
         deepStrictEqual(intercepts, expected.intercepts, 'Got intercepts');
       }
 
       deepStrictEqual(events, expected.events, 'Got expected events');
       deepStrictEqual(!!res.subscription, true, 'Got subscription');
     }
-
-    return;
   });
-});
+}

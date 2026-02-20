@@ -1,6 +1,6 @@
-import 'node:assert';
+import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { disconnectWatchtower } from './../../../lnd_methods/index.js';
+import { disconnectWatchtower } from '../../../lnd_methods/index.js';
 
 const makeLnd = err => {
   return {tower_client: {removeTower: ({}, cbk) => cbk(err)}};
@@ -12,7 +12,9 @@ const makeArgs = override => {
     public_key: Buffer.alloc(33, 3).toString('hex'),
   };
 
-  Object.keys(override || {}).forEach(key => args[key] = override[key]);
+  for (const key of Object.keys(override || {})) {
+    args[key] = override[key]
+  }
 
   return args;
 };
@@ -52,14 +54,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(disconnectWatchtower(args), error, 'Got expected error');
     } else {
       await disconnectWatchtower(args);
     }
-
-    return;
   });
-});
+}

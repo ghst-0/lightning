@@ -2,9 +2,9 @@ import asyncAuto from 'async/auto.js';
 import asyncReflect from 'async/reflect.js';
 import { returnResult } from 'asyncjs-util';
 
-import getPublicKey from './../address/get_public_key.js';
-import { isLnd } from './../../lnd_requests/index.js';
-import { rpcGroupSessionAsSession } from './../../lnd_responses/index.js';
+import getPublicKey from '../address/get_public_key.js';
+import { isLnd } from '../../lnd_requests/index.js';
+import { rpcGroupSessionAsSession } from '../../lnd_responses/index.js';
 
 const defaultVersion = 'MUSIG2_VERSION_V100RC2';
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');

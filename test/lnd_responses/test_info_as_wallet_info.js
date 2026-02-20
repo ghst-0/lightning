@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { infoAsWalletInfo } from './../../lnd_responses/index.js';
+import { infoAsWalletInfo } from '../../lnd_responses/index.js';
 
 const makeInfo = overrides => {
   const info = {
@@ -21,7 +20,9 @@ const makeInfo = overrides => {
     version: 'version',
   };
 
-  Object.keys(overrides).forEach(k => info[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    info[k] = overrides[k]
+  }
 
   return info;
 };
@@ -155,8 +156,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => infoAsWalletInfo(args), new Error(error), 'Got error');
     } else {
@@ -165,4 +166,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

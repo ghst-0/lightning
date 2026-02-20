@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import method from './../../lnd_responses/rpc_request_update_as_event.js';
+import method from '../../lnd_responses/rpc_request_update_as_event.js';
 
 const makeArgs = overrides => {
   const args = {
@@ -12,7 +11,9 @@ const makeArgs = overrides => {
     intercept_type: 'unknown type',
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -20,7 +21,9 @@ const makeArgs = overrides => {
 const makeExpected = overrides => {
   const expected = {call: 1, id: 1, macaroon: undefined};
 
-  Object.keys(overrides).forEach(k => expected[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    expected[k] = overrides[k]
+  }
 
   return expected;
 };
@@ -122,8 +125,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => method(args), new Error(error), 'Error');
     } else {
@@ -134,4 +137,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

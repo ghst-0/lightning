@@ -6,9 +6,9 @@ import { chanNumber } from 'bolt07';
 import nextTick from 'async/nextTick.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd, rpcRouteFromRoute } from './../../lnd_requests/index.js';
-import { paymentFailure } from './../../lnd_responses/index.js';
-import routeFailureKeys from './../offchain/route_failure_keys.js';
+import { isLnd, rpcRouteFromRoute } from '../../lnd_requests/index.js';
+import { paymentFailure } from '../../lnd_responses/index.js';
+import routeFailureKeys from '../offchain/route_failure_keys.js';
 
 const msAsISO = ms => new Date(ms).toISOString();
 const {isArray} = Array;

@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getForwardingConfidence } from './../../../index.js';
+import { getForwardingConfidence } from '../../../index.js';
 
 const makeLnd = ({err, res}) => {
   return {
@@ -29,7 +28,9 @@ const makeArgs = overrides => {
     to: Buffer.alloc(33, 2).toString('hex'),
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -89,8 +90,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(getForwardingConfidence(args), error, 'Got expected err');
     } else {
@@ -98,7 +99,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(res, expected, 'Got expected result');
     }
-
-    return;
   });
-});
+}

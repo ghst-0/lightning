@@ -1,14 +1,13 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getConfiguration } from './../../../index.js';
+import { getConfiguration } from '../../../index.js';
 
 const makeLnd = ({custom, err, res}) => {
   const response = {config: {type: 'value'}, log: ['log']};
 
   return {
     default: {
-      getDebugInfo: ({}, cbk) => cbk(err, res !== undefined ? res : response),
+      getDebugInfo: ({}, cbk) => cbk(err, res === undefined ? response : res),
     },
   };
 };
@@ -67,14 +66,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getConfiguration(args), error, 'Got error');
     } else {
       deepStrictEqual(await getConfiguration(args), expected, 'Got info');
     }
-
-    return;
   });
-});
+}

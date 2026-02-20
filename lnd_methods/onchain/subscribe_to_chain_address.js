@@ -1,7 +1,7 @@
 import EventEmitter from 'node:events';
 
-import { isLnd } from './../../lnd_requests/index.js';
-import { rpcConfAsConfirmation } from './../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
+import { rpcConfAsConfirmation } from '../../lnd_responses/index.js';
 import scriptFromChainAddress from './script_from_chain_address.js';
 
 const defaultMinConfirmations = 1;

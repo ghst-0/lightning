@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getChainFeeEstimate } from './../../../lnd_methods/index.js';
+import { getChainFeeEstimate } from '../../../lnd_methods/index.js';
 
 const tests = [
   {
@@ -91,8 +90,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getChainFeeEstimate(args), error, 'Got error');
     } else {
@@ -100,7 +99,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(estimate, expected, 'Got chain fee estimate');
     }
-
-    return;
   });
-});
+}

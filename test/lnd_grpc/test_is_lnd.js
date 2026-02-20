@@ -1,6 +1,6 @@
-import 'node:assert';
+import { equal } from 'node:assert/strict';
 import test from 'node:test';
-import { isLnd } from './../../lnd_grpc/index.js';
+import { isLnd } from '../../lnd_grpc/index.js';
 
 const tests = [
   {
@@ -30,12 +30,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, expected } of tests) {
+  test(description, (t, end) => {
     const res = isLnd(args);
 
     equal(res, expected, 'LND status is as expected');
 
     return end();
   });
-});
+}

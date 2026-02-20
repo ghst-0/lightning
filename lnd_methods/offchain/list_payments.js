@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
-import { rpcPaymentAsPayment } from './../../lnd_responses/index.js';
-import { sortBy } from './../../arrays/index.js';
+import { rpcPaymentAsPayment } from '../../lnd_responses/index.js';
+import { sortBy } from '../../arrays/index.js';
 
 const asStart = n => n ? Math.floor(new Date(n).getTime() / 1e3) : undefined;
 const asEnd = n => n ? Math.ceil(new Date(n).getTime() / 1e3) : undefined;

@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const bufferFromHex = hex => Buffer.from(hex, 'hex');
 const defaultMessageType = 32768;

@@ -1,8 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import method from './../../../lnd_methods/macaroon/handle_rpc_request_update.js';
+import method from '../../../lnd_methods/macaroon/handle_rpc_request_update.js';
 
 const tests = [
   {
@@ -219,8 +217,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       throws(() => method(args), new Error(error), 'Got expected error');
     } else {
@@ -228,12 +226,12 @@ tests.forEach(({args, description, error, expected}) => {
 
       const {accept, id, macaroon, reject, request, uri} = res.data;
 
-      if (!!accept) {
-        try { await accept({}); } catch (err) {}
+      if (accept) {
+        try { await accept({}); } catch {}
       }
 
-      if (!!reject) {
-        try { await reject({}); } catch (err) {}
+      if (reject) {
+        try { await reject({}); } catch {}
       }
 
       deepStrictEqual(id, expected.data.id, 'Got expected id');
@@ -242,7 +240,5 @@ tests.forEach(({args, description, error, expected}) => {
       deepStrictEqual(request, expected.data.request, 'Got expected request');
       deepStrictEqual(uri, expected.data.uri, 'Got expected uri');
     }
-
-    return;
   });
-});
+}

@@ -1,8 +1,7 @@
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import EventEmitter from 'node:events';
-import 'node:assert';
 import test from 'node:test';
-import { openChannel } from './../../../lnd_methods/index.js';
+import { openChannel } from '../../../lnd_methods/index.js';
 
 const makeLnd = ({err, data}) => {
   const lnd = {
@@ -22,7 +21,7 @@ const makeLnd = ({err, data}) => {
           emitter.emit('data', {update: 'unknown'});
           emitter.emit('end', {});
 
-          if (!!data) {
+          if (data) {
             emitter.emit('data', data);
           } else {
             emitter.emit('data', {
@@ -79,7 +78,9 @@ const makeArgs = overrides => {
     partner_public_key: Buffer.alloc(33).toString('hex'),
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -213,8 +214,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(openChannel(args), error, 'Got expected error');
     } else {
@@ -222,7 +223,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(res, expected, 'Got expected result');
     }
-
-    return;
   });
-});
+}

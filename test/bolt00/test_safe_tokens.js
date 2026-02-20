@@ -1,6 +1,6 @@
-import 'node:assert';
+import { deepEqual } from 'node:assert/strict';
 import test from 'node:test';
-import { safeTokens } from './../../bolt00/index.js';
+import { safeTokens } from '../../bolt00/index.js';
 
 const tests = [
   {
@@ -25,8 +25,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, expected } of tests) {
+  test(description, (t, end) => {
     const {safe, tokens} = safeTokens(args);
 
     deepEqual(safe, expected.safe, 'Got expected safe tokens');
@@ -34,4 +34,4 @@ tests.forEach(({args, description, expected}) => {
 
     return end();
   });
-});
+}

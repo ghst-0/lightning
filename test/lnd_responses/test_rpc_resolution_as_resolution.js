@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { rpcResolutionAsResolution } from './../../lnd_responses/index.js';
+import { rpcResolutionAsResolution } from '../../lnd_responses/index.js';
 
 const makeArgs = overrides => {
   const args = {
@@ -15,7 +14,9 @@ const makeArgs = overrides => {
     sweep_txid: Buffer.alloc(32, 1).toString('hex'),
   };
 
-  Object.keys(overrides || {}).forEach(key => args[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    args[key] = overrides[key]
+  }
 
   return args;
 };
@@ -32,7 +33,9 @@ const makeExpected = overrides => {
     transaction_vout: 0,
   };
 
-  Object.keys(overrides || {}).forEach(key => payment[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    payment[key] = overrides[key]
+  }
 
   return {payment};
 };
@@ -138,8 +141,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => rpcResolutionAsResolution(args), new Error(error), 'Err');
     } else {
@@ -148,4 +151,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

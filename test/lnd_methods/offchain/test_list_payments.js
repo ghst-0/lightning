@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import listPayments from './../../../lnd_methods/offchain/list_payments.js';
+import listPayments from '../../../lnd_methods/offchain/list_payments.js';
 
 const makeLnd = args => {
   return {
@@ -18,7 +17,9 @@ const makeLnd = args => {
 const makeArgs = overrides => {
   const args = {lnd: makeLnd({})};
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -31,8 +32,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => listPayments(args), error, 'Got expected error');
     } else {
@@ -40,7 +41,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(res, expected, 'Got expected result');
     }
-
-    return;
   });
-});
+}

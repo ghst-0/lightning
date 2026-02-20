@@ -1,12 +1,14 @@
 import EventEmitter from 'node:events';
-import 'node:assert';
+import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { requestBatchedFeeIncrease } from './../../../lnd_methods/index.js';
+import { requestBatchedFeeIncrease } from '../../../lnd_methods/index.js';
 
 const makeLnd = overrides => {
   const res = {status: 'status'};
 
-  Object.keys(overrides).forEach(k => res[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    res[k] = overrides[k]
+  }
 
   return {
     chain: {
@@ -34,7 +36,9 @@ const makeArgs = overrides => {
     transaction_vout: 0,
   };
 
-  Object.keys(overrides).forEach(key => args[key] = overrides[key]);
+  for (const key of Object.keys(overrides)) {
+    args[key] = overrides[key]
+  }
 
   return args;
 };
@@ -97,14 +101,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(requestBatchedFeeIncrease(args), error, 'Got error');
     } else {
       await requestBatchedFeeIncrease(args);
     }
-
-    return;
   });
-});
+}

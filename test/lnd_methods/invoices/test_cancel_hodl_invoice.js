@@ -1,6 +1,6 @@
-import 'node:assert';
+import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { cancelHodlInvoice } from './../../../index.js';
+import { cancelHodlInvoice } from '../../../index.js';
 
 const makeLnd = ({err}) => {
   return {invoices: {cancelInvoice: ({}, cbk) => cbk(err)}};
@@ -33,14 +33,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error}) => {
-  return test(description, async () => {
+for (const { args, description, error } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => cancelHodlInvoice(args), error, 'Got error');
     } else {
       await cancelHodlInvoice(args);
     }
-
-    return;
   });
-});
+}

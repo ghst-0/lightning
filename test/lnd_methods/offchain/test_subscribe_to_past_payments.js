@@ -1,8 +1,7 @@
-import 'node:assert';
+import { throws, deepStrictEqual } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import test from 'node:test';
-import 'node:assert';
-import { subscribeToPastPayments } from './../../../lnd_methods/index.js';
+import { subscribeToPastPayments } from '../../../lnd_methods/index.js';
 
 const nextTick = () => new Promise(cbk => process.nextTick(() => cbk()));
 
@@ -256,8 +255,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       throws(() => subscribeToPastPayments(args), new Error(error), 'Got err');
     } else {
@@ -272,7 +271,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(payment, expected, 'Got expected payment');
     }
-
-    return;
   });
-});
+}

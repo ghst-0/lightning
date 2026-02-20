@@ -1,6 +1,6 @@
-import 'node:assert';
+import { strictEqual } from 'node:assert/strict';
 import test from 'node:test';
-import { setAutopilot } from './../../../lnd_methods/index.js';
+import { setAutopilot } from '../../../lnd_methods/index.js';
 
 const makeLnd = args => {
   return {
@@ -23,7 +23,9 @@ const makeArgs = overrides => {
     lnd: makeLnd({}),
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -174,8 +176,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, expected } of tests) {
+  test(description, (t, end) => {
     setAutopilot(args, (err, res) => {
       const [errCode, errMessage] = err || [];
 
@@ -193,7 +195,5 @@ tests.forEach(({args, description, expected}) => {
 
       return end();
     });
-
-    return;
   });
-});
+}

@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { getAutopilot } from './../info/index.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { getAutopilot } from '../info/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const externalType = 'externalscore';
 const {floor} = Math;

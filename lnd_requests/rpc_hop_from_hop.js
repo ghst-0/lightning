@@ -1,7 +1,7 @@
 import { chanNumber } from 'bolt07';
 
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
-const isNumber = n => !Number.isNaN(n);
+const isNumber = n => !isNaN(n);
 const millitokensAsTokens = n => Number(BigInt(n) / BigInt(1e3));
 
 /** Get a hop formatted as a RPC hop

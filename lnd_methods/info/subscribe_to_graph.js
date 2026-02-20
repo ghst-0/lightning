@@ -1,8 +1,8 @@
 import EventEmitter from 'node:events';
 import { featureFlagDetails } from 'bolt09';
 import getNode from './get_node.js';
-import { isLnd } from './../../lnd_requests/index.js';
-import { rpcChannelClosedAsClosed, rpcChannelUpdateAsUpdate } from './../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
+import { rpcChannelClosedAsClosed, rpcChannelUpdateAsUpdate } from '../../lnd_responses/index.js';
 
 const events = ['channel_closed', 'channel_updated', 'node_updated'];
 const {isArray} = Array;

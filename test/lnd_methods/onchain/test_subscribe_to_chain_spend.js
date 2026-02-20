@@ -1,8 +1,7 @@
 import EventEmitter from 'node:events';
-import 'node:assert';
+import { strictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { subscribeToChainSpend } from './../../../lnd_methods/index.js';
+import { subscribeToChainSpend } from '../../../lnd_methods/index.js';
 
 const emptyTx = '01000000000000000000';
 
@@ -34,8 +33,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => subscribeToChainSpend(args), new Error(error), 'Got error');
 
@@ -63,7 +62,5 @@ tests.forEach(({args, description, error, expected}) => {
         spending_input_index: 0,
       },
     });
-
-    return;
   });
-});
+}

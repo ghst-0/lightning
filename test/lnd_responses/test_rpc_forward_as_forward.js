@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { rpcForwardAsForward } from './../../lnd_responses/index.js';
+import { rpcForwardAsForward } from '../../lnd_responses/index.js';
 
 const makeForward = override => {
   const forward = {
@@ -17,7 +16,9 @@ const makeForward = override => {
     timestamp_ns: '1000000000',
   };
 
-  Object.keys(override).forEach(key => forward[key] = override[key]);
+  for (const key of Object.keys(override)) {
+    forward[key] = override[key]
+  }
 
   return forward;
 };
@@ -127,8 +128,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => rpcForwardAsForward(args), new Error(error), 'Got error');
     } else {
@@ -139,4 +140,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { routingFailureFromHtlc } from './../../lnd_responses/index.js';
+import { routingFailureFromHtlc } from '../../lnd_responses/index.js';
 
 const makeHtlc = overrides => {
   const htlc = {
@@ -48,7 +47,9 @@ const makeHtlc = overrides => {
     status: 'FAILED',
   };
 
-  Object.keys(overrides || {}).forEach(k => htlc[k] = overrides[k]);
+  for (const k of Object.keys(overrides || {})) {
+    htlc[k] = overrides[k]
+  }
 
   return htlc;
 };
@@ -83,7 +84,9 @@ const makeExpected = overrides => {
     reason: 'TemporaryChannelFailure',
   };
 
-  Object.keys(overrides || {}).forEach(key => expected[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    expected[key] = overrides[key]
+  }
 
   return expected;
 };
@@ -125,8 +128,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => routingFailureFromHtlc(args), new Error(error), 'Got err');
     } else {
@@ -135,4 +138,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

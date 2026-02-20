@@ -1,14 +1,15 @@
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import EventEmitter from 'node:events';
-import 'node:assert';
 import test from 'node:test';
-import { getHeight } from './../../../index.js';
-import { getInfoResponse } from './../fixtures/index.js';
+import { getHeight } from '../../../index.js';
+import { getInfoResponse } from '../fixtures/index.js';
 
 const makeLnd = overrides => {
   const data = {hash: Buffer.alloc(32), height: 1};
 
-  Object.keys(overrides).forEach(k => data[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    data[k] = overrides[k]
+  }
 
   return {
     chain: {
@@ -66,8 +67,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(getHeight(args), error, 'Got expected error');
     } else {
@@ -75,7 +76,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(got, expected, 'Got expected result');
     }
-
-    return;
   });
-});
+}

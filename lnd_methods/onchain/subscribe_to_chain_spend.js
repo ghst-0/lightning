@@ -1,6 +1,6 @@
 import EventEmitter from 'node:events';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 import scriptFromChainAddress from './script_from_chain_address.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');

@@ -1,9 +1,9 @@
 import EventEmitter from 'node:events';
-import { forwardPaymentActions } from './payment_states';
+import payment_states from './payment_states.json' with { type: 'json' };
+import { isLnd } from '../../lnd_requests/index.js';
+import { rpcForwardAsForwardRequest } from '../../lnd_responses/index.js';
 
-import { isLnd } from './../../lnd_requests/index.js';
-import { rpcForwardAsForwardRequest } from './../../lnd_responses/index.js';
-
+const { forwardPaymentActions } = payment_states;
 const bufferFromHex = hex => Buffer.from(hex, 'hex');
 const event = 'forward_request';
 const method = 'htlcInterceptor';

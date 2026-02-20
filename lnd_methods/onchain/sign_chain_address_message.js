@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const base64AsHex = base64 => Buffer.from(base64, 'base64').toString('hex');
 const notSupportedError = 'unknown method SignMessageWithAddr for service walletrpc.WalletKit';

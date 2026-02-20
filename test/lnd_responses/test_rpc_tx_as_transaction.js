@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { rpcTxAsTransaction } from './../../lnd_responses/index.js';
+import { rpcTxAsTransaction } from '../../lnd_responses/index.js';
 
 const makeTx = override => {
   const tx = {
@@ -26,7 +25,9 @@ const makeTx = override => {
     tx_hash: Buffer.alloc(32).toString('hex'),
   };
 
-  Object.keys(override).forEach(key => tx[key] = override[key]);
+  for (const key of Object.keys(override)) {
+    tx[key] = override[key]
+  }
 
   return tx;
 };
@@ -167,8 +168,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => rpcTxAsTransaction(args), new Error(error), 'Got error');
     } else {
@@ -179,4 +180,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

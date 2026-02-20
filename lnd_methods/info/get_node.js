@@ -1,9 +1,9 @@
 import asyncAuto from 'async/auto.js';
 import asyncMapLimit from 'async/mapLimit.js';
 import { returnResult } from 'asyncjs-util';
-import { nodeInfoAsNode } from './../../lnd_responses/index.js';
+import { nodeInfoAsNode } from '../../lnd_responses/index.js';
 import getChannel from './get_channel.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 import getWalletVersion from './get_wallet_version.js';
 
 const badVers = new Set(['0.11.0-beta', '0.11.1-beta', '0.12.0-beta', '0.12.1-beta']);

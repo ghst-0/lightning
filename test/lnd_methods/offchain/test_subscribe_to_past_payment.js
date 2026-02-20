@@ -1,6 +1,6 @@
 import test from 'node:test';
-import 'node:assert';
-import { subscribeToPastPayment } from './../../../index.js';
+import { throws } from 'node:assert/strict';
+import { subscribeToPastPayment } from '../../../index.js';
 
 const tests = [
   {
@@ -15,8 +15,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => subscribeToPastPayment(args), new Error(error), 'Got err');
     } else {
@@ -25,4 +25,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

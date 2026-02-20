@@ -1,8 +1,7 @@
-import 'node:assert';
-import 'node:assert';
-import { join } from 'path';
+import { deepStrictEqual, equal } from 'node:assert/strict';
+import { join } from 'node:path';
 import test from 'node:test';
-import { authenticatedLndGrpc } from './../../index.js';
+import { authenticatedLndGrpc } from '../../index.js';
 
 const expectedServices = [
   'autopilot',
@@ -31,14 +30,14 @@ const tests = [
     expected: {services: expectedServices},
   },
   {
-    args: {path: join(__dirname, '../../grpc/protos')},
+    args: {path: join(import.meta.dirname, '../../grpc/protos')},
     description: 'The path can be specified',
     expected: {services: expectedServices},
   },
 ];
 
-tests.forEach(({args, description, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, expected } of tests) {
+  test(description, (t, end) => {
     const {lnd} = authenticatedLndGrpc(args);
 
     equal(!!lnd, true, 'Got LND object');
@@ -46,4 +45,4 @@ tests.forEach(({args, description, expected}) => {
 
     return end();
   });
-});
+}

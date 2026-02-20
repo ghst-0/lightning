@@ -1,9 +1,8 @@
-import 'node:assert';
+import { throws, deepStrictEqual } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import { promisify } from 'node:util';
 import test from 'node:test';
-import 'node:assert';
-import { subscribeToBackups } from './../../../index.js';
+import { subscribeToBackups } from '../../../index.js';
 
 const nextTick = promisify(process.nextTick);
 
@@ -38,8 +37,6 @@ const makeLnd = ({data, err}) => {
           emitter.emit('status', {status: 'status'});
           emitter.emit('end', {});
           emitter.emit('error', {details: 'Cancelled on client'});
-
-          return;
         });
 
         return emitter;
@@ -86,17 +83,17 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       throws(() => subscribeToBackups(args), new Error(error), 'Got error');
     } else {
       const events = [];
       const sub = subscribeToBackups(args);
 
-      ['backup', 'error',].forEach(event => {
-        return sub.on(event, data => events.push({event, data}));
-      });
+      for (const event of ['backup', 'error',]) {
+        sub.on(event, data => events.push({ event, data }))
+      }
 
       await nextTick();
 
@@ -104,13 +101,9 @@ tests.forEach(({args, description, error, expected}) => {
 
       sub.removeAllListeners();
 
-      const sub2 = subscribeToBackups(args);
-
       await nextTick();
 
       deepStrictEqual(events, expected.events);
     }
-
-    return;
   });
-});
+}

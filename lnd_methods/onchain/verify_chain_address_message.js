@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const hexAsBase64 = hex => Buffer.from(hex, 'hex').toString('base64');

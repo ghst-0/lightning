@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { sendToChainAddresses } from './../../../lnd_methods/index.js';
+import { sendToChainAddresses } from '../../../lnd_methods/index.js';
 
 const makeArgs = overrides => {
   const args = {
@@ -15,7 +14,9 @@ const makeArgs = overrides => {
     send_to: [{address: 'address', tokens: 1}],
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -29,7 +30,9 @@ const makeExpected = overrides => {
     tokens: 1,
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -125,8 +128,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => sendToChainAddresses(args), error, 'Got err');
     } else {
@@ -134,7 +137,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(res, expected, 'Got expected result');
     }
-
-    return;
   });
-});
+}

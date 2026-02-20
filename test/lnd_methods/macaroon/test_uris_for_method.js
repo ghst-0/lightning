@@ -1,8 +1,7 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import method from './../../../lnd_methods/macaroon/uris_for_method.js';
-import methods from './../../../lnd_methods/macaroon/methods';
+import method from '../../../lnd_methods/macaroon/uris_for_method.js';
+import methods from '../../../lnd_methods/macaroon/methods.json' with { type: 'json' };
 
 const tests = [
   {
@@ -27,8 +26,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => method(args), new Error(error), 'Got expected error');
     } else {
@@ -38,8 +37,10 @@ tests.forEach(({args, description, error, expected}) => {
     }
 
     // Run through all the methods to make sure they can be derived
-    Object.keys(methods).forEach(n => method({method: n}));
+    for (const n of Object.keys(methods)) {
+      method({ method: n })
+    }
 
     return end();
   });
-});
+}

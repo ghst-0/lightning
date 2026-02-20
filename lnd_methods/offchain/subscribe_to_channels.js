@@ -1,6 +1,6 @@
 import EventEmitter from 'node:events';
-import { isLnd } from './../../lnd_requests/index.js';
-import { rpcChannelAsChannel, rpcClosedChannelAsClosed, rpcOutpointAsUpdate } from './../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
+import { rpcChannelAsChannel, rpcClosedChannelAsClosed, rpcOutpointAsUpdate } from '../../lnd_responses/index.js';
 
 const asError = msg => new Error(msg);
 const eventActive = 'channel_active_changed';

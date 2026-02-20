@@ -1,9 +1,7 @@
 import type {
   AuthenticatedLightningArgs,
   AuthenticatedLightningSubscription,
-  LightningError,
 } from '../../typescript';
-import type {SubscribeToPastPaymentsPaymentEvent} from './subscribe_to_past_payments';
 
 export type SubscribeToPaymentsArgs = AuthenticatedLightningArgs;
 

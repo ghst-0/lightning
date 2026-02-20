@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { addPeer } from './../peers/index.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { addPeer } from '../peers/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const anchors = 'ANCHORS';
 const defaultChainFeeConfTarget = 6;

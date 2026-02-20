@@ -1,14 +1,14 @@
 import { randomBytes } from 'node:crypto';
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const asSecs = date => date ? (Date.parse(date) - Date.now()) / 1e3 : null;
 const bufferToHex = buffer => buffer.toString('hex');
 const expirationAsDate = epoch => new Date(Number(epoch) * 1e3).toISOString();
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
 const isHash = n => !!n && /^[0-9A-F]{64}$/i.test(n);
-const isNumber = n => !Number.isNaN(n);
+const isNumber = n => !isNaN(n);
 const makeId = () => randomBytes(32).toString('hex');
 const method = 'leaseOutput';
 const minExpireSecs = 1;

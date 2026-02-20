@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { sendToChainOutputScripts } from './../../../lnd_methods/index.js';
+import { sendToChainOutputScripts } from '../../../lnd_methods/index.js';
 
 const emptyTx = '01000000000000000000';
 
@@ -17,7 +16,9 @@ const makeArgs = overrides => {
     send_to: [{script: '00', tokens: 1}],
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -74,8 +75,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => sendToChainOutputScripts(args), error, 'Got err');
     } else {
@@ -83,7 +84,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(res, expected, 'Got expected result');
     }
-
-    return;
   });
-});
+}

@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 import verifyBackup from './verify_backup.js';
 
 const existsErr = 'unable to unpack single backups: channel already exists';

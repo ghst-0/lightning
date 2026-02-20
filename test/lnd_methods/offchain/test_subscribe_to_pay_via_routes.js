@@ -1,9 +1,6 @@
-import 'node:assert';
-import EventEmitter from 'node:events';
-import 'node:assert';
+import { deepStrictEqual, strictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { subscribeToPayViaRoutes } from './../../../index.js';
+import { subscribeToPayViaRoutes } from '../../../index.js';
 
 const deletePayment = ({}, cbk) => cbk();
 
@@ -378,37 +375,36 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => subscribeToPayViaRoutes(args), new Error(error), 'Got err');
 
       return end();
-    } else {
-      const attempts = [];
-      const failures = [];
-      let gotError;
-      let gotSuccess;
-      const sub = subscribeToPayViaRoutes(args);
-
-      sub.on('error', err => gotError = err);
-      sub.on('paying', attempt => attempts.push(attempt));
-      sub.on('routing_failure', failure => failures.push(failure));
-      sub.on('success', success => gotSuccess = success);
-
-      return sub.once('end', () => {
-        deepStrictEqual(attempts, expected.attempts, 'Got pay attempts');
-        deepStrictEqual(failures, expected.failures, 'Got pay failures');
-        deepStrictEqual(gotSuccess, expected.success, 'Got pay success');
-
-        const [errCode, errMessage] = gotError || [];
-        const [expectedErrCode, expectedErrMessage] = expected.error || [];
-
-        strictEqual(errCode, expectedErrCode, 'Got error code');
-        strictEqual(errMessage, expectedErrMessage, 'Got error message');
-
-        return end();
-      });
     }
+    const attempts = [];
+    const failures = [];
+    let gotError;
+    let gotSuccess;
+    const sub = subscribeToPayViaRoutes(args);
+
+    sub.on('error', err => {gotError = err});
+    sub.on('paying', attempt => attempts.push(attempt));
+    sub.on('routing_failure', failure => failures.push(failure));
+    sub.on('success', success => {gotSuccess = success});
+
+    return sub.once('end', () => {
+      deepStrictEqual(attempts, expected.attempts, 'Got pay attempts');
+      deepStrictEqual(failures, expected.failures, 'Got pay failures');
+      deepStrictEqual(gotSuccess, expected.success, 'Got pay success');
+
+      const [errCode, errMessage] = gotError || [];
+      const [expectedErrCode, expectedErrMessage] = expected.error || [];
+
+      strictEqual(errCode, expectedErrCode, 'Got error code');
+      strictEqual(errMessage, expectedErrMessage, 'Got error message');
+
+      return end();
+    });
   });
-});
+}

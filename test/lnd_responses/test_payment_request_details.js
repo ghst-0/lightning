@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { paymentRequestDetails } from './../../lnd_responses/index.js';
+import { paymentRequestDetails } from '../../lnd_responses/index.js';
 
 const makeDetails = overrides => {
   const details = {
@@ -34,7 +33,9 @@ const makeDetails = overrides => {
     timestamp: '1',
   };
 
-  Object.keys(overrides).forEach(k => details[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    details[k] = overrides[k]
+  }
 
   return details;
 };
@@ -156,8 +157,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => paymentRequestDetails(args), new Error(error), 'Got err');
     } else {
@@ -166,4 +167,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

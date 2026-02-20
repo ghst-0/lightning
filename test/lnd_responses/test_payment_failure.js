@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { paymentFailure } from './../../lnd_responses/index.js';
+import { paymentFailure } from '../../lnd_responses/index.js';
 
 const makeFailure = ({fail, overrides}) => {
   const failure = {
@@ -31,9 +30,13 @@ const makeFailure = ({fail, overrides}) => {
     keys: [Buffer.alloc(33).toString('hex')],
   };
 
-  Object.keys(overrides || {}).forEach(k => failure[k] = overrides[k]);
+  for (const k of Object.keys(overrides || {})) {
+    failure[k] = overrides[k]
+  }
 
-  Object.keys(fail || {}).forEach(k => failure.failure[k] = fail[k]);
+  for (const k of Object.keys(fail || {})) {
+    failure.failure[k] = fail[k]
+  }
 
   return failure;
 };
@@ -68,7 +71,9 @@ const makeExpected = overrides => {
     message: 'UnexpectedPayViaRoutesFailure',
   };
 
-  Object.keys(overrides || {}).forEach(key => expected[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    expected[key] = overrides[key]
+  }
 
   return expected;
 };
@@ -254,8 +259,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => paymentFailure(args), new Error(error), 'Got error');
     } else {
@@ -264,4 +269,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

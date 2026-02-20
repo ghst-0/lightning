@@ -1,6 +1,6 @@
-import 'node:assert';
+import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { addExternalSocket } from './../../../index.js';
+import { addExternalSocket } from '../../../index.js';
 
 const makeLnd = ({err}) => {
   return {peers: {updateNodeAnnouncement: (args, cbk) => cbk(err)}};
@@ -9,7 +9,9 @@ const makeLnd = ({err}) => {
 const makeArgs = overrides => {
   const args = {lnd: makeLnd({}), socket: '127.0.0.1:9735'};
 
-  Object.keys(overrides).forEach(key => args[key] = overrides[key]);
+  for (const key of Object.keys(overrides)) {
+    args[key] = overrides[key]
+  }
 
   return args;
 };
@@ -43,14 +45,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => addExternalSocket(args), error, 'Got error');
     } else {
       await addExternalSocket(args);
     }
-
-    return;
   });
-});
+}

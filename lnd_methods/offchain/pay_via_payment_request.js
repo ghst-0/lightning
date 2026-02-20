@@ -2,7 +2,7 @@ import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
 import finishedPayment from './finished_payment.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 import subscribeToPayViaRequest from './subscribe_to_pay_via_request.js';
 
 const method = 'sendPaymentV2';

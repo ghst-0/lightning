@@ -1,6 +1,6 @@
 import EventEmitter from 'node:events';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const blockHashByteLen = 32;
 const event = 'block';

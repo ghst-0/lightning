@@ -3,8 +3,8 @@ import asyncAuto from 'async/auto.js';
 import { parsePaymentRequest } from 'invoices';
 import { returnResult } from 'asyncjs-util';
 
-import { createChainAddress } from './../address/index.js';
-import { isLnd, routeHintFromRoute } from './../../lnd_requests/index.js';
+import { createChainAddress } from '../address/index.js';
+import { isLnd, routeHintFromRoute } from '../../lnd_requests/index.js';
 
 const hexAsBuffer = hex => hex ? Buffer.from(hex, 'hex') : undefined;
 const {isArray} = Array;

@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { rpcRouteFromRoute } from './../../lnd_requests/index.js';
+import { rpcRouteFromRoute } from '../../lnd_requests/index.js';
 
 const tests = [
   {
@@ -119,8 +118,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => rpcRouteFromRoute(args), new Error(error), 'Got error');
     } else {
@@ -129,4 +128,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

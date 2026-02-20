@@ -1,6 +1,6 @@
-import 'node:assert';
+import { equal } from 'node:assert/strict';
 import test from 'node:test';
-import { getAutopilot } from './../../../index.js';
+import { getAutopilot } from '../../../index.js';
 
 const tests = [
   {
@@ -229,8 +229,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, expected } of tests) {
+  test(description, (t, end) => {
     getAutopilot(args, (err, res) => {
       const [errCode, errMessage] = err || [];
 
@@ -248,7 +248,7 @@ tests.forEach(({args, description, expected}) => {
 
       equal(res.is_enabled, expected.is_enabled, 'Got is_enabled as expected');
 
-      if (!!expected.node) {
+      if (expected.node) {
         const [node] = res.nodes || [];
 
         equal(
@@ -288,4 +288,4 @@ tests.forEach(({args, description, expected}) => {
       return end();
     });
   });
-});
+}

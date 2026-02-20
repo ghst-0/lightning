@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { signChainAddressMessage } from './../../../index.js';
+import { signChainAddressMessage } from '../../../index.js';
 
 const makeArgs = override => {
   const args = {
@@ -14,7 +13,9 @@ const makeArgs = override => {
     message: 'message',
   };
 
-  Object.keys(override).forEach(attr => args[attr] = override[attr]);
+  for (const attr of Object.keys(override)) {
+    args[attr] = override[attr]
+  }
 
   return args;
 };
@@ -74,14 +75,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => signChainAddressMessage(args), error, 'Got error');
     } else {
       deepStrictEqual(await signChainAddressMessage(args), expected, 'Result');
     }
-
-    return;
   });
-});
+}

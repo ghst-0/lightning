@@ -1,12 +1,13 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { rpcOutpointAsUpdate } from './../../lnd_responses/index.js';
+import { rpcOutpointAsUpdate } from '../../lnd_responses/index.js';
 
 const makeInfo = overrides => {
   const details = {funding_txid_bytes: Buffer.alloc(32), output_index: 0};
 
-  Object.keys(overrides || {}).forEach(key => details[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    details[key] = overrides[key]
+  }
 
   return details;
 };
@@ -17,7 +18,9 @@ const makeExpected = overrides => {
     transaction_vout: 0,
   };
 
-  Object.keys(overrides || {}).forEach(key => expected[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    expected[key] = overrides[key]
+  }
 
   return expected;
 };
@@ -44,8 +47,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => rpcOutpointAsUpdate(args), new Error(error), 'Got error');
     } else {
@@ -54,4 +57,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

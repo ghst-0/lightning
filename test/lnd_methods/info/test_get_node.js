@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getNode } from './../../../index.js';
+import { getNode } from '../../../index.js';
 
 const makeLnd = ({err, getVersionErr, res}) => {
   const response = {
@@ -175,14 +174,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getNode(args), error, 'Got expected error');
     } else {
       deepStrictEqual(await getNode(args), expected, 'Got node details');
     }
-
-    return;
   });
-});
+}

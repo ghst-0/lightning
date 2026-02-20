@@ -1,5 +1,3 @@
-import { chanNumber } from 'bolt07';
-
 const {isArray} = Array;
 
 /** Ignore as ignored pairs

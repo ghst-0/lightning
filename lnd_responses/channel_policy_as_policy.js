@@ -1,6 +1,6 @@
 const asDate = epochTime => new Date(epochTime * 1e3).toISOString();
-const discount = fee => (!fee ? 0 : -fee).toString();
-const inverse = rate => !rate ? 0 : -rate;
+const discount = fee => (fee ? -fee : 0).toString();
+const inverse = rate => rate ? -rate : 0;
 
 /** Convert raw channel policy to standard channel policy
 

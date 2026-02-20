@@ -1,6 +1,6 @@
 import { randomBytes } from 'node:crypto';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 import subscribeToPay from './subscribe_to_pay.js';
 
 const defaultCltvDelta = 144;

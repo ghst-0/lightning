@@ -1,6 +1,6 @@
-import 'node:assert';
+import { equal } from 'node:assert/strict';
 import test from 'node:test';
-import grpcSsl from './../../lnd_grpc/grpc_ssl.js';
+import grpcSsl from '../../lnd_grpc/grpc_ssl.js';
 
 const tests = [
   {
@@ -17,12 +17,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description}) => {
-  return test(description, (t, end) => {
+for (const { args, description } of tests) {
+  test(description, (t, end) => {
     const res = grpcSsl(args);
 
     equal(!!res.ssl, true, 'Has SSL object');
 
     return end();
   });
-});
+}

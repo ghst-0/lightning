@@ -1,4 +1,4 @@
-import constants from './constants';
+import constants from './constants.json' with { type: 'json'};
 
 const formats = constants.addressFormats;
 const {keys} = Object;

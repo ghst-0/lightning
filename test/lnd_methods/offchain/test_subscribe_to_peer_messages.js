@@ -1,8 +1,7 @@
-import 'node:assert';
+import { deepStrictEqual } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import test from 'node:test';
-import 'node:assert';
-import { subscribeToPeerMessages } from './../../../lnd_methods/index.js';
+import { subscribeToPeerMessages } from '../../../lnd_methods/index.js';
 
 const makeLnd = overrides => {
   const data = {
@@ -11,7 +10,9 @@ const makeLnd = overrides => {
     type: 44444,
   };
 
-  Object.keys(overrides).forEach(k => data[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    data[k] = overrides[k]
+  }
 
   return {
     default: {
@@ -91,8 +92,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     try {
       subscribeToPeerMessages({});
     } catch (err) {
@@ -126,7 +127,5 @@ tests.forEach(({args, description, error, expected}) => {
         return end();
       });
     }
-
-    return;
   });
-});
+}

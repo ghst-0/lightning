@@ -1,10 +1,8 @@
-import 'node:assert';
+import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getInfoResponse } from './../fixtures/index.js';
-import { stopDaemon } from './../../../index.js';
+import { stopDaemon } from '../../../index.js';
 
 const makeLnd = ({attempts}) => {
-  const response = getInfoResponse;
 
   return {
     default: {
@@ -43,14 +41,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => stopDaemon(args), error, 'Got error');
     } else {
       await stopDaemon(args);
     }
-
-    return;
   });
-});
+}

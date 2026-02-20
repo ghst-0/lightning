@@ -1,12 +1,13 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { rpcWalletStateAsState } from './../../lnd_responses/index.js';
+import { rpcWalletStateAsState } from '../../lnd_responses/index.js';
 
 const makeExpected = overrides => {
   const expected = {};
 
-  Object.keys(overrides).forEach(k => expected[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    expected[k] = overrides[k]
+  }
 
   return expected;
 };
@@ -58,8 +59,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => rpcWalletStateAsState(args), new Error(error), 'Got error');
     } else {
@@ -68,4 +69,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

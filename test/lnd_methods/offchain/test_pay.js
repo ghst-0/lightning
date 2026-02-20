@@ -1,10 +1,8 @@
-import 'node:assert';
+import { equal, strictEqual, deepStrictEqual } from 'node:assert/strict';
 import EventEmitter from 'node:events';
-import 'node:assert';
-import 'node:assert';
 import test from 'node:test';
-import { getInfoResponse } from './../fixtures/index.js';
-import { pay } from './../../../index.js';
+import { getInfoResponse } from '../fixtures/index.js';
+import { pay } from '../../../index.js';
 
 const getInfo = ({}, cbk) => cbk(null, getInfoResponse);
 const preimage = Buffer.alloc(32);
@@ -72,7 +70,9 @@ const makePaymentData = overrides => {
     value_sat: '1',
   };
 
-  Object.keys(overrides).forEach(k => data[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    data[k] = overrides[k]
+  }
 
   return data;
 };
@@ -161,8 +161,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       try {
         await pay(args);
@@ -195,7 +195,5 @@ tests.forEach(({args, description, error, expected}) => {
     strictEqual(paid.mtokens, expected.mtokens, 'Mtokens are returned');
     strictEqual(paid.secret, expected.secret, 'Payment results in secret');
     strictEqual(paid.tokens, expected.tokens, 'Tokens are returned');
-
-    return;
   });
-});
+}

@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const bufferFromHex = hex => Buffer.from(hex, 'hex');
 const isHex = n => !(n.length % 2) && /^[0-9A-F]*$/i.test(n);

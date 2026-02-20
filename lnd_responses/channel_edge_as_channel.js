@@ -1,4 +1,5 @@
 import { chanFormat } from 'bolt07';
+
 import channelPolicyAsPolicy from './channel_policy_as_policy.js';
 
 const separatorChar = ':';

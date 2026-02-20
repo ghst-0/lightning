@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
-import { isLnd } from './../../lnd_requests/index.js';
-import { rpcTxAsTransaction } from './../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
+import { rpcTxAsTransaction } from '../../lnd_responses/index.js';
 
 const isHash = n => !!n && /^[0-9A-F]{64}$/i.test(n);
 const method = 'getTransaction';
@@ -69,7 +69,7 @@ export default ({id, lnd}, cbk) => {
 
           try {
             return cbk(null, rpcTxAsTransaction(res));
-          } catch {
+          } catch (err) {
             return cbk([503, err.message]);
           }
         });

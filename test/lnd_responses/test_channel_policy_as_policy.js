@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import chanPolicyAsPolicy from './../../lnd_responses/channel_policy_as_policy.js';
+import chanPolicyAsPolicy from '../../lnd_responses/channel_policy_as_policy.js';
 
 const makeExpected = overrides => {
   const expected = {
@@ -17,7 +16,9 @@ const makeExpected = overrides => {
     updated_at: new Date(1000).toISOString(),
   };
 
-  Object.keys(overrides || {}).forEach(key => expected[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    expected[key] = overrides[key]
+  }
 
   return expected;
 };
@@ -137,8 +138,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => chanPolicyAsPolicy(args), new Error(error), 'Got error');
     } else {
@@ -149,4 +150,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

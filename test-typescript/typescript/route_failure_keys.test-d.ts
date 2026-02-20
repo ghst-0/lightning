@@ -1,5 +1,4 @@
 import {expectError, expectType} from 'tsd';
-import {AuthenticatedLnd} from '../../lnd_grpc';
 import {
   routeFailureKeys,
   RouteFailureKeysResult,

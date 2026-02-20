@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getForwardingReputations } from './../../../index.js';
+import { getForwardingReputations } from '../../../index.js';
 
 const makeLnd = ({err, res}) => {
   return {
@@ -135,8 +134,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(getForwardingReputations(args), error, 'Got expected err');
     } else {
@@ -144,7 +143,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(res, expected, 'Got expected result');
     }
-
-    return;
   });
-});
+}

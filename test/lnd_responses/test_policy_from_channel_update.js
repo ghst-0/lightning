@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { policyFromChannelUpdate } from './../../lnd_responses/index.js';
+import { policyFromChannelUpdate } from '../../lnd_responses/index.js';
 
 const makeInput = ({overrides, update}) => {
   const response = {
@@ -18,9 +17,13 @@ const makeInput = ({overrides, update}) => {
     },
   };
 
-  Object.keys(overrides || {}).forEach(key => response[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    response[key] = overrides[key]
+  }
 
-  Object.keys(update || {}).forEach(key => response.update[key] = update[key]);
+  for (const key of Object.keys(update || {})) {
+    response.update[key] = update[key]
+  }
 
   return response;
 };
@@ -38,7 +41,9 @@ const makeExpected = overrides => {
     updated_at: '1970-01-01T00:00:01.000Z',
   };
 
-  Object.keys(overrides || {}).forEach(key => expected[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    expected[key] = overrides[key]
+  }
 
   return expected;
 };
@@ -96,8 +101,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => policyFromChannelUpdate(args), new Error(error), 'Got err');
     } else {
@@ -106,4 +111,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { pendingAsPendingChannels } from './../../lnd_responses/index.js';
+import { pendingAsPendingChannels } from '../../lnd_responses/index.js';
 
 const makeChannel = overrides => {
   const res = {
@@ -16,7 +15,9 @@ const makeChannel = overrides => {
     remote_node_pub: Buffer.alloc(33).toString('hex'),
   };
 
-  Object.keys(overrides || {}).forEach(key => res[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    res[key] = overrides[key]
+  }
 
   return res;
 };
@@ -31,7 +32,9 @@ const makePendingHtlc = overrides => {
     stage: 1,
   };
 
-  Object.keys(overrides || {}).forEach(key => res[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    res[key] = overrides[key]
+  }
 
   return res;
 };
@@ -48,7 +51,9 @@ const makePendingForceClosingChannel = overrides => {
     recovered_balance: '1',
   };
 
-  Object.keys(overrides || {}).forEach(key => res[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    res[key] = overrides[key]
+  }
 
   return res;
 };
@@ -63,7 +68,9 @@ const makePendingOpenChannel = overrides => {
     fee_per_kw: '1',
   };
 
-  Object.keys(overrides || {}).forEach(key => res[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    res[key] = overrides[key]
+  }
 
   return res;
 };
@@ -82,7 +89,9 @@ const makeWaitingCloseChannel = overrides => {
     limbo_balance: '1',
   };
 
-  Object.keys(overrides || {}).forEach(key => res[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    res[key] = overrides[key]
+  }
 
   return res;
 }
@@ -94,7 +103,9 @@ const makeArgs = overrides => {
     waiting_close_channels: [makeWaitingCloseChannel({})],
   };
 
-  Object.keys(overrides || {}).forEach(key => args[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    args[key] = overrides[key]
+  }
 
   return args;
 };
@@ -139,7 +150,9 @@ const makeExpectedPending = overrides => {
     type: 'original_with_static_to_remote',
   };
 
-  Object.keys(overrides || {}).forEach(key => res[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    res[key] = overrides[key]
+  }
 
   return res;
 };
@@ -153,7 +166,9 @@ const makeExpected = overrides => {
     ],
   };
 
-  Object.keys(overrides || {}).forEach(key => expected[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    expected[key] = overrides[key]
+  }
 
   return expected;
 };
@@ -472,8 +487,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => pendingAsPendingChannels(args), new Error(error), 'Errors');
     } else {
@@ -482,4 +497,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

@@ -1,7 +1,8 @@
-import { attemptStates } from './constants';
+import constants from './constants.json' with { type: 'json'};
 import rpcAttemptHtlcAsAttempt from './rpc_attempt_htlc_as_attempt.js';
-import { safeTokens } from './../bolt00/index.js';
+import { safeTokens } from '../bolt00/index.js';
 
+const { attemptStates } = constants;
 const {isArray} = Array;
 const is256Hex = n => !!n && /^[0-9A-F]{64}$/i.test(n);
 const {max} = Math;
@@ -126,7 +127,7 @@ export default payment => {
     throw new Error('ExpectedArrayOfPaymentHtlcsInConfirmedPayment');
   }
 
-  if (!payment.htlcs.find(n => n.status === attemptStates.confirmed)) {
+  if (!payment.htlcs.some(n => n.status === attemptStates.confirmed)) {
     throw new Error('ExpectedSuccessHtlcInConfirmedPayment');
   }
 

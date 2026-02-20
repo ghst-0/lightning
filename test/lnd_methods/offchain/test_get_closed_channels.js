@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getClosedChannels } from './../../../index.js';
+import { getClosedChannels } from '../../../index.js';
 
 const makeLnd = (err, override, response) => {
   const channel = {
@@ -18,9 +17,11 @@ const makeLnd = (err, override, response) => {
     time_locked_balance: '1',
   };
 
-  Object.keys(override || {}).forEach(key => channel[key] = override[key]);
+  for (const key of Object.keys(override || {})) {
+    channel[key] = override[key]
+  }
 
-  const r = response !== undefined ? response : {channels: [channel]};
+  const r = response === undefined ? { channels: [channel] } : response;
 
   return {default: {closedChannels: ({}, cbk) => cbk(err, r)}};
 };
@@ -35,7 +36,9 @@ const makeArgs = ({override}) => {
     lnd: makeLnd(),
   };
 
-  Object.keys(override || {}).forEach(key => args[key] = override[key]);
+  for (const key of Object.keys(override || {})) {
+    args[key] = override[key]
+  }
 
   return args;
 };
@@ -68,7 +71,9 @@ const makeExpectedChannel = ({override}) => {
     transaction_vout: 1,
   };
 
-  Object.keys(override || {}).forEach(key => expected[key] = override[key]);
+  for (const key of Object.keys(override || {})) {
+    expected[key] = override[key]
+  }
 
   return expected;
 };
@@ -318,8 +323,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(getClosedChannels(args), error, 'Got expected error');
     } else {
@@ -327,7 +332,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(channels, expected.channels, 'Got expected channels');
     }
-
-    return;
   });
-});
+}

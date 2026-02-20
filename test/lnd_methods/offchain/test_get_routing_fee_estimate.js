@@ -1,4 +1,4 @@
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
 import { getRoutingFeeEstimate } from '../../../index.js';
 
@@ -11,7 +11,7 @@ const makeLnd = ({err, res}) => {
 
   return {
     router: {
-      estimateRouteFee: ({}, cbk) => cbk(err, res !== undefined ? res : r),
+      estimateRouteFee: ({}, cbk) => cbk(err, res === undefined ? r : res),
     },
   };
 };
@@ -19,7 +19,9 @@ const makeLnd = ({err, res}) => {
 const makeArgs = override => {
   const args = {lnd: makeLnd({}), request: 'request'};
 
-  Object.keys(override || {}).forEach(key => args[key] = override[key]);
+  for (const key of Object.keys(override || {})) {
+    args[key] = override[key]
+  }
 
   return args;
 };
@@ -69,14 +71,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(getRoutingFeeEstimate(args), error, 'Got expected error');
     } else {
       deepStrictEqual(await getRoutingFeeEstimate(args), expected, 'Got res');
     }
-
-    return;
   });
-});
+}

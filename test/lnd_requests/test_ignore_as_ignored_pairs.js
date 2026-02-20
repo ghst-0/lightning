@@ -1,11 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, strictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-
-const requests = './../../lnd_requests';
-
-const ignoreAsIgnoredPairs = require(`${requests}/ignore_as_ignored_pairs`);
+import ignoreAsIgnoredPairs from '../../lnd_requests/ignore_as_ignored_pairs.js'
 
 const tests = [
   {
@@ -35,11 +30,11 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => ignoreAsIgnoredPairs(args), new Error(error), 'Got error');
-    } else if (!!expected.ignored) {
+    } else if (expected.ignored) {
       const {ignored} = ignoreAsIgnoredPairs(args);
 
       const got = ignored.map(n => {
@@ -53,4 +48,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

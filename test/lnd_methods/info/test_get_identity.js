@@ -1,8 +1,7 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getInfoResponse } from './../fixtures/index.js';
-import { getIdentity } from './../../../index.js';
+import { getInfoResponse } from '../fixtures/index.js';
+import { getIdentity } from '../../../index.js';
 
 const makeLnd = ({err, res}) => {
   return {
@@ -46,14 +45,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getIdentity(args), error, 'Got error');
     } else {
       deepStrictEqual(await getIdentity(args), expected, 'Got identity');
     }
-
-    return;
   });
-});
+}

@@ -1,4 +1,6 @@
-import { policyUpdateFailures } from './constants';
+import constants from './constants.json' with { type: 'json'};
+
+const { policyUpdateFailures } = constants;
 
 const internalByteOrderTxIdAsTxId = n => n.slice().reverse().toString('hex');
 const {isBuffer} = Buffer;

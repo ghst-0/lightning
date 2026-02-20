@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { failureFromPayment } from './../../lnd_responses/index.js';
+import { failureFromPayment } from '../../lnd_responses/index.js';
 
 const id = Buffer.alloc(32).toString('hex')
 
@@ -15,7 +14,9 @@ const makeExpected = overrides => {
     is_route_not_found: false,
   };
 
-  Object.keys(overrides).forEach(k => expected[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    expected[k] = overrides[k]
+  }
 
   return expected;
 };
@@ -68,8 +69,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => failureFromPayment(args), new Error(error), 'Got error');
     } else {
@@ -78,4 +79,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   })
-});
+}

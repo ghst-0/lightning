@@ -4,10 +4,10 @@ import { chanNumber } from 'bolt07';
 import { returnResult } from 'asyncjs-util';
 
 import constants from './constants.json' with { type: 'json'};
-import { destinationCustomRecords, ignoreAsIgnoredNodes, ignoreAsIgnoredPairs, isLnd, routeHintFromRoute } from './../../lnd_requests/index.js';
-import { getHeight } from './../generic/index.js';
-import { mtokensAmount } from './../../bolt00/index.js';
-import { routesFromQueryRoutes } from './../../lnd_responses/index.js';
+import { destinationCustomRecords, ignoreAsIgnoredNodes, ignoreAsIgnoredPairs, isLnd, routeHintFromRoute } from '../../lnd_requests/index.js';
+import { getHeight } from '../generic/index.js';
+import { mtokensAmount } from '../../bolt00/index.js';
+import { routesFromQueryRoutes } from '../../lnd_responses/index.js';
 
 const { blocksBuffer, defaultCltv, defaultTokens } = constants;
 const asTimePreference = n => n === undefined ? n : ((n * 2) - 1e6) / 1e6;
@@ -17,7 +17,7 @@ const defaultMaxFee = Number.MAX_SAFE_INTEGER;
 const errorFilter = err => Array.isArray(err) && err.slice().shift() === 429;
 const internalServerError = /internal.server.error/i;
 const {isArray} = Array;
-const isConfidence = n => !Number.isNaN(n) && n >= 0 && n <= 1e6;
+const isConfidence = n => !isNaN(n) && n >= 0 && n <= 1e6;
 const isHex = n => !(n.length % 2) && /^[0-9A-F]*$/i.test(n);
 const networkBusyError = /device.or.resource.busy/;
 const noRouteErrorDetails = 'unable to find a path to destination';

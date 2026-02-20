@@ -3,7 +3,7 @@ import asyncRetry from 'async/retry.js';
 import { returnResult } from 'asyncjs-util';
 
 import getPeers from './get_peers.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const connectedErrMsg = /already.connected.to/;
 const defaultInterval = retryCount => 50 * 2 ** retryCount;

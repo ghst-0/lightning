@@ -1,6 +1,6 @@
 import { parsePaymentRequest } from 'invoices';
 import rpcAttemptHtlcAsAttempt from './rpc_attempt_htlc_as_attempt.js';
-import { safeTokens } from './../bolt00/index.js';
+import { safeTokens } from '../bolt00/index.js';
 
 const emptyHash = Buffer.alloc(32).toString('hex');
 const {isArray} = Array;

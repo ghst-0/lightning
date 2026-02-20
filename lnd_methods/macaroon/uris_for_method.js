@@ -1,5 +1,5 @@
-import methods from './methods';
-import { packageTypes, serviceTypes } from './../../grpc/index.js';
+import methods from './methods.json' with { type: 'json' };
+import { packageTypes, serviceTypes } from '../../grpc/index.js';
 
 
 const flatten = arr => arr.flat(Infinity);

@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getMethods } from './../../../index.js';
+import { getMethods } from '../../../index.js';
 
 const makeLnd = ({err, res}) => {
   const response = {
@@ -10,7 +9,7 @@ const makeLnd = ({err, res}) => {
     },
   };
 
-  const r = res !== undefined ? res : response;
+  const r = res === undefined ? response : res;
 
   return {default: {listPermissions: ({}, cbk) => cbk(err, r)}};
 };
@@ -67,14 +66,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getMethods(args), error, 'Got error');
     } else {
       deepStrictEqual(await getMethods(args), expected, 'Got expected res');
     }
-
-    return;
   });
-});
+}

@@ -1,23 +1,22 @@
-import 'node:assert';
-import 'node:assert';
+import { strictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getMinimumRelayFee } from './../../../lnd_methods/index.js';
+import { getMinimumRelayFee } from '../../../lnd_methods/index.js';
 
 const tests = [
   {
     args: {},
     description: 'LND is required',
-    error: [400, 'ExpecteAuthenticatedLndToGetMinRelayFeeRate'],
+    error: [400, 'ExpectedAuthenticatedLndToGetMinRelayFeeRate'],
   },
   {
     args: {lnd: {}},
     description: 'LND with wallet object is required',
-    error: [400, 'ExpecteAuthenticatedLndToGetMinRelayFeeRate'],
+    error: [400, 'ExpectedAuthenticatedLndToGetMinRelayFeeRate'],
   },
   {
     args: {lnd: {wallet: {}}},
     description: 'LND with estimateFee method is required',
-    error: [400, 'ExpecteAuthenticatedLndToGetMinRelayFeeRate'],
+    error: [400, 'ExpectedAuthenticatedLndToGetMinRelayFeeRate'],
   },
   {
     args: {
@@ -55,8 +54,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(getMinimumRelayFee(args), error, 'Got expected error');
     } else {
@@ -64,7 +63,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       strictEqual(res.tokens_per_vbyte, expected.tokens_per_vbyte, 'Got rate');
     }
-
-    return;
   });
-});
+}

@@ -1,8 +1,6 @@
 import {LightningMessage} from '.';
 import {
-  AuthenticatedLightningArgs,
   AuthenticatedLightningSubscription,
-  LightningError,
 } from '../../typescript';
 
 export type SubscribeToPeerMessagesMessageReceivedEvent =

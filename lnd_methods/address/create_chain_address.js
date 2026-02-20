@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 import addressFormats from './address_formats.json' with { type: 'json' };
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const connectFailMessage = '14 UNAVAILABLE: Connect Failed';
 const defaultAddressFormat = 'p2wpkh';

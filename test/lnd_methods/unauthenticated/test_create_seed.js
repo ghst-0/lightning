@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { createSeed } from './../../../lnd_methods/index.js';
+import { createSeed } from '../../../lnd_methods/index.js';
 
 const message = '14 UNAVAILABLE: Connect Failed';
 
@@ -68,8 +67,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(createSeed(args), error, 'Got expected error');
     } else {
@@ -77,7 +76,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(seed, expected.seed, 'Got expected seed');
     }
-
-    return;
   });
-});
+}

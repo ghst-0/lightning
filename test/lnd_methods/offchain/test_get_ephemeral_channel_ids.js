@@ -1,12 +1,11 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getEphemeralChannelIds } from './../../../lnd_methods/index.js';
+import { getEphemeralChannelIds } from '../../../lnd_methods/index.js';
 
 const makeLnd = ({err, res}) => {
   const response = {alias_maps: [{aliases: ['1', '2'], base_scid: '1'}]};
 
-  const r = res !== undefined ? res : response;
+  const r = res === undefined ? response : res;
 
   return {default: {listAliases: ({}, cbk) => cbk(err, r)}};
 };
@@ -54,8 +53,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(getEphemeralChannelIds(args), error, 'Got expected error');
     } else {
@@ -63,7 +62,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(res, expected, 'Got expected result');
     }
-
-    return;
   });
-});
+}

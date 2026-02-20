@@ -1,6 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual } from 'node:assert/strict';
 import test from 'node:test';
-import method from './../../../lnd_methods/offchain/route_failure_keys.js';
+import method from '../../../lnd_methods/offchain/route_failure_keys.js';
 
 const tests = [
   {
@@ -44,12 +44,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, expected } of tests) {
+  test(description, (t, end) => {
     const {keys} = method(args);
 
     deepStrictEqual(keys, expected.keys, 'Got expected route failure keys');
 
     return end();
   });
-});
+}

@@ -1,7 +1,7 @@
 import EventEmitter from 'node:events';
 
-import { isLnd } from './../../lnd_requests/index.js';
-import { rpcTxAsTransaction } from './../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
+import { rpcTxAsTransaction } from '../../lnd_responses/index.js';
 
 const cancelError = 'Cancelled on client';
 const {isArray} = Array;

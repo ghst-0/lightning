@@ -1,8 +1,7 @@
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import EventEmitter from 'node:events';
-import 'node:assert';
 import test from 'node:test';
-import { payViaPaymentDetails } from './../../../index.js';
+import { payViaPaymentDetails } from '../../../index.js';
 
 const makePaymentData = overrides => {
   const data = {
@@ -67,7 +66,9 @@ const makePaymentData = overrides => {
     value_sat: '1',
   };
 
-  Object.keys(overrides).forEach(k => data[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    data[k] = overrides[k]
+  }
 
   return data;
 };
@@ -110,9 +111,9 @@ const makeLnd = args => {
         const data = args.data || makePaymentData({});
         const emitter = new EventEmitter();
 
-        if (!!args.is_end) {
+        if (args.is_end) {
           process.nextTick(() => emitter.emit('end'));
-        } else if (!!args.err) {
+        } else if (args.err) {
           process.nextTick(() => emitter.emit('error', args.err));
         } else {
           process.nextTick(() => emitter.emit('data', data));
@@ -151,79 +152,11 @@ const makeArgs = overrides => {
     tokens: 1,
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
-};
-
-const makeExpectedPayment = ({}) => {
-  return {
-    failed: undefined,
-    is_confirmed: true,
-    is_failed: false,
-    is_pending: false,
-    payment: {
-      fee: 0,
-      fee_mtokens: '1',
-      hops: [{
-        channel: '0x0x1',
-        channel_capacity: 1,
-        fee: 0,
-        fee_mtokens: '1',
-        forward: 0,
-        forward_mtokens: '1',
-        public_key: 'b',
-        timeout: 1,
-      }],
-      id: '66687aadf862bd776c8fc18b8e9f8e20089714856ee233b3902a591d0d5f2925',
-      paths: [{
-        fee: 0,
-        fee_mtokens: '1',
-        hops: [{
-          channel: '0x0x1',
-          channel_capacity: 1,
-          fee: 0,
-          fee_mtokens: '1',
-          forward: 0,
-          forward_mtokens: '1',
-          public_key: 'b',
-          timeout: 1
-        }],
-        mtokens: '1',
-        safe_fee: 1,
-        safe_tokens: 1,
-        timeout: 1,
-        tokens: 0,
-      }],
-      mtokens: '1',
-      safe_fee: 1,
-      safe_tokens: 1,
-      secret: Buffer.alloc(32).toString('hex'),
-      timeout: 1,
-      tokens: 0,
-    },
-  };
-};
-
-const makeLegacyConfirmed = ({}) => {
-  return {
-    htlcs: [],
-    preimage: Buffer.alloc(32),
-    route: {
-      hops: [{
-        amt_to_forward_msat: '1',
-        chan_capacity: '1',
-        chan_id: '1',
-        expiry: 1,
-        fee_msat: '1',
-        pub_key: 'b',
-      }],
-      total_amt_msat: '1',
-      total_fees_msat: '1',
-      total_time_lock: 1,
-    },
-    state: 'SUCCEEDED',
-  };
 };
 
 const tests = [
@@ -310,8 +243,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => payViaPaymentDetails(args), error, 'Got error');
     } else {
@@ -319,7 +252,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(payment, expected.payment, 'Got expected payment');
     }
-
-    return;
   });
-});
+}

@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { routesFromQueryRoutes } from './../../lnd_responses/index.js';
+import { routesFromQueryRoutes } from '../../lnd_responses/index.js';
 
 const recordType = '11903';
 const {stringify} = JSON;
@@ -90,7 +89,7 @@ const tests = [
 
             buf.writeBigInt64LE(BigInt(n.type));
 
-            const type = Array(...buf).map(n => String.fromCharCode(n));
+            const type = Array(...buf).map(n => String.fromCodePoint(n));
 
             sum[type.join('')] = n.value;
 
@@ -132,8 +131,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({description, error, expected, response}) => {
-  return test(description, (t, end) => {
+for (const { description, error, expected, response } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => routesFromQueryRoutes({response}), new Error(error));
 
@@ -146,4 +145,4 @@ tests.forEach(({description, error, expected, response}) => {
 
     return end();
   })
-});
+}

@@ -1,4 +1,5 @@
 import { chanFormat } from 'bolt07';
+
 import policyFromChannelUpdate from './policy_from_channel_update.js';
 
 /** Derive payment failure from raw API failure
@@ -66,33 +67,33 @@ export default ({channel, failure, index, key, keys}) => {
 
   const update = failure.channel_update;
 
-  if (!!update) {
+  if (update) {
     try {
       policyFromChannelUpdate({key, keys, update});
 
       chanFormat({number: update.chan_id});
-    } catch (err) {
+    } catch {
       return {code: 500, message: 'ExpectedValidChannelUpdateToDeriveFailure'};
     }
   }
 
-  const failChan = !update ? {channel} : chanFormat({number: update.chan_id});
+  const failChan = update ? chanFormat({ number: update.chan_id }) : { channel };
   const hasMtokens = !!failure.htlc_msat && failure.htlc_msat !== '0';
 
   const details = {
-    channel: !!channel ? channel : failChan.channel,
+    channel: channel ? channel : failChan.channel,
     height: failure.height || undefined,
     index: failure.failure_source_index,
-    mtokens: !hasMtokens ? undefined : failure.htlc_msat,
-    policy: !update ? null : policyFromChannelUpdate({key, keys, update}),
+    mtokens: hasMtokens ? failure.htlc_msat : undefined,
+    policy: update ? policyFromChannelUpdate({ key, keys, update }) : null,
     timeout_height: failure.cltv_expiry || undefined,
-    update: !update ? undefined : {
+    update: update ? {
       chain: update.chain_hash.reverse().toString('hex'),
-      channel_flags : update.channel_flags,
+      channel_flags: update.channel_flags,
       extra_opaque_data: update.extra_opaque_data.toString('hex'),
       message_flags: update.message_flags,
-      signature: update.signature.toString('hex'),
-    },
+      signature: update.signature.toString('hex')
+    } : undefined,
   };
 
   switch (failure.code) {

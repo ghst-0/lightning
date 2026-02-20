@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { rpcAttemptHtlcAsAttempt } from './../../lnd_responses/index.js';
+import { rpcAttemptHtlcAsAttempt } from '../../lnd_responses/index.js';
 
 const route = {
   hops: [{
@@ -27,7 +26,9 @@ const makeArgs = overrides => {
     status: 'IN_FLIGHT',
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -61,7 +62,9 @@ const makeExpected = overrides => {
     },
   };
 
-  Object.keys(overrides).forEach(k => attempt[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    attempt[k] = overrides[k]
+  }
 
   return {attempt};
 };
@@ -113,8 +116,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => rpcAttemptHtlcAsAttempt(args), new Error(error), 'Got err');
     } else {
@@ -125,4 +128,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

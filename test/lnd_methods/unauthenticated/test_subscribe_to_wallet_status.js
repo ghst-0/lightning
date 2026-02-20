@@ -1,13 +1,14 @@
-import 'node:assert';
 import EventEmitter from 'node:events';
-import 'node:assert';
+import { deepStrictEqual } from 'node:assert/strict';
 import test from 'node:test';
-import { subscribeToWalletStatus } from './../../../lnd_methods/index.js';
+import { subscribeToWalletStatus } from '../../../lnd_methods/index.js';
 
 const makeLnd = overrides => {
   const data = {state: 'LOCKED'};
 
-  Object.keys(overrides).forEach(k => data[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    data[k] = overrides[k]
+  }
 
   return {
     status: {
@@ -104,8 +105,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     try {
       subscribeToWalletStatus({});
     } catch (err) {
@@ -138,7 +139,5 @@ tests.forEach(({args, description, error, expected}) => {
       sub.once('locked', () => end());
       sub.once('starting', () => end());
     }
-
-    return;
   });
-});
+}

@@ -1,7 +1,7 @@
 import EventEmitter from 'node:events';
 
-import { channelAcceptAsOpenRequest } from './../../lnd_responses/index.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { channelAcceptAsOpenRequest } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const channelRequestEvent = 'channel_request';
 const method = 'channelAcceptor';

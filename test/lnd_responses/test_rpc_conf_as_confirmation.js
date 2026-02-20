@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { rpcConfAsConfirmation } from './../../lnd_responses/index.js';
+import { rpcConfAsConfirmation } from '../../lnd_responses/index.js';
 
 const makeArgs = overrides => {
   const conf = {
@@ -10,7 +9,9 @@ const makeArgs = overrides => {
     raw_tx: Buffer.alloc(10),
   };
 
-  Object.keys(overrides).forEach(k => conf[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    conf[k] = overrides[k]
+  }
 
   return {conf};
 };
@@ -61,8 +62,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => rpcConfAsConfirmation(args), new Error(error), 'Got error');
     } else {
@@ -73,4 +74,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

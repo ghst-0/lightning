@@ -1,10 +1,8 @@
-import 'node:assert';
+import { deepStrictEqual, strictEqual, throws } from 'node:assert/strict';
 import EventEmitter from 'node:events';
-import 'node:assert';
 import test from 'node:test';
-import 'node:assert';
-import { lookupInvoiceResponse } from './../fixtures/index.js';
-import { subscribeToInvoices } from './../../../index.js';
+import { lookupInvoiceResponse } from '../fixtures/index.js';
+import { subscribeToInvoices } from '../../../index.js';
 
 const emitter = new EventEmitter();
 
@@ -84,10 +82,10 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
+for (const { args, description, error, expected } of tests) {
   args.restart_delay_ms = 1;
 
-  return test(description, (t, end) => {
+  test(description, (t, end) => {
     if (error) {
       throws(() => subscribeToInvoices(args), new Error(error), 'Got error');
     } else {
@@ -102,13 +100,13 @@ tests.forEach(({args, description, error, expected}) => {
       const subscriptionError = [
         503,
         'UnexpectedInvoiceSubscriptionError',
-        {err: new Error('error')},
+        { err: new Error('error') },
       ];
 
-      sub.on('end', () => gotEnd = true);
-      sub.on('error', err => gotErr = err);
-      sub.on('invoice_updated', invoice => gotInvoice = invoice);
-      sub.on('status', status => gotStatus = status);
+      sub.on('end', () => {gotEnd = true});
+      sub.on('error', err => {gotErr = err});
+      sub.on('invoice_updated', invoice => {gotInvoice = invoice});
+      sub.on('status', status => {gotStatus = status});
 
       emitter.emit('end', {});
       emitter.emit('error', new Error('error'));
@@ -121,7 +119,7 @@ tests.forEach(({args, description, error, expected}) => {
       strictEqual(gotErr2, null, 'Did not get second error');
       strictEqual(gotStatus, 'status', 'Got expected status');
 
-      sub.on('error', err => gotErr3 = err);
+      sub.on('error', err => {gotErr3 = err});
 
       emitter.emit('data', {});
 
@@ -137,5 +135,5 @@ tests.forEach(({args, description, error, expected}) => {
     }
 
     return end();
-  });
-});
+  })
+}

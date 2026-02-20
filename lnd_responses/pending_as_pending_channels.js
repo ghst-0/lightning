@@ -1,5 +1,6 @@
-import { channelTypes } from './constants';
+import constants from './constants.json' with { type: 'json'};
 
+const { channelTypes } = constants;
 const {isArray} = Array;
 const remoteInitiator = 'INITIATOR_REMOTE';
 const outpointSeparator = ':';
@@ -304,7 +305,7 @@ export default args => {
     const pendingTokens = wait.pending_balance || forced.pending_balance;
 
     return {
-      blocks_until_expiry: !!chanOpen ? chanOpen.funding_expiry : undefined,
+      blocks_until_expiry: chanOpen ? chanOpen.funding_expiry : undefined,
       capacity: Number(channel.capacity),
       close_transaction: wait.close_transaction || undefined,
       close_transaction_id: endTx || undefined,
@@ -317,8 +318,8 @@ export default args => {
       is_timelocked: forced.timelock_blocks !== undefined,
       local_balance: Number(channel.local_balance),
       local_reserve: Number(channel.local_chan_reserve_sat),
-      opening_funding_height: !chanOpen ? undefined : chanOpen.open_height,
-      opening_waiting_blocks: !chanOpen ? undefined : chanOpen.open_blocks,
+      opening_funding_height: chanOpen ? chanOpen.open_height : undefined,
+      opening_waiting_blocks: chanOpen ? chanOpen.open_blocks : undefined,
       partner_public_key: channel.remote_node_pub,
       pending_balance: pendingTokens || undefined,
       pending_payments: forced.pending_payments || undefined,
@@ -329,10 +330,10 @@ export default args => {
       sent: Number(),
       timelock_blocks: forced.timelock_blocks,
       timelock_expiration: forced.timelock_expiration || undefined,
-      transaction_fee: !chanOpen ? null : chanOpen.transaction_fee,
+      transaction_fee: chanOpen ? chanOpen.transaction_fee : null,
       transaction_id: txId,
       transaction_vout: Number(vout),
-      transaction_weight: !chanOpen ? null : chanOpen.transaction_weight,
+      transaction_weight: chanOpen ? chanOpen.transaction_weight : null,
       type: channelTypes[channel.commitment_type],
     };
   });

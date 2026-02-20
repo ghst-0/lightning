@@ -1,6 +1,6 @@
-import 'node:assert';
+import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { connectWatchtower } from './../../../index.js';
+import { connectWatchtower } from '../../../index.js';
 
 const makeLnd = err => {
   return {tower_client: {addTower: ({}, cbk) => cbk(err)}};
@@ -13,7 +13,9 @@ const makeArgs = override => {
     socket: 'socket',
   };
 
-  Object.keys(override || {}).forEach(key => args[key] = override[key]);
+  for (const key of Object.keys(override || {})) {
+    args[key] = override[key]
+  }
 
   return args;
 };
@@ -54,14 +56,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(connectWatchtower(args), error, 'Got expected error');
     } else {
       await connectWatchtower(args);
     }
-
-    return;
   });
-});
+}

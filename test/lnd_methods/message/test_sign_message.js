@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { signMessage } from './../../../index.js';
+import { signMessage } from '../../../index.js';
 
 const tests = [
   {
@@ -48,14 +47,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => signMessage(args), error, 'Got expected error');
     } else {
       deepStrictEqual(await signMessage(args), expected, 'Got result');
     }
-
-    return;
   });
-});
+}

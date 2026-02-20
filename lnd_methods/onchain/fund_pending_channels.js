@@ -2,7 +2,7 @@ import asyncAuto from 'async/auto.js';
 import asyncEach from 'async/each.js';
 import asyncEachSeries from 'async/eachSeries.js';
 import { returnResult } from 'asyncjs-util';
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const bufferFromHex = hex => Buffer.from(hex, 'hex');
 const {isArray} = Array;

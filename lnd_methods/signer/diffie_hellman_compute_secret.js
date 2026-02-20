@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const defaultKeyFamily = 6;
 const defaultKeyIndex = 0;
@@ -62,7 +62,7 @@ export default (args, cbk) => {
           }
 
           if (err) {
-            return cbk([503, 'UnexpetedErrorDerivingSharedKey', {err}]);
+            return cbk([503, 'UnexpectedErrorDerivingSharedKey', {err}]);
           }
 
           if (!res) {

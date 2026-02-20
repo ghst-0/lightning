@@ -1,4 +1,4 @@
-const isNumber = n => !Number.isNaN(n);
+const isNumber = n => !isNaN(n);
 const isString = n => typeof n === 'string';
 
 /** Derive network info details from network info message

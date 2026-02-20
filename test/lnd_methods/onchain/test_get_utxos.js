@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getUtxos } from './../../../lnd_methods/index.js';
+import { getUtxos } from '../../../lnd_methods/index.js';
 
 const makeExpected = overrides => {
   const utxo = {
@@ -14,7 +13,9 @@ const makeExpected = overrides => {
     transaction_vout: 0,
   };
 
-  Object.keys(overrides).forEach(k => utxo[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    utxo[k] = overrides[k]
+  }
 
   return {utxos: [utxo]};
 };
@@ -35,7 +36,9 @@ const makeLnd = overrides => {
           pk_script: '00',
         };
 
-        Object.keys(overrides).forEach(k => utxo[k] = overrides[k]);
+        for (const k of Object.keys(overrides)) {
+          utxo[k] = overrides[k]
+        }
 
         return cbk(null, {utxos: [utxo]});
       },
@@ -134,8 +137,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getUtxos(args), error, 'Got expected error');
     } else {
@@ -143,7 +146,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(utxos, expected.utxos, 'Got utxos');
     }
-
-    return;
   });
-});
+}

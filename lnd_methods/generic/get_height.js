@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
-import getWalletInfo from './../info/get_wallet_info.js';
-import subscribeToBlocks from './../onchain/subscribe_to_blocks.js';
+import getWalletInfo from '../info/get_wallet_info.js';
+import subscribeToBlocks from '../onchain/subscribe_to_blocks.js';
 
 /** Lookup the current best block height
 
@@ -45,14 +45,12 @@ export default ({lnd}, cbk) => {
             current_block_height: block.height,
           });
         });
-
-        return;
       }],
 
       // Get all node info if necessary
       getInfo: ['getHeight', ({getHeight}, cbk) => {
         // Exit early when the public key was already derived
-        if (!!getHeight) {
+        if (getHeight) {
           return cbk();
         }
 

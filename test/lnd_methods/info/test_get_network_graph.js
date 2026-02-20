@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getNetworkGraph } from './../../../index.js';
+import { getNetworkGraph } from '../../../index.js';
 
 const makeLnd = ({edges, nodes}) => {
   return {
@@ -158,14 +157,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getNetworkGraph(args), error, 'Got error');
     } else {
       deepStrictEqual(await getNetworkGraph(args), expected, 'Got res');
     }
-
-    return;
   });
-});
+}

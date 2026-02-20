@@ -2,7 +2,7 @@ import asyncAuto from 'async/auto.js';
 import { createPsbt } from 'psbt';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const defaultChangeType = () => 'CHANGE_ADDRESS_TYPE_P2TR';

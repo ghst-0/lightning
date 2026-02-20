@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getAccessIds } from './../../../index.js';
+import { getAccessIds } from '../../../index.js';
 
 const unknown = {
   details: 'unknown method ListMacaroonIDs for service lnrpc.Lightning'
@@ -59,8 +58,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getAccessIds(args), error, 'Got expected error');
     } else {
@@ -68,7 +67,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(ids, expected.ids, 'Got expected ids');
     }
-
-    return;
   });
-});
+}

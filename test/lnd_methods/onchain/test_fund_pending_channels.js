@@ -1,6 +1,6 @@
-import 'node:assert';
+import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { fundPendingChannels } from './../../../lnd_methods/index.js';
+import { fundPendingChannels } from '../../../lnd_methods/index.js';
 
 const id = Buffer.alloc(32).toString('hex');
 const id2 = Buffer.alloc(32, 1).toString('hex');
@@ -26,7 +26,9 @@ const makeLnd = ({finalizeErr, verifyErr}) => {
 const makeArgs = overrides => {
   const args = {channels: [id], funding: '01', lnd: makeLnd({})};
 
-  Object.keys(overrides).forEach(key => args[key] = overrides[key]);
+  for (const key of Object.keys(overrides)) {
+    args[key] = overrides[key]
+  }
 
   return args;
 };
@@ -107,14 +109,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(fundPendingChannels(args), error, 'Got error');
     } else {
       await fundPendingChannels(args);
     }
-
-    return;
   });
-});
+}

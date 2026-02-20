@@ -1,10 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getPendingChannels } from './../../../index.js';
-
-const expectedChannel = {
-};
+import { getPendingChannels } from '../../../index.js';
 
 const makeLnd = ({err, res}) => {
   return {
@@ -41,8 +37,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getPendingChannels(args), error, 'Got expected err');
     } else {
@@ -50,7 +46,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(pending, expected, 'Got expected pending channels');
     }
-
-    return;
   });
-});
+}

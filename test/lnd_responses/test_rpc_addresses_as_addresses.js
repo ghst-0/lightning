@@ -1,12 +1,13 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { rpcAddressesAsAddresses } from './../../lnd_responses/index.js';
+import { rpcAddressesAsAddresses } from '../../lnd_responses/index.js';
 
 const makeAddress = overrides => {
   const args = {address: 'address', balance: '0', is_internal: false};
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -14,7 +15,9 @@ const makeAddress = overrides => {
 const makeArgs = overrides => {
   const args = {accounts: [{addresses: [makeAddress({})]}]};
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -24,7 +27,9 @@ const makeExpected = overrides => {
     addresses: [{address: 'address', is_change: false, tokens: 0}],
   };
 
-  Object.keys(overrides).forEach(k => expected[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    expected[k] = overrides[k]
+  }
 
   return expected;
 };
@@ -68,8 +73,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => rpcAddressesAsAddresses(args), new Error(error), 'Got err');
     } else {
@@ -80,4 +85,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

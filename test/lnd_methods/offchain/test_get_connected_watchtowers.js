@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getConnectedWatchtowers } from './../../../lnd_methods/index.js';
+import { getConnectedWatchtowers } from '../../../lnd_methods/index.js';
 
 const makeStats = overrides => {
   const stats = {
@@ -12,7 +11,9 @@ const makeStats = overrides => {
     num_sessions_exhausted: 1,
   };
 
-  Object.keys(overrides).forEach(k => stats[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    stats[k] = overrides[k]
+  }
 
   return stats;
 };
@@ -31,7 +32,9 @@ const makeTower = overrides => {
     }],
   };
 
-  Object.keys(overrides).forEach(k => tower[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    tower[k] = overrides[k]
+  }
 
   return tower;
 };
@@ -40,7 +43,7 @@ const makeLnd = args => {
   return {
     tower_client: {
       listTowers: ({}, cbk) => {
-        if (!!args.towersErr) {
+        if (args.towersErr) {
           return cbk(args.towersErr);
         }
 
@@ -51,7 +54,7 @@ const makeLnd = args => {
         return cbk(null, {towers: [makeTower({})]});
       },
       policy: ({}, cbk) => {
-        if (!!args.policyErr) {
+        if (args.policyErr) {
           return cbk(args.policyErr);
         }
 
@@ -62,7 +65,7 @@ const makeLnd = args => {
         return cbk(null, {max_updates: 1, sweep_sat_per_vbyte: 1});
       },
       stats: ({}, cbk) => {
-        if (!!args.statsErr) {
+        if (args.statsErr) {
           return cbk(args.statsErr);
         }
 
@@ -74,14 +77,6 @@ const makeLnd = args => {
       },
     },
   };
-};
-
-const makeArgs = override => {
-  const args = {lnd: makeLnd({})};
-
-  Object.keys(override || {}).forEach(key => args[key] = override[key]);
-
-  return args;
 };
 
 const tests = [
@@ -284,14 +279,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(getConnectedWatchtowers(args), error, 'Got error');
     } else {
       deepStrictEqual(await getConnectedWatchtowers(args), expected, 'Result');
     }
-
-    return;
   });
-});
+}

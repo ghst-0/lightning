@@ -1,8 +1,9 @@
 import { featureFlagDetails } from 'bolt09';
-import routeFromRouteHint from './route_from_route_hint.js';
-import { safeTokens } from './../bolt00/index.js';
 
-const bufToHex = n => !n.length ? undefined : n.toString('hex');
+import routeFromRouteHint from './route_from_route_hint.js';
+import { safeTokens } from '../bolt00/index.js';
+
+const bufToHex = n => n.length === 0 ? undefined : n.toString('hex');
 const defaultExpireMs = 1000 * 60 * 60;
 const {isArray} = Array;
 const {isBuffer} = Buffer;
@@ -99,11 +100,6 @@ export default args => {
   if (!isArray(args.route_hints)) {
     throw new Error('ExpectedRouteHintsArray');
   }
-
-  const routes = args.route_hints.forEach(route => routeFromRouteHint({
-    destination: args.destination,
-    hop_hints: route.hop_hints,
-  }));
 
   if (!args.timestamp) {
     throw new Error('ExpectedPaymentRequestTimestamp');

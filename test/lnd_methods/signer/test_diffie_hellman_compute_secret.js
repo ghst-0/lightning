@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { strictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { diffieHellmanComputeSecret } from './../../../index.js';
+import { diffieHellmanComputeSecret } from '../../../index.js';
 
 const makeLnd = (err, res) => {
   return {signer: {deriveSharedKey: ({}, cbk) => cbk(err, res)}};
@@ -13,7 +12,9 @@ const makeArgs = ({override}) => {
     partner_public_key: '00',
   };
 
-  Object.keys(override || {}).forEach(key => args[key] = override[key]);
+  for (const key of Object.keys(override || {})) {
+    args[key] = override[key]
+  }
 
   return args;
 };
@@ -49,7 +50,7 @@ const tests = [
       override: {lnd: {signer: {deriveSharedKey: ({}, cbk) => cbk('err')}}},
     }),
     description: 'Errors are passed back',
-    error: [503, 'UnexpetedErrorDerivingSharedKey', {err: 'err'}],
+    error: [503, 'UnexpectedErrorDerivingSharedKey', {err: 'err'}],
   },
   {
     args: makeArgs({
@@ -83,8 +84,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(diffieHellmanComputeSecret(args), error, 'Got error');
     } else {
@@ -92,7 +93,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       strictEqual(secret.toString('hex'), expected.secret, 'Got secret');
     }
-
-    return;
   });
-});
+}

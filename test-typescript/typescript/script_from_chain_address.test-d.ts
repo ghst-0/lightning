@@ -1,5 +1,4 @@
 import {expectError, expectType} from 'tsd';
-import {AuthenticatedLnd} from '../../lnd_grpc';
 import {
   scriptFromChainAddress,
   ScriptFromChainAddressResult,
@@ -15,9 +14,7 @@ expectError(scriptFromChainAddress({}));
 expectError(scriptFromChainAddress({bech32_address, p2pkh_address}));
 expectError(scriptFromChainAddress({bech32_address, p2sh_address}));
 expectError(scriptFromChainAddress({p2pkh_address, p2sh_address}));
-expectError(
-  scriptFromChainAddress({bech32_address, p2pkh_address, p2sh_address})
-);
+expectError(scriptFromChainAddress({bech32_address, p2pkh_address, p2sh_address}));
 
 expectType<ScriptFromChainAddressResult>(
   scriptFromChainAddress({bech32_address})

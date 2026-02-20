@@ -2,10 +2,10 @@ import asyncAuto from 'async/auto.js';
 import { parsePaymentRequest } from 'invoices';
 import { returnResult } from 'asyncjs-util';
 
-import { createChainAddress } from './../address/index.js';
+import { createChainAddress } from '../address/index.js';
 import getInvoice from './get_invoice.js';
-import { isLnd, routeHintFromRoute } from './../../lnd_requests/index.js';
-import { mtokensAmount } from './../../bolt00/index.js';
+import { isLnd, routeHintFromRoute } from '../../lnd_requests/index.js';
+import { mtokensAmount } from '../../bolt00/index.js';
 
 const defaultExpirySec = 60 * 60 * 3;
 const hexAsBuffer = hex => hex ? Buffer.from(hex, 'hex') : undefined;

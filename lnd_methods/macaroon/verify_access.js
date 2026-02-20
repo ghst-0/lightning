@@ -1,6 +1,6 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const accessDeniedMessage = 'permission denied';
 const asPermission = n => ({action: n.split(':')[1], entity: n.split(':')[0]});

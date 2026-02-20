@@ -94,7 +94,6 @@ import { partiallySignPsbt } from './onchain/index.js';
 import { pay } from './offchain/index.js';
 import { payViaPaymentDetails } from './offchain/index.js';
 import { payViaPaymentRequest } from './offchain/index.js';
-import { payViaRequest } from './offchain/index.js';
 import { payViaRoutes } from './offchain/index.js';
 import { prepareForChannelProposal } from './onchain/index.js';
 import { probeForRoute } from './offchain/index.js';
@@ -255,7 +254,6 @@ export {
   pay,
   payViaPaymentDetails,
   payViaPaymentRequest,
-  payViaRequest,
   payViaRoutes,
   prepareForChannelProposal,
   probeForRoute,

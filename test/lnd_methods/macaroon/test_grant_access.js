@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { strictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { grantAccess } from './../../../index.js';
+import { grantAccess } from '../../../index.js';
 
 const tests = [
   {
@@ -114,8 +113,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => grantAccess(args), error, 'Got expected error');
     } else {
@@ -123,7 +122,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       strictEqual(macaroon, expected.macaroon, 'Got expected macaroon');
     }
-
-    return;
   });
-});
+}

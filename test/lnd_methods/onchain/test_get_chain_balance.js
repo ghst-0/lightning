@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { strictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getChainBalance } from './../../../lnd_methods/index.js';
+import { getChainBalance } from '../../../lnd_methods/index.js';
 
 const tests = [
   {
@@ -37,8 +36,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getChainBalance(args), error, 'Got expected error');
     } else {
@@ -46,7 +45,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       strictEqual(res.chain_balance, expected.chain_balance, 'Got balance');
     }
-
-    return;
   });
-});
+}

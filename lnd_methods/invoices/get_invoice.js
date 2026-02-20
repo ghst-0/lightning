@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
-import { rpcInvoiceAsInvoice } from './../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
+import { rpcInvoiceAsInvoice } from '../../lnd_responses/index.js';
 
 const isHash = n => /^[0-9A-F]{64}$/i.test(n);
 
@@ -96,7 +96,7 @@ export default ({id, lnd}, cbk) => {
 
           try {
             return cbk(null, rpcInvoiceAsInvoice(response));
-          } catch {
+          } catch (err) {
             return cbk([503, err.message]);
           }
         });

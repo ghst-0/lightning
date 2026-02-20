@@ -2,7 +2,7 @@ import asyncAuto from 'async/auto.js';
 import { chanNumber } from 'bolt07';
 
 import { returnResult } from 'asyncjs-util';
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const errorNotFound = 'htlc unknown';
 const errorUninitiated = 'cannot lookup with flag --store-final-htlc-resolutions=false';

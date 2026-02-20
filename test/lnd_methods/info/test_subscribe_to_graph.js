@@ -1,10 +1,8 @@
 import EventEmitter from 'node:events';
-import 'node:assert';
-import { promisify } from 'util';
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
+import { promisify } from 'node:util';
 import test from 'node:test';
-import 'node:assert';
-import { subscribeToGraph } from './../../../index.js';
+import { subscribeToGraph } from '../../../index.js';
 
 const nextTick = promisify(process.nextTick);
 
@@ -70,8 +68,6 @@ const makeLnd = ({}) => {
           });
 
           emitter.emit('error', 'error');
-
-          return;
         });
 
         return emitter;
@@ -518,8 +514,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       throws(() => subscribeToGraph(args), new Error(error), 'Got error');
     } else {
@@ -527,8 +523,9 @@ tests.forEach(({args, description, error, expected}) => {
 
       const sub = subscribeToGraph(args);
 
-      ['channel_closed', 'channel_updated', 'error', 'node_updated']
-        .forEach(event => sub.on(event, data => events.push({event, data})));
+      for (const event of ['channel_closed', 'channel_updated', 'error', 'node_updated']) {
+        sub.on(event, data => events.push({ event, data }))
+      }
 
       await nextTick();
 
@@ -546,7 +543,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(gotEvents, expected.events, 'Got graph events');
     }
-
-    return;
   });
-});
+}

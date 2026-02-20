@@ -1,7 +1,7 @@
 import EventEmitter from 'node:events';
 
-import { backupsFromSnapshot } from './../../lnd_responses/index.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { backupsFromSnapshot } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const cancelError = 'Cancelled on client';
 const method = 'subscribeChannelBackups';

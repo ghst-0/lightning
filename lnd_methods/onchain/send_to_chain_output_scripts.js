@@ -2,7 +2,7 @@ import asyncAuto from 'async/auto.js';
 import { idForTransaction } from '@alexbosworth/blockchain';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');

@@ -1,4 +1,4 @@
-const isNumber = n => !Number.isNaN(n);
+const isNumber = n => !isNaN(n);
 const tokensAsMtokens = tokens => (BigInt(tokens) * BigInt(1e3)).toString();
 
 /** Derive millitokens from tokens and mtokens

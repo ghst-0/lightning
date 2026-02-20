@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { verifyAccess } from './../../../lnd_methods/index.js';
+import { verifyAccess } from '../../../lnd_methods/index.js';
 
 const makeArgs = overrides => {
   const args = {
@@ -14,7 +13,9 @@ const makeArgs = overrides => {
     permissions: ['entity:action'],
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -87,8 +88,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => verifyAccess(args), error, 'Got expected error');
     } else {
@@ -96,7 +97,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(res, expected, 'Got expected result');
     }
-
-    return;
   });
-});
+}

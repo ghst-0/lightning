@@ -1,11 +1,8 @@
-import 'node:assert';
+import { deepStrictEqual, strictEqual, throws } from 'node:assert/strict';
 import EventEmitter from 'node:events';
-import 'node:assert';
-import 'node:assert';
 import test from 'node:test';
-import 'node:assert';
-import { lookupInvoiceResponse } from './../fixtures/index.js';
-import { subscribeToInvoice } from './../../../index.js';
+import { lookupInvoiceResponse } from '../fixtures/index.js';
+import { subscribeToInvoice } from '../../../index.js';
 
 const emitter = new EventEmitter();
 
@@ -97,8 +94,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => subscribeToInvoice(args), new Error(error), 'Got error');
     } else {
@@ -110,10 +107,10 @@ tests.forEach(({args, description, error, expected}) => {
       let gotStatus;
       const sub = subscribeToInvoice(args);
 
-      sub.on('end', () => gotEnd = true);
-      sub.on('error', err => gotErr = err);
-      sub.on('invoice_updated', invoice => gotInvoice = invoice);
-      sub.on('status', status => gotStatus = status);
+      sub.on('end', () => {gotEnd = true});
+      sub.on('error', err => {gotErr = err});
+      sub.on('invoice_updated', invoice => {gotInvoice = invoice});
+      sub.on('status', status => {gotStatus = status});
 
       emitter.emit('end', {});
       emitter.emit('error', new Error('error'));
@@ -128,7 +125,7 @@ tests.forEach(({args, description, error, expected}) => {
       strictEqual(gotErr2, null, 'Did not get second error');
       strictEqual(gotStatus, 'status', 'Got expected status');
 
-      sub.on('error', err => gotErr3 = err);
+      sub.on('error', err => {gotErr3 = err});
 
       emitter.emit('data', {});
 
@@ -143,4 +140,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getBackup } from './../../../index.js';
+import { getBackup } from '../../../index.js';
 
 const txId = Buffer.alloc(32).toString('hex');
 
@@ -18,7 +17,9 @@ const makeArgs = overrides => {
     transaction_vout: 0,
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -66,8 +67,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(getBackup(args), error, 'Got expected error');
     } else {
@@ -75,7 +76,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(backup, expected.backup, 'Got expected backup');
     }
-
-    return;
   });
-});
+}

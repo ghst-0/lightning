@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { prepareForChannelProposal } from './../../../lnd_methods/index.js';
+import { prepareForChannelProposal } from '../../../lnd_methods/index.js';
 
 const makeArgs = overrides => {
   const args = {
@@ -22,7 +21,9 @@ const makeArgs = overrides => {
     transaction_vout: 0,
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -81,8 +82,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => prepareForChannelProposal(args), error, 'Got err');
     } else {
@@ -90,7 +91,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(res.id.length, 64, 'Got pending id');
     }
-
-    return;
   });
-});
+}

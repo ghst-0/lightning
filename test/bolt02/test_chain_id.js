@@ -1,6 +1,6 @@
-import 'node:assert';
+import { equal } from 'node:assert/strict';
 import test from 'node:test';
-import { chainId } from './../../bolt02/index.js';
+import { chainId } from '../../bolt02/index.js';
 
 const tests = [
   {
@@ -13,12 +13,12 @@ const tests = [
   {args: {chain: 'c', network: 'n'}, description: 'No known chain/network'},
 ];
 
-tests.forEach(({args, description, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, expected } of tests) {
+  test(description, (t, end) => {
     const {chain} = chainId(args);
 
     equal(chain, expected, 'Chain id derived from chain and network');
 
     return end();
   });
-});
+}

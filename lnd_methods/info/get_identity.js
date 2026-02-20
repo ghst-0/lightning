@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { getPublicKey } from './../address/index.js';
+import { getPublicKey } from '../address/index.js';
 import getWalletInfo from './get_wallet_info.js';
 
 const family = 6;

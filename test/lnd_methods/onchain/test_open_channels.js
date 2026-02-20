@@ -1,10 +1,8 @@
 import EventEmitter from 'node:events';
-import 'node:assert';
-import 'node:assert';
+import { strictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { openChannels } from './../../../lnd_methods/index.js';
+import { openChannels } from '../../../lnd_methods/index.js';
 
-const emitter = new EventEmitter();
 const nodeKey1 = Buffer.alloc(33).toString('hex');
 const nodeKey2 = Buffer.alloc(33, 2).toString('hex');
 
@@ -187,8 +185,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(openChannels(args), error, 'Got error');
     } else {
@@ -200,7 +198,5 @@ tests.forEach(({args, description, error, expected}) => {
       strictEqual(channel.id.length, 64, 'Got expected pending id');
       strictEqual(channel.tokens, expected.pending.tokens, 'Got tokens');
     }
-
-    return;
   });
-});
+}

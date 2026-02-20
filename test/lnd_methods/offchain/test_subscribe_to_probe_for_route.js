@@ -1,10 +1,7 @@
-import 'node:assert';
-import EventEmitter from 'node:events';
+import { throws, deepEqual } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { getInfoResponse } from './../fixtures/index.js';
-import { queryRoutesResponse } from './../fixtures/index.js';
-import { subscribeToProbeForRoute } from './../../../index.js';
+import { getInfoResponse, queryRoutesResponse } from '../fixtures/index.js';
+import { subscribeToProbeForRoute } from '../../../index.js';
 
 const deletePayment = ({}, cbk) => cbk();
 
@@ -30,12 +27,6 @@ const expectedRoute = {
   timeout: 1,
   tokens: 0,
   total_mtokens: undefined,
-};
-
-const sendToRouteFailure = {
-  chan_id: '1',
-  code: 'INCORRECT_OR_UNKNOWN_PAYMENT_DETAILS',
-  failure_source_index: 1,
 };
 
 const makeLnd = ({count, getInfo, sendToRouteV2}) => {
@@ -267,36 +258,35 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => subscribeToProbeForRoute(args), new Error(error), 'Error');
 
       return end();
-    } else {
-      const failures = [];
-      let gotError;
-      const routes = [];
-      let gotSuccess;
-      const sub = subscribeToProbeForRoute(args);
-
-      sub.on('error', err => gotError = err);
-      sub.on('probe_success', ({route}) => gotSuccess = route);
-      sub.on('probing', ({route}) => routes.push(route));
-      sub.on('routing_failure', failure => failures.push(failure));
-
-      if (!!args.suppress_errors) {
-        sub.removeAllListeners('error');
-      }
-
-      sub.on('end', () => {
-        deepStrictEqual(failures, expected.failures, 'Got expected failures');
-        deepStrictEqual(gotError, expected.error, 'Got expected error');
-        deepStrictEqual(gotSuccess, expected.success, 'Got expected success');
-        deepStrictEqual(routes, expected.routes, 'Got expected routes');
-
-        return end();
-      });
     }
+    const failures = [];
+    let gotError;
+    const routes = [];
+    let gotSuccess;
+    const sub = subscribeToProbeForRoute(args);
+
+    sub.on('error', err => {gotError = err});
+    sub.on('probe_success', ({route}) => {gotSuccess = route});
+    sub.on('probing', ({route}) => routes.push(route));
+    sub.on('routing_failure', failure => failures.push(failure));
+
+    if (args.suppress_errors) {
+      sub.removeAllListeners('error');
+    }
+
+    sub.on('end', () => {
+      deepEqual(failures, expected.failures, 'Got expected failures');
+      deepEqual(gotError, expected.error, 'Got expected error');
+      deepEqual(gotSuccess, expected.success, 'Got expected success');
+      deepEqual(routes, expected.routes, 'Got expected routes');
+
+      return end();
+    });
   });
-});
+}

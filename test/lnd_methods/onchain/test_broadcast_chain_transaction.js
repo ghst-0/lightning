@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { strictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { broadcastChainTransaction } from './../../../lnd_methods/index.js';
+import { broadcastChainTransaction } from '../../../lnd_methods/index.js';
 
 const emptyTx = '01000000000000000000';
 
@@ -81,8 +80,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => broadcastChainTransaction(args), error, 'Got error');
     } else {
@@ -90,7 +89,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       strictEqual(id, expected.id, 'Got fee rate');
     }
-
-    return;
   });
-});
+}

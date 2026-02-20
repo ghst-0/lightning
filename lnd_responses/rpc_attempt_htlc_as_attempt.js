@@ -1,6 +1,7 @@
-import { attemptStates } from './constants';
+import constants from './constants.json' with { type: 'json'};
 import rpcRouteAsRoute from './rpc_route_as_route.js';
 
+const { attemptStates } = constants;
 const nsAsMs = ns => Number(BigInt(ns) / BigInt(1e6));
 
 /** Payment attempt details from RPC HTLCAttempt message

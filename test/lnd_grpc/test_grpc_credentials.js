@@ -1,7 +1,6 @@
-import 'node:assert';
+import { equal, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import grpcCredentials from './../../lnd_grpc/grpc_credentials.js';
+import grpcCredentials from '../../lnd_grpc/grpc_credentials.js';
 
 const tests = [
   {
@@ -11,8 +10,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, error, description}) => {
-  return test(description, (t, end) => {
+for (const { args, error, description } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => grpcCredentials(args), new Error(error), 'Got error');
     } else {
@@ -21,4 +20,4 @@ tests.forEach(({args, error, description}) => {
 
     return end();
   });
-});
+}

@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import routeFromHint from './../../lnd_responses/route_from_route_hint.js';
+import routeFromHint from '../../lnd_responses/route_from_route_hint.js';
 
 const makeHopHint = overrides => {
   const hint = {
@@ -12,7 +11,9 @@ const makeHopHint = overrides => {
     node_id: 'id',
   };
 
-  Object.keys(overrides).forEach(k => hint[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    hint[k] = overrides[k]
+  }
 
   return hint;
 };
@@ -20,7 +21,9 @@ const makeHopHint = overrides => {
 const makeArgs = overrides => {
   const args = {destination: 'destination', hop_hints: [makeHopHint({})]};
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -130,8 +133,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => routeFromHint(args), new Error(error), 'Got error');
     } else {
@@ -140,4 +143,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

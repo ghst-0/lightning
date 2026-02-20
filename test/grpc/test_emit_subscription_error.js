@@ -1,5 +1,5 @@
 import test from 'node:test';
-import { emitSubscriptionError } from './../../grpc/index.js';
+import { emitSubscriptionError } from '../../grpc/index.js';
 
 const tests = [
   {
@@ -65,8 +65,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, expected } of tests) {
+  test(description, (t, end) => {
     const emitErr = emitSubscriptionError(args);
 
     emitErr('error');
@@ -74,4 +74,4 @@ tests.forEach(({args, description, expected}) => {
 
     return end();
   });
-});
+}

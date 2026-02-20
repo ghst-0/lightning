@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getRouteThroughHops } from './../../../index.js';
+import { getRouteThroughHops } from '../../../index.js';
 
 const makeExpected = overrides => {
   const route = {
@@ -241,8 +240,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(getRouteThroughHops(args), error, 'Got expected error');
     } else {
@@ -250,7 +249,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(route, expected.route, 'Route');
     }
-
-    return;
   });
-});
+}

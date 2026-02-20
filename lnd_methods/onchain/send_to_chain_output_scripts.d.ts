@@ -3,7 +3,6 @@ import {
   AuthenticatedLightningMethod,
   UtxoSelection,
 } from '../../typescript';
-import {MergeExclusive} from 'type-fest';
 
 export type SendToChainOutputScriptsArgs = AuthenticatedLightningArgs<{
   /** Transaction Label String */

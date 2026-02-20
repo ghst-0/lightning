@@ -39,7 +39,7 @@ export default args => {
     throw new Error('ExpectedPaymentRequestDestinationToCalculateRoute');
   }
 
-  if (!isArray(args.hop_hints) || !args.hop_hints.length) {
+  if (!isArray(args.hop_hints) || args.hop_hints.length === 0) {
     throw new Error('ExpectedRouteHopHints');
   }
 

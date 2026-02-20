@@ -1,6 +1,6 @@
-import 'node:assert';
+import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { deleteForwardingReputations } from './../../../index.js';
+import { deleteForwardingReputations } from '../../../index.js';
 
 const tests = [
   {
@@ -19,14 +19,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(deleteForwardingReputations(args), error, 'Got error');
     } else {
       await deleteForwardingReputations(args);
     }
-
-    return;
   });
-});
+}

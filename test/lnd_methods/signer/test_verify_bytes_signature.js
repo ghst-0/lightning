@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { verifyBytesSignature } from './../../../index.js';
+import { verifyBytesSignature } from '../../../index.js';
 
 const makeLnd = (err, res) => {
   return {signer: {verifyMessage: ({}, cbk) => cbk(err, res)}};
@@ -15,7 +14,9 @@ const makeArgs = ({override}) => {
     signature: '00',
   };
 
-  Object.keys(override || {}).forEach(key => args[key] = override[key]);
+  for (const key of Object.keys(override || {})) {
+    args[key] = override[key]
+  }
 
   return args;
 };
@@ -74,8 +75,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(verifyBytesSignature(args), error, 'Got expected error');
     } else {
@@ -83,7 +84,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(validity.is_valid, expected.is_valid, 'Got validity');
     }
-
-    return;
   });
-});
+}

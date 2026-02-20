@@ -1,6 +1,6 @@
 import BN from 'bn.js';
 import { chanFormat } from 'bolt07';
-import { safeTokens } from './../bolt00/index.js';
+import { safeTokens } from '../bolt00/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const {isBuffer} = Buffer;

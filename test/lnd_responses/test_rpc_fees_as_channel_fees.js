@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { rpcFeesAsChannelFees } from './../../lnd_responses/index.js';
+import { rpcFeesAsChannelFees } from '../../lnd_responses/index.js';
 
 const makeArgs = override => {
   const args = {
@@ -11,7 +10,9 @@ const makeArgs = override => {
     fee_per_mil: '0',
   };
 
-  Object.keys(override).forEach(key => args[key] = override[key]);
+  for (const key of Object.keys(override)) {
+    args[key] = override[key]
+  }
 
   return args;
 };
@@ -90,8 +91,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => rpcFeesAsChannelFees(args), new Error(error), 'Got error');
     } else {
@@ -102,4 +103,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

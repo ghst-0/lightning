@@ -3,9 +3,9 @@ import { randomBytes } from 'node:crypto';
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { emitSubscriptionError, handleRemoveListener } from './../../grpc/index.js';
+import { emitSubscriptionError, handleRemoveListener } from '../../grpc/index.js';
 import handleRpcRequestUpdate from './handle_rpc_request_update.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const makeId = () => randomBytes(32).toString('hex');
 const method = 'RegisterRPCMiddleware';

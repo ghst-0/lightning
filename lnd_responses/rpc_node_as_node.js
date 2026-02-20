@@ -59,7 +59,7 @@ export default args => {
     throw new Error('ExpectedArrayOfNetworkAddressesForRpcNode');
   }
 
-  args.addresses.forEach(({addr, network}) => {
+  for (const { addr, network } of args.addresses) {
     if (!addr) {
       throw new Error('ExpectedNodeAddressInNodeDetails');
     }
@@ -67,9 +67,7 @@ export default args => {
     if (!network) {
       throw new Error('ExpectedNodeNetworkInNodeDetails');
     }
-
-    return;
-  });
+  }
 
   if (args.alias === undefined) {
     throw new Error('ExpectedNodeAliasFromNodeDetails');
@@ -93,7 +91,7 @@ export default args => {
 
   const updatedAt = args.last_update * msPerSec;
 
-  const updated = !updatedAt ? undefined : new Date(updatedAt);
+  const updated = updatedAt ? new Date(updatedAt) : undefined;
 
   return {
     alias: args.alias,
@@ -109,6 +107,6 @@ export default args => {
       socket: addr,
       type: network,
     })),
-    updated_at: !updated ? undefined : updated.toISOString(),
+    updated_at: updated ? updated.toISOString() : undefined,
   };
 };

@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { infoAsWalletInfo } from './../../lnd_responses/index.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { infoAsWalletInfo } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const cannotConnectMessage = 'failed to connect to all addresses';
 const connectFailMessage = '14 UNAVAILABLE: channel is in state TRANSIENT_FAILURE';

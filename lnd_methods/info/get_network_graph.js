@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { channelEdgeAsChannel, rpcNodeAsNode } from './../../lnd_responses/index.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { channelEdgeAsChannel, rpcNodeAsNode } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const {isArray} = Array;
 const method = 'describeGraph';

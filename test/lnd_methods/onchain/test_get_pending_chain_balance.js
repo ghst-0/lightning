@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { strictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getPendingChainBalance } from './../../../lnd_methods/index.js';
+import { getPendingChainBalance } from '../../../lnd_methods/index.js';
 
 const makeLnd = ({pendingChannels, walletBalance}) => {
   const defaultBalance = ({}, cbk) => cbk(null, {unconfirmed_balance: '2'});
@@ -39,8 +38,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getPendingChainBalance(args), error, 'Got error');
     } else {
@@ -48,7 +47,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       strictEqual(res.pending_chain_balance, expected, 'Got pending balance');
     }
-
-    return;
   });
-});
+}

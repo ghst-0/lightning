@@ -1,8 +1,7 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getStatusResponse } from './../fixtures/index.js';
-import { getWalletStatus } from './../../../index.js';
+import { getStatusResponse } from '../fixtures/index.js';
+import { getWalletStatus } from '../../../index.js';
 
 const makeLnd = ({err, res}) => {
   return {status: {getState: ({}, cbk) => cbk(err, res)}};
@@ -41,14 +40,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getWalletStatus(args), error, 'Got error');
     } else {
       deepStrictEqual(await getWalletStatus(args), expected, 'Got info');
     }
-
-    return;
   });
-});
+}

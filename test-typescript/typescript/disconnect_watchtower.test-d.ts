@@ -4,7 +4,6 @@ import {disconnectWatchtower} from '../../lnd_methods';
 
 const lnd = {} as AuthenticatedLnd;
 const public_key = 'pubkey';
-const retry_delay = 2100;
 
 expectError(disconnectWatchtower());
 expectError(disconnectWatchtower({}));

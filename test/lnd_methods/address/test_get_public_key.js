@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { equal, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getPublicKey } from './../../../index.js';
+import { getPublicKey } from '../../../index.js';
 
 const tests = [
   {
@@ -111,8 +110,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getPublicKey(args), error, 'Got expected error');
     } else {
@@ -120,7 +119,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       equal(res.public_key, expected.public_key, 'Got expected public key');
     }
-
-    return;
   });
-});
+}

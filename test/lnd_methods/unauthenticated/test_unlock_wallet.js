@@ -1,6 +1,6 @@
-import 'node:assert';
+import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { unlockWallet } from './../../../lnd_methods/index.js';
+import { unlockWallet } from '../../../lnd_methods/index.js';
 
 const details = 'invalid passphrase for master public key';
 
@@ -40,14 +40,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(unlockWallet(args), error, 'Got expected error');
     } else {
       await unlockWallet(args);
     }
-
-    return;
   });
-});
+}

@@ -1,7 +1,7 @@
 import EventEmitter from 'node:events';
 
-import { isLnd } from './../../lnd_requests/index.js';
-import { rpcInvoiceAsInvoice } from './../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
+import { rpcInvoiceAsInvoice } from '../../lnd_responses/index.js';
 
 const isHex = n => !(n.length % 2) && /^[0-9A-F]*$/i.test(n);
 const updateEvent = 'invoice_updated';

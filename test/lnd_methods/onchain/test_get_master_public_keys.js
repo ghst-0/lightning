@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getMasterPublicKeys } from './../../../lnd_methods/index.js';
+import { getMasterPublicKeys } from '../../../lnd_methods/index.js';
 
 const makeExpected = overrides => {
   const res = {
@@ -13,7 +12,9 @@ const makeExpected = overrides => {
     named: 'name',
   };
 
-  Object.keys(overrides).forEach(k => res[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    res[k] = overrides[k]
+  }
 
   return {keys: [res]};
 };
@@ -31,7 +32,9 @@ const makeLnd = overrides => {
           watch_only: true,
         };
 
-        Object.keys(overrides).forEach(k => account[k] = overrides[k]);
+        for (const k of Object.keys(overrides)) {
+          account[k] = overrides[k]
+        }
 
         return cbk(null, {accounts: [account]});
       },
@@ -80,8 +83,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getMasterPublicKeys(args), error, 'Got error');
     } else {
@@ -89,7 +92,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(keys, expected.keys, 'Got keys');
     }
-
-    return;
   });
-});
+}

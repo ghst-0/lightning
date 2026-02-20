@@ -1,6 +1,6 @@
-import 'node:assert';
+import { equal } from 'node:assert/strict';
 import test from 'node:test';
-import decodeSerialized from './../../lnd_grpc/decode_serialized.js';
+import decodeSerialized from '../../lnd_grpc/decode_serialized.js';
 
 const tests = [
   {
@@ -28,12 +28,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, expected } of tests) {
+  test(description, (t, end) => {
     const {decoded} = expected;
     const res = decodeSerialized(args);
 
-    if (!!decoded) {
+    if (decoded) {
       equal(res.decoded.toString('hex'), decoded, 'Got decoded data');
     } else {
       equal(res.decoded, undefined, 'No decoded data');
@@ -41,4 +41,4 @@ tests.forEach(({args, description, expected}) => {
 
     return end();
   });
-});
+}

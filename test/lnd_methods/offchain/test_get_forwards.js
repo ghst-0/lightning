@@ -1,10 +1,9 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getForwards } from './../../../index.js';
+import { getForwards } from '../../../index.js';
 
 const makeLnd = ({empty, err, overrides}) => {
-  if (!!empty) {
+  if (empty) {
     return {default: {forwardingHistory: ({}, cbk) => cbk()}};
   }
 
@@ -24,7 +23,9 @@ const makeLnd = ({empty, err, overrides}) => {
     last_offset_index: '1',
   };
 
-  Object.keys(overrides || {}).forEach(key => res[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    res[key] = overrides[key]
+  }
 
   return {default: {forwardingHistory: ({}, cbk) => cbk(err, res)}};
 };
@@ -109,8 +110,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getForwards(args), error, 'Got expected error');
     } else {
@@ -118,7 +119,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(res, expected, 'Got expected result');
     }
-
-    return;
   });
-});
+}

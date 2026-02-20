@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getSweepTransactions } from './../../../lnd_methods/index.js';
+import { getSweepTransactions } from '../../../lnd_methods/index.js';
 
 const emptyTx = '01000000000000000000';
 
@@ -25,7 +24,9 @@ const makeDefault = overrides => {
     },
   };
 
-  Object.keys(overrides).forEach(k => methods[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    methods[k] = overrides[k]
+  }
 
   return methods;
 };
@@ -37,7 +38,9 @@ const makeWallet = overrides => {
     }),
   };
 
-  Object.keys(overrides).forEach(k => wallet[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    wallet[k] = overrides[k]
+  }
 
   return wallet;
 };
@@ -110,8 +113,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getSweepTransactions(args), error, 'Got error');
     } else {
@@ -119,7 +122,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(res.transactions, expected.transactions, 'Got txs');
     }
-
-    return;
   });
-});
+}

@@ -1,14 +1,14 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const errorNotFound = '-5: Block not found';
 const errorUnknownMethod = 'unknown service chainrpc.ChainKit';
 const hexAsReversedBuffer = hex => Buffer.from(hex, 'hex').reverse();
 const {isBuffer} = Buffer;
-const isNumber = n => !Number.isNaN(n);
+const isNumber = n => !isNaN(n);
 const isHash = n => /^[0-9A-F]{64}$/i.test(n);
 const method = 'getBlock';
 const type = 'blocks';

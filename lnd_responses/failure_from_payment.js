@@ -1,5 +1,6 @@
-import { failureReason } from './constants';
+import constants from './constants.json' with { type: 'json'};
 
+const { failureReason } = constants;
 const is256Hex = n => !!n && /^[0-9A-F]{64}$/i.test(n);
 
 /** Derive failure status from payment

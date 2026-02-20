@@ -1,9 +1,7 @@
-import 'node:assert';
-import EventEmitter from 'node:events';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getInfoResponse } from './../fixtures/index.js';
-import { getRouteConfidence } from './../../../index.js';
+import { getInfoResponse } from '../fixtures/index.js';
+import { getRouteConfidence } from '../../../index.js';
 
 const makeLnd = ({err, res}) => {
   return {
@@ -127,8 +125,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(getRouteConfidence(args), error, 'Got expected error');
     } else {
@@ -136,7 +134,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(got, expected, 'Got expected result');
     }
-
-    return;
   });
-});
+}

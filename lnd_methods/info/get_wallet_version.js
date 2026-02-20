@@ -1,13 +1,15 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
-import { isLnd } from './../../lnd_requests/index.js';
-import { packageTypes } from './../../grpc/index.js';
-import { versions } from './constants';
 
+import { isLnd } from '../../lnd_requests/index.js';
+import { packageTypes } from '../../grpc/index.js';
+import constants from './constants.json' with { type: 'json'};
+
+const { versions } = constants;
 const hasTag = (res, tag) => res.build_tags.includes(tag);
 const {isArray} = Array;
 const isHash = n => !!n && /^[0-9A-F]{40}$/i.test(n);
-const isNumber = n => !Number.isNaN(n);
+const isNumber = n => !isNaN(n);
 const method = 'getVersion';
 const type = 'version';
 const unknownServiceErr = 'unknown service verrpc.Versioner';

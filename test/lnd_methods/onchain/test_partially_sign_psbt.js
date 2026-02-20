@@ -1,14 +1,13 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { partiallySignPsbt } from './../../../lnd_methods/index.js';
-
-const unsupported = {details: 'unknown method for service walletrpc.WalletKit'};
+import { partiallySignPsbt } from '../../../lnd_methods/index.js';
 
 const makeLnd = overrides => {
   const res = {signed_psbt: Buffer.alloc(2)};
 
-  Object.keys(overrides).forEach(k => res[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    res[k] = overrides[k]
+  }
 
   return {wallet: {signPsbt: (args, cbk) => cbk(null, res)}};
 };
@@ -16,7 +15,9 @@ const makeLnd = overrides => {
 const makeArgs = overrides => {
   const args = {lnd: makeLnd({}), psbt: '00'};
 
-  Object.keys(overrides).forEach(key => args[key] = overrides[key]);
+  for (const key of Object.keys(overrides)) {
+    args[key] = overrides[key]
+  }
 
   return args;
 };
@@ -24,7 +25,9 @@ const makeArgs = overrides => {
 const makeExpected = overrides => {
   const expected = {psbt: '0000'};
 
-  Object.keys(overrides).forEach(k => expected[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    expected[k] = overrides[k]
+  }
 
   return expected;
 };
@@ -86,8 +89,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(partiallySignPsbt(args), error, 'Got error');
     } else {
@@ -95,7 +98,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(got, expected, 'Got expected result');
     }
-
-    return;
   });
-});
+}

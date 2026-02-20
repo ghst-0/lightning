@@ -1,4 +1,4 @@
-import {expectType, expectError} from 'tsd';
+import {expectType} from 'tsd';
 import {unauthenticatedLndGrpc, UnauthenticatedLnd} from '../../lnd_grpc';
 
 expectType<{lnd: UnauthenticatedLnd}>(unauthenticatedLndGrpc({}));

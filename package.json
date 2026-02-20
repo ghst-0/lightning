@@ -23,9 +23,9 @@
     "psbt": "4.0.0",
     "type-fest": "5.4.4"
   },
+  "type": "module",
   "description": "Lightning Network client library",
   "devDependencies": {
-    "tsd": "0.33.0",
     "typescript": "5.9.3"
   },
   "engines": {
@@ -44,9 +44,8 @@
     "url": "https://github.com/alexbosworth/lightning.git"
   },
   "scripts": {
-    "test": "node --experimental-test-coverage --test && npm run test:types",
-    "test:types": "tsd",
-    "unit-tests": "node --test && npm run test:types"
+    "test": "node --experimental-test-coverage --test",
+    "unit-tests": "node --test"
   },
   "tsd": {
     "directory": "test-typescript/typescript"

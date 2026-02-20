@@ -1,10 +1,9 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getPathfindingSettings } from './../../../lnd_methods/index.js';
+import { getPathfindingSettings } from '../../../lnd_methods/index.js';
 
 const makeLnd = ({config, empty, err, overrides}) => {
-  if (!!empty) {
+  if (empty) {
     return {router: {getMissionControlConfig: ({}, cbk) => cbk()}};
   }
 
@@ -17,9 +16,13 @@ const makeLnd = ({config, empty, err, overrides}) => {
     },
   };
 
-  Object.keys(overrides || {}).forEach(key => res[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    res[key] = overrides[key]
+  }
 
-  Object.keys(config || {}).forEach(key => res.config[key] = config[key]);
+  for (const key of Object.keys(config || {})) {
+    res.config[key] = config[key]
+  }
 
   return {router: {getMissionControlConfig: ({}, cbk) => cbk(err, res)}};
 };
@@ -82,8 +85,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getPathfindingSettings(args), error, 'Got error');
     } else {
@@ -91,7 +94,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(res, expected, 'Got expected result');
     }
-
-    return;
   });
-});
+}

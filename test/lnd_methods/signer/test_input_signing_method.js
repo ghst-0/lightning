@@ -1,6 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual } from 'node:assert/strict';
 import test from 'node:test';
-import method from './../../../lnd_methods/signer/input_signing_method.js';
+import method from '../../../lnd_methods/signer/input_signing_method.js';
 
 const makeArgs = override => {
   const args = {
@@ -14,7 +14,9 @@ const makeArgs = override => {
     }],
   };
 
-  Object.keys(override || {}).forEach(key => args[key] = override[key]);
+  for (const key of Object.keys(override || {})) {
+    args[key] = override[key]
+  }
 
   return args;
 };
@@ -42,12 +44,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, expected } of tests) {
+  test(description, (t, end) => {
     const res = method(args);
 
     deepStrictEqual(res, expected, 'Got expected result');
 
     return end();
   });
-});
+}

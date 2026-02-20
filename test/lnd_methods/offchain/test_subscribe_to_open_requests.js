@@ -1,9 +1,8 @@
-import 'node:assert';
+import { throws, deepStrictEqual } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import { promisify } from 'node:util';
 import test from 'node:test';
-import 'node:assert';
-import { subscribeToOpenRequests } from './../../../index.js';
+import { subscribeToOpenRequests } from '../../../index.js';
 
 const nextTick = promisify(process.nextTick);
 
@@ -37,8 +36,6 @@ const makeLnd = ({data, err}) => {
           emitter.emit('status', {status: 'status'});
           emitter.emit('end', {});
           emitter.emit('error', {details: 'Cancelled on client'});
-
-          return;
         });
 
         return emitter;
@@ -100,17 +97,17 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       throws(() => subscribeToOpenRequests(args), new Error(error), 'Got err');
     } else {
       const events = [];
       const sub = subscribeToOpenRequests(args);
 
-      ['channel_request', 'error',].forEach(event => {
-        return sub.on(event, data => events.push({event, data}));
-      });
+      for (const event of ['channel_request', 'error',]) {
+        sub.on(event, data => events.push({ event, data }))
+      }
 
       await nextTick();
 
@@ -118,11 +115,9 @@ tests.forEach(({args, description, error, expected}) => {
 
       sub.removeAllListeners();
 
-      const sub2 = subscribeToOpenRequests(args);
-
       await nextTick();
 
-      events.forEach(event => {
+      for (const event of events) {
         if (!!event.data && !!event.data.accept) {
           event.data.accept();
           event.data.reject();
@@ -133,11 +128,9 @@ tests.forEach(({args, description, error, expected}) => {
           delete event.data.accept;
           delete event.data.reject;
         }
-      });
+      }
 
       deepStrictEqual(events, expected.events);
     }
-
-    return;
   });
-});
+}

@@ -1,4 +1,4 @@
-import { rpcRouteAsRoute } from './../lnd_responses/index.js';
+import { rpcRouteAsRoute } from '../lnd_responses/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 

@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { chanNumber } from 'bolt07';
 import { returnResult } from 'asyncjs-util';
-import { channelEdgeAsChannel } from './../../lnd_responses/index.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { channelEdgeAsChannel } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const edgeIsZombieErrorMessage = 'edge marked as zombie';
 const edgeNotFoundErrorMessage = 'edge not found';

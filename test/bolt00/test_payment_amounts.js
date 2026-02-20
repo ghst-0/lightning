@@ -1,7 +1,6 @@
-import 'node:assert';
+import { equal, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { paymentAmounts } from './../../bolt00/index.js';
+import { paymentAmounts } from '../../bolt00/index.js';
 
 const tests = [
   {
@@ -66,8 +65,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => paymentAmounts(args), new Error(error), 'Got expected err');
     } else {
@@ -81,4 +80,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

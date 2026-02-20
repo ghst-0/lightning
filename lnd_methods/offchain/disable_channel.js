@@ -1,12 +1,12 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const action = 'DISABLE';
 const internalByteOrderId = id => Buffer.from(id, 'hex').reverse();
 const isHash = n => !!n && /^[0-9A-F]{64}$/i.test(n);
-const isNumber = n => !Number.isNaN(n);
+const isNumber = n => !isNaN(n);
 const method = 'updateChanStatus';
 const notSupported = /unknown/;
 const type = 'router';

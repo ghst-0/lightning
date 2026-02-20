@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { confirmedFromPaymentStatus } from './../../lnd_responses/index.js';
+import { confirmedFromPaymentStatus } from '../../lnd_responses/index.js';
 
 const makeHtlc = overrides => {
   const htlc = {
@@ -31,7 +30,9 @@ const makeHtlc = overrides => {
     status: 'SUCCEEDED',
   };
 
-  Object.keys(overrides).forEach(k => htlc[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    htlc[k] = overrides[k]
+  }
 
   return htlc;
 };
@@ -66,7 +67,9 @@ const makeArgs = overrides => {
     preimage: Buffer.alloc(32),
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -113,7 +116,9 @@ const makeExpected = overrides => {
     tokens: 1,
   };
 
-  Object.keys(overrides).forEach(k => expected[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    expected[k] = overrides[k]
+  }
 
   return expected;
 };
@@ -151,8 +156,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => confirmedFromPaymentStatus(args), new Error(error), 'Err');
     } else {
@@ -161,4 +166,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

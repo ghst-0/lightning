@@ -1,6 +1,6 @@
 import EventEmitter from 'node:events';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const cancelError = 'Cancelled on client';
 const events = ['connected', 'disconnected', 'error'];

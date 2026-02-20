@@ -5,7 +5,7 @@ import asyncMap from 'async/map.js';
 import { returnResult } from 'asyncjs-util';
 
 import cancelPendingChannel from './cancel_pending_channel.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const anchors = 'ANCHORS';
 const bufferFromHex = hex => Buffer.from(hex, 'hex');

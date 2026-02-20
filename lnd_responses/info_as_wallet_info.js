@@ -1,10 +1,11 @@
-import { chainId } from './../bolt02/index.js';
 import { featureFlagDetails } from 'bolt09';
+
+import { chainId } from '../bolt02/index.js';
 
 const dateFromEpoch = epoch => new Date(epoch * 1e3);
 const {isArray} = Array;
 const isBoolean = n => n === false || n === true;
-const isNumber = n => !Number.isNaN(n);
+const isNumber = n => !isNaN(n);
 const isString = n => typeof n === 'string';
 const {keys} = Object;
 

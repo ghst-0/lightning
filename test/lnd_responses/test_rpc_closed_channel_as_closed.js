@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { rpcClosedChannelAsClosed } from './../../lnd_responses/index.js';
+import { rpcClosedChannelAsClosed } from '../../lnd_responses/index.js';
 
 const makeArgs = overrides => {
   const args = {
@@ -29,7 +28,9 @@ const makeArgs = overrides => {
     time_locked_balance: '1',
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -67,7 +68,9 @@ const makeExpected = overrides => {
     transaction_vout: 0,
   };
 
-  Object.keys(overrides).forEach(k => expected[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    expected[k] = overrides[k]
+  }
 
   return expected;
 };
@@ -175,8 +178,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => rpcClosedChannelAsClosed(args), new Error(error), 'Error');
     } else {
@@ -187,4 +190,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

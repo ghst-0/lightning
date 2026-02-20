@@ -2,9 +2,9 @@ import asyncAuto from 'async/auto.js';
 import asyncRetry from 'async/retry.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
-import { rpcInvoiceAsInvoice } from './../../lnd_responses/index.js';
-import { sortBy } from './../../arrays/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
+import { rpcInvoiceAsInvoice } from '../../lnd_responses/index.js';
+import { sortBy } from '../../arrays/index.js';
 
 const asStart = n => n ? Math.floor(new Date(n).getTime() / 1e3) : undefined;
 const asEnd = n => n ? Math.ceil(new Date(n).getTime() / 1e3) : undefined;

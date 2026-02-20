@@ -1,8 +1,7 @@
-import 'node:assert';
+import { throws, deepStrictEqual } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import test from 'node:test';
-import 'node:assert';
-import { subscribeToForwards } from './../../../index.js';
+import { subscribeToForwards } from '../../../index.js';
 
 const emitter = new EventEmitter();
 
@@ -58,22 +57,22 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => subscribeToForwards(args), new Error(error), 'Got error');
     } else {
       let gotEnd;
       let gotErr;
-      let gotErr2 = null;
+      let gotErr3;
       let gotForward;
       let gotStatus;
       const sub = subscribeToForwards(args);
 
-      sub.on('end', () => gotEnd = true);
-      sub.on('error', err => gotErr = err);
-      sub.on('forward', forward => gotForward = forward);
-      sub.on('status', status => gotStatus = status);
+      sub.on('end', () => {gotEnd = true});
+      sub.on('error', err => {gotErr = err});
+      sub.on('forward', forward => {gotForward = forward});
+      sub.on('status', status => {gotStatus = status});
 
       emitter.emit('end', {});
       emitter.emit('error', new Error('error'));
@@ -82,8 +81,8 @@ tests.forEach(({args, description, error, expected}) => {
 
       const sub2 = subscribeToForwards(args);
 
-      sub2.on('error', err => gotErr3 = err);
-      sub2.on('forward', forward => gotForward = forward);
+      sub2.on('error', err => {gotErr3 = err});
+      sub2.on('forward', forward => {gotForward = forward});
 
       emitter.emit('data', {});
 
@@ -95,9 +94,11 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(gotForward, expected.forward, 'Got expected forward');
 
-      [sub, sub2].forEach(n => n.removeAllListeners());
+      for (const n of [sub, sub2]) {
+        n.removeAllListeners()
+      }
     }
 
     return end();
   });
-});
+}

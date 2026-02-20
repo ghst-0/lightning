@@ -1,9 +1,9 @@
 import EventEmitter from 'node:events';
 import asyncDoUntil from 'async/doUntil.js';
 
-import { forwardFromHtlcEvent } from './../../lnd_responses/index.js';
-import { handleRemoveListener } from './../../grpc/index.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { forwardFromHtlcEvent } from '../../lnd_responses/index.js';
+import { handleRemoveListener } from '../../grpc/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const event = 'forward';
 const events = ['error', 'forward'];

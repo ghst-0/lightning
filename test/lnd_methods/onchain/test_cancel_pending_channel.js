@@ -1,6 +1,6 @@
-import 'node:assert';
+import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { cancelPendingChannel } from './../../../lnd_methods/index.js';
+import { cancelPendingChannel } from '../../../lnd_methods/index.js';
 
 const id = Buffer.alloc(32).toString('hex');
 
@@ -26,14 +26,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => cancelPendingChannel(args), error, 'Got error');
     } else {
       await cancelPendingChannel(args);
     }
-
-    return;
   });
-});
+}

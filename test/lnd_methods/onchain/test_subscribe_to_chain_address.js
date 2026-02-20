@@ -1,8 +1,7 @@
 import EventEmitter from 'node:events';
-import 'node:assert';
+import { strictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { subscribeToChainAddress } from './../../../lnd_methods/index.js';
+import { subscribeToChainAddress } from '../../../lnd_methods/index.js';
 
 const emptyTx = '01000000000000000000';
 
@@ -54,8 +53,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, emitter, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, emitter, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => subscribeToChainAddress(args), new Error(error), 'Got err');
 
@@ -81,7 +80,5 @@ tests.forEach(({args, description, emitter, error, expected}) => {
         raw_tx: Buffer.from(emptyTx, 'hex'),
       },
     });
-
-    return;
   });
-});
+}

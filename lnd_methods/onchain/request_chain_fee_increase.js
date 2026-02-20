@@ -1,11 +1,11 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const defaultConfirmations = 6;
 const isHash = n => /^[0-9A-F]{64}$/i.test(n);
-const isNumber = n => !Number.isNaN(n);
+const isNumber = n => !isNaN(n);
 const messageExternalUtxo = 'the passed output does not belong to the wallet';
 const messageInvalidOutputIndex = /^invalid.output.index/;
 const method = 'bumpFee';

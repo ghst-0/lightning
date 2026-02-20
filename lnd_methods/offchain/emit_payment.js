@@ -3,7 +3,7 @@ import {
   failureFromPayment,
   pendingFromPayment,
   routingFailureFromHtlc
-} from './../../lnd_responses/index.js';
+} from '../../lnd_responses/index.js';
 import payment_states from './payment_states.json' with { type: 'json' };
 
 const { states } = payment_states;

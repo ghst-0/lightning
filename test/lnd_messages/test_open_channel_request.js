@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { openChannelRequest } from './../../lnd_messages/index.js';
+import { openChannelRequest } from '../../lnd_messages/index.js';
 
 const makeArgs = overrides => {
   const args = {
@@ -19,7 +18,9 @@ const makeArgs = overrides => {
     target_conf: 1,
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -41,7 +42,9 @@ const makeExpected = overrides => {
     partner_csv_delay: 1,
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -77,8 +80,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => openChannelRequest(args), new Error(error), 'Got error');
     } else {
@@ -89,4 +92,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

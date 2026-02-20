@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { backupsFromSnapshot } from './../../lnd_responses/index.js';
+import { backupsFromSnapshot } from '../../lnd_responses/index.js';
 
 const multiChanBackup = {
   chan_points: [{funding_txid_bytes: Buffer.alloc(32), output_index: 2}],
@@ -21,7 +20,9 @@ const makeArgs = overrides => {
     single_chan_backups: singleChanBackups,
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -138,8 +139,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => backupsFromSnapshot(args), new Error(error), 'Got error');
     } else {
@@ -150,4 +151,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

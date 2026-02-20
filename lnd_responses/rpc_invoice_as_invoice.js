@@ -62,7 +62,7 @@ const mtokensPerToken = BigInt(1e3);
     settled: <Invoice Is Confirmed Bool>
     state: <Invoice Status String>
     value: <Tokens Value String>
-    value_msat: <Milliltokens Value String>
+    value_msat: <Millitokens Value String>
   }
 
   @throws
@@ -129,7 +129,7 @@ export default args => {
   }
 
   if (!Buffer.isBuffer(args.description_hash)) {
-    throw new Error('ExpectedDescriptionHashInGetInvoiceResposne');
+    throw new Error('ExpectedDescriptionHashInGetInvoiceResponse');
   }
 
   if (!args.expiry) {
@@ -144,7 +144,9 @@ export default args => {
     throw new Error('ExpectedArrayOfResponseHtlcs');
   }
 
-  args.htlcs.forEach(htlc => htlcAsPayment(htlc));
+  for (const htlc of args.htlcs) {
+    htlcAsPayment(htlc)
+  }
 
   if (args.memo === undefined) {
     throw new Error('ExpectedMemoInLookupInvoiceResponse');
@@ -190,7 +192,7 @@ export default args => {
     confirmed_index: confirmedIndex || undefined,
     created_at: new Date(createdAtMs).toISOString(),
     description: args.memo,
-    description_hash: !descHash.length ? undefined : descHash.toString('hex'),
+    description_hash: descHash.length === 0 ? undefined : descHash.toString('hex'),
     expires_at: new Date(createdAtMs + expiresInMs).toISOString(),
     features: keys(args.features).map(bit => ({
       bit: Number(bit),

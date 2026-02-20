@@ -2,8 +2,8 @@ import asyncAuto from 'async/auto.js';
 import asyncMap from 'async/map.js';
 import { returnResult } from 'asyncjs-util';
 
-import constants from './constants';
-import { isLnd } from './../../lnd_requests/index.js';
+import constants from './constants.json' with { type: 'json'};
+import { isLnd } from '../../lnd_requests/index.js';
 
 const {
   externalType,

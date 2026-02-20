@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { endGroupSigningSession } from './../../../index.js';
+import { endGroupSigningSession } from '../../../index.js';
 
 const makeLnd = ({cleanErr, combineErr, combineRes}) => {
   return {
@@ -19,7 +18,9 @@ const makeArgs = override => {
     signatures: [Buffer.alloc(64).toString('hex')],
   };
 
-  Object.keys(override || {}).forEach(key => args[key] = override[key]);
+  for (const key of Object.keys(override || {})) {
+    args[key] = override[key]
+  }
 
   return args;
 };
@@ -79,8 +80,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(endGroupSigningSession(args), error, 'Got expected err');
     } else {
@@ -88,7 +89,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(res, expected, 'Got expected result');
     }
-
-    return;
   });
-});
+}

@@ -1,9 +1,9 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
-import { rpcForwardAsForward } from './../../lnd_responses/index.js';
-import { sortBy } from './../../arrays/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
+import { rpcForwardAsForward } from '../../lnd_responses/index.js';
+import { sortBy } from '../../arrays/index.js';
 
 const asEpoch = date => Math.round(new Date(date).getTime() / 1e3);
 const defaultLimit = 100;

@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { equal, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { createChainAddress } from './../../../index.js';
+import { createChainAddress } from '../../../index.js';
 
 const tests = [
   {
@@ -175,8 +174,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => createChainAddress(args), error, 'Got error');
     } else {
@@ -184,7 +183,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       equal(address, expected.address, 'Got expected new address');
     }
-
-    return;
   });
-});
+}

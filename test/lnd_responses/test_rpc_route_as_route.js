@@ -1,7 +1,6 @@
-import 'node:assert';
+import { strictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { rpcRouteAsRoute } from './../../lnd_responses/index.js';
+import { rpcRouteAsRoute } from '../../lnd_responses/index.js';
 
 const makeRoute = override => {
   const route = {
@@ -20,7 +19,9 @@ const makeRoute = override => {
     total_time_lock: 1,
   };
 
-  Object.keys(override).forEach(key => route[key] = override[key]);
+  for (const key of Object.keys(override)) {
+    route[key] = override[key]
+  }
 
   return route;
 };
@@ -80,8 +81,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => rpcRouteAsRoute(args), new Error(error), 'Got error');
     } else {
@@ -97,4 +98,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

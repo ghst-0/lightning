@@ -44,7 +44,7 @@ export default update => {
 
   try {
     chanFormat({number: update.chan_id});
-  } catch (err) {
+  } catch {
     throw new Error('ExpectedValidChannelId');
   }
 
@@ -66,14 +66,14 @@ export default update => {
 
   const transactionId = update.chan_point.funding_txid_bytes.reverse();
 
-  const txId = !!transactionId.equals(emptyTxId) ? null : transactionId;
+  const txId = transactionId.equals(emptyTxId) ? null : transactionId;
 
   return {
     capacity: Number(update.capacity) || undefined,
     close_height: update.closed_height,
     id: chanFormat({number: update.chan_id}).channel,
-    transaction_id: !!txId ? bufferAsHex(txId) : undefined,
-    transaction_vout: !!txId ? update.chan_point.output_index : undefined,
+    transaction_id: txId ? bufferAsHex(txId) : undefined,
+    transaction_vout: txId ? update.chan_point.output_index : undefined,
     updated_at: new Date().toISOString(),
   };
 };

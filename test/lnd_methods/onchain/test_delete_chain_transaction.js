@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { deleteChainTransaction } from './../../../lnd_methods/index.js';
+import { deleteChainTransaction } from '../../../lnd_methods/index.js';
 
 const makeLnd = () => {
   return {
@@ -71,14 +70,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => deleteChainTransaction(args), error, 'Got err');
     } else {
       await deleteChainTransaction(args);
     }
-
-    return;
   });
-});
+}

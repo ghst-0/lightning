@@ -4,9 +4,9 @@ import { chanNumber } from 'bolt07';
 import { parsePaymentRequest } from 'invoices';
 
 import emitPayment from './emit_payment.js';
-import { getHeight } from './../generic/index.js';
-import { isLnd, routeHintFromRoute } from './../../lnd_requests/index.js';
-import { paymentAmounts } from './../../bolt00/index.js';
+import { getHeight } from '../generic/index.js';
+import { isLnd, routeHintFromRoute } from '../../lnd_requests/index.js';
+import { paymentAmounts } from '../../bolt00/index.js';
 
 const asTimePreference = n => n === undefined ? n : ((n * 2) - 1e6) / 1e6;
 const cltvBuf = 3;
@@ -17,7 +17,7 @@ const defaultMaxPaths = 1;
 const defaultTimeoutSeconds = 25;
 const hexToBuf = hex => hex ? Buffer.from(hex, 'hex') : undefined;
 const {isArray} = Array;
-const isConfidence = n => !Number.isNaN(n) && n >= 0 && n <= 1e6;
+const isConfidence = n => !isNaN(n) && n >= 0 && n <= 1e6;
 const isHex = n => !!n && !(n.length % 2) && /^[0-9A-F]*$/i.test(n);
 const method = 'sendPaymentV2';
 const msPerSec = 1000;
@@ -201,7 +201,7 @@ const unsupportedFeatures = new Set([30, 31]);
   }
 */
 export default args => {
-  if (!!args.cltv_delta && !!args.request) {
+  if (args.cltv_delta && args.request) {
     throw new Error('UnexpectedCltvDeltaWhenSubscribingToPayPaymentRequest');
   }
 
@@ -255,7 +255,7 @@ export default args => {
     throw new Error('UnexpectedFormatForRoutesWhenSubscribingToPayment');
   }
 
-  if (!args.routes) {
+  if (args.routes) {
     try {
       for (const route of args.routes) {
         routeHintFromRoute({ route })
@@ -282,7 +282,7 @@ export default args => {
     }
 
     // Exit early when there is a CLTV limit related failure
-    if (err && !!err.details && cltvLimitErr.test(err.details)) {
+    if (err && err.details && cltvLimitErr.test(err.details)) {
       return emitter.emit('failed', {is_route_not_found: true});
     }
 
@@ -296,164 +296,164 @@ export default args => {
   const finalCltv = args.cltv_delta ? args.cltv_delta : defaultCltvDelta;
 
   asyncAuto({
-    // Determine what cltv delta and features would be used with the payment
-    aspects: cbk => {
-      // Exit early when there are no features to look at
-      if (!args.features && !args.request) {
-        return cbk(null, {features: []});
-      }
+      // Determine what cltv delta and features would be used with the payment
+      aspects: cbk => {
+        // Exit early when there are no features to look at
+        if (!args.features && !args.request) {
+          return cbk(null, {features: []});
+        }
 
-      // Exit early when feature bits are specified directly
-      if (features) {
-        return cbk(null, {features});
-      }
+        // Exit early when feature bits are specified directly
+        if (features) {
+          return cbk(null, {features});
+        }
 
-      const request = parsePaymentRequest({request: args.request});
+        const request = parsePaymentRequest({request: args.request});
 
-      return cbk(null, {
-        features: request.features.map(n => n.bit),
-        final_cltv: request.cltv_delta,
-      });
-    },
-
-    // Determine the block height to figure out the height delta
-    getHeight: cbk => {
-      // Exit early when there is no max timeout restriction
-      if (!args.max_timeout_height) {
-        return cbk();
-      }
-
-      return getHeight({lnd: args.lnd}, cbk);
-    },
-
-    // Determine channel id restrictions if applicable
-    outgoingChannelIds: cbk => {
-      if (!args.outgoing_channels) {
-        return cbk();
-      }
-
-      if (!isArray(args.outgoing_channels)) {
-        return cbk([400, 'ExpectedArrayOfOutgoingChannelIdsToSubscribeToPay']);
-      }
-
-      if (!!args.outgoing_channel && !args.outgoing_channels) {
-        return cbk(null, [numberFromChannel(args.outgoing_channel)]);
-      }
-
-      return cbk(null, args.outgoing_channels.map(channel => {
-        return chanNumber({channel}).number;
-      }));
-    },
-
-    // Validate the payment request features
-    checkFeatures: ['aspects', ({aspects}, cbk) => {
-      const bit = aspects.features.find(n => unsupportedFeatures.has(n));
-
-      if (bit) {
-        return cbk([501, 'UnsupportedPaymentFeatureInPayRequest', {bit}]);
-      }
-
-      return cbk();
-    }],
-
-    // Determine the maximum CLTV delta
-    maxCltvDelta: ['aspects', 'getHeight', ({aspects, getHeight}, cbk) => {
-      if (!args.max_timeout_height) {
-        return cbk();
-      }
-
-      const currentHeight = getHeight.current_block_height;
-      const lastCltv = args.request ? aspects.final_cltv : finalCltv;
-
-      const maxDelta = cltvLimit(args.max_timeout_height, currentHeight);
-
-      // The max cltv delta cannot be lower than the final cltv delta + buffer
-      if (!!maxDelta && !!lastCltv && maxDelta < lastCltv + cltvBuf) {
-        return cbk([
-          400,
-          'MaxTimeoutTooNearCurrentHeightToMakePayment',
-          {
-            last_cltv: lastCltv,
-            max_delta: maxDelta,
-          },
-        ]);
-      }
-
-      return cbk(null, maxDelta);
-    }],
-
-    // Final payment parameters
-    params: [
-      'maxCltvDelta',
-      'outgoingChannelIds',
-      ({maxCltvDelta, outgoingChannelIds}, cbk) =>
-    {
-      const amounts = paymentAmounts({
-        max_fee: args.max_fee,
-        max_fee_mtokens: args.max_fee_mtokens,
-        mtokens: args.mtokens,
-        request: args.request,
-        tokens: args.tokens,
-      });
-
-      const destTlv = messages.reduce((tlv, n) => {
-        tlv[n.type] = Buffer.from(n.value, 'hex');
-
-        return tlv;
+        return cbk(null, {
+          features: request.features.map(n => n.bit),
+          final_cltv: request.cltv_delta,
+        });
       },
-      {});
 
-      const singleOut = channel ? chanNumber({ channel }).number : undefined;
-      const hasOutIds = outgoingChannelIds && outgoingChannelIds.length > 0;
+      // Determine the block height to figure out the height delta
+      getHeight: cbk => {
+        // Exit early when there is no max timeout restriction
+        if (!args.max_timeout_height) {
+          return cbk();
+        }
 
-      return cbk(null, {
-        allow_self_payment: true,
-        amt: amounts.tokens,
-        amt_msat: amounts.mtokens,
-        cancelable: true,
-        cltv_limit: args.max_timeout_height ? maxCltvDelta : undefined,
-        dest: args.destination ? hexToBuf(args.destination) : undefined,
-        dest_custom_records: messages.length === 0 ? undefined : destTlv,
-        dest_features: features,
-        fee_limit_msat: amounts.max_fee_mtokens,
-        fee_limit_sat: amounts.max_fee,
-        final_cltv_delta: args.request ? undefined : finalCltv,
-        last_hop_pubkey: hexToBuf(args.incoming_peer),
-        max_parts: args.max_paths || defaultMaxPaths,
-        max_shard_size_msat: args.max_path_mtokens || undefined,
-        no_inflight_updates: false,
-        outgoing_chan_id: hasOutIds ? undefined : singleOut,
-        outgoing_chan_ids: outgoingChannelIds,
-        payment_addr: args.payment ? hexToBuf(args.payment) : undefined,
-        payment_hash: args.id ? hexToBuf(args.id) : undefined,
-        payment_request: args.request ? args.request : undefined,
-        route_hints: hints.length > 0 ? hints : undefined,
-        time_pref: asTimePreference(args.confidence),
-        timeout_seconds: timeoutSecs || defaultTimeoutSeconds,
+        return getHeight({lnd: args.lnd}, cbk);
+      },
+
+      // Determine channel id restrictions if applicable
+      outgoingChannelIds: cbk => {
+        if (!args.outgoing_channels) {
+          return cbk();
+        }
+
+        if (!isArray(args.outgoing_channels)) {
+          return cbk([400, 'ExpectedArrayOfOutgoingChannelIdsToSubscribeToPay']);
+        }
+
+        if (args.outgoing_channel && !args.outgoing_channels) {
+          return cbk(null, [numberFromChannel(args.outgoing_channel)]);
+        }
+
+        return cbk(null, args.outgoing_channels.map(channel => {
+          return chanNumber({channel}).number;
+        }));
+      },
+
+      // Validate the payment request features
+      checkFeatures: ['aspects', ({aspects}, cbk) => {
+        const bit = aspects.features.find(n => unsupportedFeatures.has(n));
+
+        if (bit) {
+          return cbk([501, 'UnsupportedPaymentFeatureInPayRequest', {bit}]);
+        }
+
+        return cbk();
+      }],
+
+      // Determine the maximum CLTV delta
+      maxCltvDelta: ['aspects', 'getHeight', ({aspects, getHeight}, cbk) => {
+        if (!args.max_timeout_height) {
+          return cbk();
+        }
+
+        const currentHeight = getHeight.current_block_height;
+        const lastCltv = args.request ? aspects.final_cltv : finalCltv;
+
+        const maxDelta = cltvLimit(args.max_timeout_height, currentHeight);
+
+        // The max cltv delta cannot be lower than the final cltv delta + buffer
+        if (maxDelta && lastCltv && maxDelta < lastCltv + cltvBuf) {
+          return cbk([
+            400,
+            'MaxTimeoutTooNearCurrentHeightToMakePayment',
+            {
+              last_cltv: lastCltv,
+              max_delta: maxDelta,
+            },
+          ]);
+        }
+
+        return cbk(null, maxDelta);
+      }],
+
+      // Final payment parameters
+      params: [
+        'maxCltvDelta',
+        'outgoingChannelIds',
+        ({maxCltvDelta, outgoingChannelIds}, cbk) =>
+        {
+          const amounts = paymentAmounts({
+            max_fee: args.max_fee,
+            max_fee_mtokens: args.max_fee_mtokens,
+            mtokens: args.mtokens,
+            request: args.request,
+            tokens: args.tokens,
+          });
+
+          const destTlv = messages.reduce((tlv, n) => {
+              tlv[n.type] = Buffer.from(n.value, 'hex');
+
+              return tlv;
+            },
+            {});
+
+          const singleOut = channel ? chanNumber({ channel }).number : undefined;
+          const hasOutIds = !!outgoingChannelIds && outgoingChannelIds.length > 0;
+
+          return cbk(null, {
+            allow_self_payment: true,
+            amt: amounts.tokens,
+            amt_msat: amounts.mtokens,
+            cancelable: true,
+            cltv_limit: args.max_timeout_height ? maxCltvDelta : undefined,
+            dest: args.destination ? hexToBuf(args.destination) : undefined,
+            dest_custom_records: messages.length > 0 ? destTlv : undefined,
+            dest_features: features,
+            fee_limit_msat: amounts.max_fee_mtokens,
+            fee_limit_sat: amounts.max_fee,
+            final_cltv_delta: args.request ? undefined : finalCltv,
+            last_hop_pubkey: hexToBuf(args.incoming_peer),
+            max_parts: args.max_paths || defaultMaxPaths,
+            max_shard_size_msat: args.max_path_mtokens || undefined,
+            no_inflight_updates: false,
+            outgoing_chan_id: hasOutIds ? undefined : singleOut,
+            outgoing_chan_ids: outgoingChannelIds,
+            payment_addr: args.payment ? hexToBuf(args.payment) : undefined,
+            payment_hash: args.id ? hexToBuf(args.id) : undefined,
+            payment_request: args.request ? args.request : undefined,
+            route_hints: hints.length === 0 ? undefined : hints,
+            time_pref: asTimePreference(args.confidence),
+            timeout_seconds: timeoutSecs || defaultTimeoutSeconds,
+          });
+        }],
+
+      // Send payment
+      send: ['checkFeatures', 'params', ({params}, cbk) => {
+        const sub = args.lnd.router.sendPaymentV2(params);
+
+        sub.on('data', data => emitPayment({data, emitter}));
+        sub.on('end', () => cbk());
+
+        sub.on('error', err => {
+          sub.removeAllListeners();
+
+          return cbk(err);
+        });
+      }],
+    },
+    err => {
+      return nextTick(() => {
+        if (err) {
+          return emitError(err);
+        }
       });
-    }],
-
-    // Send payment
-    send: ['checkFeatures', 'params', ({params}, cbk) => {
-      const sub = args.lnd.router.sendPaymentV2(params);
-
-      sub.on('data', data => emitPayment({data, emitter}));
-      sub.on('end', () => cbk());
-
-      sub.on('error', err => {
-        sub.removeAllListeners();
-
-        return cbk(err);
-      });
-    }],
-  },
-  err => {
-    return nextTick(() => {
-      if (err) {
-        return emitError(err);
-      }
     });
-  });
 
   return emitter;
 };

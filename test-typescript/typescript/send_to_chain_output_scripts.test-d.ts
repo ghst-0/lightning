@@ -2,7 +2,6 @@ import {expectError, expectType} from 'tsd';
 import {AuthenticatedLnd} from '../../lnd_grpc';
 import {
   sendToChainOutputScripts,
-  SendToChainOutputScriptsArgs,
   SendToChainOutputScriptsResult,
 } from '../../lnd_methods';
 

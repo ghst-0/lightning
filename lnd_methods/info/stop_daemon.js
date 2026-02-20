@@ -3,7 +3,7 @@ import asyncRetry from 'async/retry.js';
 import { returnResult } from 'asyncjs-util';
 
 import getWalletInfo from './get_wallet_info.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const interval = retryCount => 10 * 2 ** retryCount;
 const method = 'stopDaemon';

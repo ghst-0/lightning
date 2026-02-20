@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
-import { rpcAddressesAsAddresses } from './../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
+import { rpcAddressesAsAddresses } from '../../lnd_responses/index.js';
 
 const err404 = 'unknown method ListAddresses for service walletrpc.WalletKit';
 const {isArray} = Array;

@@ -2,7 +2,7 @@ import asyncAuto from 'async/auto.js';
 import { componentsOfTransaction, unsignedTxFromPsbt } from '@alexbosworth/blockchain';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const asOutpoint = n => `${n.transaction_id}:${n.transaction_vout}`;
 const defaultChangeType = () => 'CHANGE_ADDRESS_TYPE_P2TR';

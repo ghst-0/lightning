@@ -1,4 +1,4 @@
-export * from './address';
+export * from './address/';
 export * from './generic';
 export * from './info';
 export * from './invoices';

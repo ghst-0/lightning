@@ -1,7 +1,6 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getChainTransactions } from './../../../lnd_methods/index.js';
+import { getChainTransactions } from '../../../lnd_methods/index.js';
 
 const makeExpected = overrides => {
   const transaction = {
@@ -20,7 +19,9 @@ const makeExpected = overrides => {
     transaction: undefined,
   };
 
-  Object.keys(overrides).forEach(k => transaction[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    transaction[k] = overrides[k]
+  }
 
   return {transactions: [transaction]};
 };
@@ -41,7 +42,9 @@ const makeLnd = overrides => {
           tx_hash: Buffer.alloc(32).toString('hex'),
         };
 
-        Object.keys(overrides).forEach(k => transaction[k] = overrides[k]);
+        for (const k of Object.keys(overrides)) {
+          transaction[k] = overrides[k]
+        }
 
         return cbk(null, {transactions: [transaction]});
       },
@@ -165,8 +168,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getChainTransactions(args), error, 'Got err');
     } else {
@@ -174,7 +177,5 @@ tests.forEach(({args, description, error, expected}) => {
 
       deepStrictEqual(transactions, expected.transactions, 'Got transactions');
     }
-
-    return;
   });
-});
+}

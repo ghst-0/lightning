@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { mtokensAmount } from './../../bolt00/index.js';
+import { mtokensAmount } from '../../bolt00/index.js';
 
 const tests = [
   {
@@ -41,10 +40,13 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
-      throws(() => mtokensAmount(args), new Error(error), 'Got expected err');
+      throws(() => {
+        console.log('mtokensAmount(args)')
+        mtokensAmount(args)
+      }, new Error(error), 'Got expected err');
     } else {
       const {mtokens} = mtokensAmount(args);
 
@@ -53,4 +55,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

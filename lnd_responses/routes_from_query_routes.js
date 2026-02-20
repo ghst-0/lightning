@@ -1,10 +1,10 @@
 import BN from 'bn.js';
 import { chanFormat } from 'bolt07';
-import { safeTokens } from './../bolt00/index.js';
+
+import { safeTokens } from '../bolt00/index.js';
 
 const {isArray} = Array;
 const {keys} = Object;
-const mtokensPerToken = BigInt(1e3);
 const {round} = Math;
 const successDenominator = 1e6;
 
@@ -78,7 +78,7 @@ export default ({response}) => {
     throw new Error('ExpectedRoutes');
   }
 
-  if (!routes.length) {
+  if (routes.length === 0) {
     throw new Error('ExpectedMultipleRoutes');
   }
 
@@ -98,23 +98,23 @@ export default ({response}) => {
     return false;
   });
 
-  if (!!invalidRoute) {
+  if (invalidRoute) {
     throw new Error('ExpectedValidRoutes');
   }
 
   try {
-    routes.forEach(route => {
-      return route.hops.forEach(h => chanFormat({number: h.chan_id}));
-    });
-  } catch (err) {
+    for (const route of routes) {
+      for (const h of route.hops) {
+        chanFormat({ number: h.chan_id })
+      }
+    }
+  } catch {
     throw new Error('ExpectedValidHopChannelIdsInRoutes');
   }
 
   return {
     routes: routes.map(route => {
       const [lastHop] = route.hops.slice().reverse();
-      const totalFeesMtok = BigInt(route.total_fees_msat);
-      const totalAmtMtok = BigInt(route.total_amt_msat);
 
       return {
         confidence: confidence || undefined,

@@ -1,8 +1,7 @@
-import { resolutionOutcomes } from './constants';
-import { resolutionTypes } from './constants';
+import constants from './constants.json' with { type: 'json'};
 
+const { resolutionOutcomes, resolutionTypes } = constants;
 const isHash = n => !!n && /^[0-9A-F]{64}$/i.test(n);
-const outpointSeparator = ':';
 
 /** Map RPC resolution to channel resolution
 

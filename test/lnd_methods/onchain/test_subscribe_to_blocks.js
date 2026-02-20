@@ -1,13 +1,14 @@
-import 'node:assert';
+import { deepStrictEqual, strictEqual } from 'node:assert/strict';
 import EventEmitter from 'node:events';
-import 'node:assert';
 import test from 'node:test';
-import { subscribeToBlocks } from './../../../lnd_methods/index.js';
+import { subscribeToBlocks } from '../../../lnd_methods/index.js';
 
 const makeLnd = overrides => {
   const data = {hash: Buffer.alloc(32), height: 1};
 
-  Object.keys(overrides).forEach(k => data[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    data[k] = overrides[k]
+  }
 
   return {
     chain: {
@@ -66,8 +67,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     try {
       subscribeToBlocks({});
     } catch (err) {
@@ -97,7 +98,5 @@ tests.forEach(({args, description, error, expected}) => {
         return end();
       });
     }
-
-    return;
   });
-});
+}

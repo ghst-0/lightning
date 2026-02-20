@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { getPublicKey } from './../address/index.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { getPublicKey } from '../address/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const family = 0;
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');

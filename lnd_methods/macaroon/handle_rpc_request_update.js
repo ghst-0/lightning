@@ -3,9 +3,9 @@ import {
   closeChannelRequest,
   openChannelRequest,
   payViaRouteRequest
-} from './../../lnd_messages/index.js';
+} from '../../lnd_messages/index.js';
 import rejectRpcRequest from './reject_rpc_request.js';
-import { rpcRequestUpdateAsEvent } from './../../lnd_responses/index.js';
+import { rpcRequestUpdateAsEvent } from '../../lnd_responses/index.js';
 
 const isChanClose = n => !!n && n === '/lnrpc.Lightning/CloseChannel';
 const isChanOpen = n => !!n && n.startsWith('/lnrpc.Lightning/OpenChannel');

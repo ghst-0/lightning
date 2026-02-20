@@ -1,6 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual } from 'node:assert/strict';
 import test from 'node:test';
-import { destinationCustomRecords } from './../../lnd_requests/index.js';
+import { destinationCustomRecords } from '../../lnd_requests/index.js';
 
 const tests = [
   {
@@ -15,12 +15,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, expected } of tests) {
+  test(description, (t, end) => {
     const {tlv} = destinationCustomRecords(args);
 
     deepStrictEqual(tlv, expected.tlv, 'Got expected output');
 
     return end();
   });
-});
+}

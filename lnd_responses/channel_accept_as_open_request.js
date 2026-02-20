@@ -1,5 +1,6 @@
-import { channelTypes } from './constants';
+import constants from './constants.json' with { type: 'json'};
 
+const { channelTypes } = constants;
 const bufferAsHex = buffer => buffer.toString('hex');
 const compressedPublicKeyLength = 33;
 const hashAsId = hash => hash.reverse().toString('hex');

@@ -1,7 +1,7 @@
 import EventEmitter from 'node:events';
-import { emitSubscriptionError, handleRemoveListener } from './../../grpc/index.js';
-import { isLnd } from './../../lnd_requests/index.js';
-import { rpcPeerMessageAsMessage } from './../../lnd_responses/index.js';
+import { emitSubscriptionError, handleRemoveListener } from '../../grpc/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
+import { rpcPeerMessageAsMessage } from '../../lnd_responses/index.js';
 
 const events = ['message_received'];
 const method = 'SubscribeCustomMessages';

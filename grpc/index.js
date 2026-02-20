@@ -5,11 +5,11 @@ import handleRemoveListener from './handle_remove_listener.js';
 const {
   defaultSocket,
   grpcSslCipherSuites,
-  maxReceiveMessageLength,
   packageTypes,
   protoFiles,
   protosDir,
   serviceTypes,
+  maxReceiveMessageLength,
   unauthenticatedPackageTypes,
   unauthenticatedServiceTypes
 } = grpc_services;

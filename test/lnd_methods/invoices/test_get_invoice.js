@@ -1,7 +1,7 @@
-import 'node:assert';
+import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getInvoice } from './../../../index.js';
-import { lookupInvoiceResponse } from './../fixtures/index.js';
+import { getInvoice } from '../../../index.js';
+import { lookupInvoiceResponse } from '../fixtures/index.js';
 
 const id = Buffer.alloc(32).toString('hex');
 
@@ -45,14 +45,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error}) => {
-  return test(description, async () => {
+for (const { args, description, error } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(getInvoice(args), error, 'Got expected err');
     } else {
       await getInvoice(args);
     }
-
-    return;
   });
-});
+}

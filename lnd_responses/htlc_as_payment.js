@@ -1,9 +1,10 @@
 import BN from 'bn.js';
 import { chanFormat } from 'bolt07';
-import { htlcStates } from './constants';
 
+import constants from './constants.json' with { type: 'json'};
+
+const { htlcStates } = constants;
 const dateFrom = seconds => new Date(1e3 * seconds).toISOString();
-const endian = 'le';
 const {keys} = Object;
 const mtokensPerToken = BigInt(1e3);
 
@@ -91,8 +92,8 @@ export default args => {
   const totalMtokens = args.mpp_total_amt_msat;
 
   return {
-    canceled_at: !isCanceled ? undefined : dateFrom(args.resolve_time),
-    confirmed_at: !isReceived ? undefined : dateFrom(args.resolve_time),
+    canceled_at: isCanceled ? dateFrom(args.resolve_time) : undefined,
+    confirmed_at: isReceived ? dateFrom(args.resolve_time) : undefined,
     created_at: dateFrom(args.accept_time),
     created_height: args.accept_height,
     in_channel: chanFormat({number: args.chan_id}).channel,

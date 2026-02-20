@@ -1,6 +1,6 @@
 import { chanFormat } from 'bolt07';
 
-const asDiscount = fee => !fee ? 0 : -fee;
+const asDiscount = fee => fee ? -fee : 0;
 const bufferAsHex = buffer => buffer.toString('hex');
 const emptyTxId = Buffer.alloc(32);
 const {isBuffer} = Buffer;
@@ -113,7 +113,7 @@ export default update => {
 
   try {
     chanFormat({number: update.chan_id});
-  } catch (err) {
+  } catch {
     throw new Error('ExpectedValidChannelId');
   }
 
@@ -122,7 +122,7 @@ export default update => {
   const maxHtlc = update.routing_policy.max_htlc_msat;
   const transactionId = update.chan_point.funding_txid_bytes.reverse();
 
-  const txId = !!transactionId.equals(emptyTxId) ? null : transactionId;
+  const txId = transactionId.equals(emptyTxId) ? null : transactionId;
 
   return {
     base_fee_mtokens: update.routing_policy.fee_base_msat,
@@ -133,11 +133,11 @@ export default update => {
     inbound_base_discount_mtokens: inBase.toString(),
     inbound_rate_discount: inRate,
     is_disabled: update.routing_policy.disabled,
-    max_htlc_mtokens: maxHtlc !== Number().toString() ? maxHtlc : undefined,
+    max_htlc_mtokens: maxHtlc === Number().toString() ? undefined : maxHtlc,
     min_htlc_mtokens: update.routing_policy.min_htlc,
     public_keys: [update.advertising_node, update.connecting_node],
-    transaction_id: !!txId ? bufferAsHex(txId) : undefined,
-    transaction_vout: !!txId ? update.chan_point.output_index : undefined,
+    transaction_id: txId ? bufferAsHex(txId) : undefined,
+    transaction_vout: txId ? update.chan_point.output_index : undefined,
     updated_at: now(),
   };
 };

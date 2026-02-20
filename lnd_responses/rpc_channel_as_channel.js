@@ -1,8 +1,10 @@
 import { chanFormat } from 'bolt07';
-import { channelTypes } from './constants';
+
+import constants from './constants.json' with { type: 'json'};
 import parseThawHeight from './parse_thaw_height.js';
 import rpcHtlcAsPayment from './rpc_htlc_as_payment.js';
 
+const { channelTypes } = constants;
 const {isArray} = Array;
 const msPerSec = 1e3;
 const outpointDelimiter = ':';
@@ -225,7 +227,7 @@ export default args => {
   const uptime = Number(args.uptime) * msPerSec;
   const zeroConfRealId = args.zero_conf_confirmed_scid;
 
-  const channelId = !!Number(zeroConfRealId) ? zeroConfRealId : args.chan_id;
+  const channelId = Number(zeroConfRealId) ? zeroConfRealId : args.chan_id;
   const downtime = Number(args.lifetime) * msPerSec - uptime;
 
   const otherIds = args.alias_scids
@@ -249,7 +251,7 @@ export default args => {
     local_balance: Number(args.local_balance),
     local_csv: own.csv_delay,
     local_dust: Number(own.dust_limit_sat),
-    local_given: !!args.initiator ? pushAmount : Number(),
+    local_given: args.initiator ? pushAmount : Number(),
     local_max_htlcs: own.max_accepted_htlcs,
     local_max_pending_mtokens: own.max_pending_amt_msat,
     local_min_htlc_mtokens: own.min_htlc_msat,
@@ -262,7 +264,7 @@ export default args => {
     remote_balance: Number(args.remote_balance),
     remote_csv: peer.csv_delay,
     remote_dust: Number(peer.dust_limit_sat),
-    remote_given: !args.initiator ? pushAmount : Number(),
+    remote_given: args.initiator ? Number() : pushAmount,
     remote_max_htlcs: peer.max_accepted_htlcs,
     remote_max_pending_mtokens: peer.max_pending_amt_msat,
     remote_min_htlc_mtokens: peer.min_htlc_msat,

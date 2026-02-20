@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { forwardFromHtlcEvent } from './../../lnd_responses/index.js';
+import { forwardFromHtlcEvent } from '../../lnd_responses/index.js';
 
 const makeInfo = overrides => {
   const info = {
@@ -11,7 +10,9 @@ const makeInfo = overrides => {
     outgoing_timelock: 1,
   };
 
-  Object.keys(overrides).forEach(k => info[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    info[k] = overrides[k]
+  }
 
   return info;
 };
@@ -24,7 +25,9 @@ const makeLinkFailEvent = overrides => {
     wire_failure: 'wire_failure',
   };
 
-  Object.keys(overrides).forEach(k => event[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    event[k] = overrides[k]
+  }
 
   return event;
 };
@@ -46,7 +49,9 @@ const makeHtlc = overrides => {
     timestamp_ns: 1e8,
   };
 
-  Object.keys(overrides).forEach(k => htlc[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    htlc[k] = overrides[k]
+  }
 
   return htlc;
 };
@@ -73,7 +78,9 @@ const makeExpected = overrides => {
     tokens: 0,
   };
 
-  Object.keys(overrides).forEach(k => expected[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    expected[k] = overrides[k]
+  }
 
   return expected;
 };
@@ -316,8 +323,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => forwardFromHtlcEvent(args), new Error(error), 'Got err');
     } else {
@@ -326,4 +333,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

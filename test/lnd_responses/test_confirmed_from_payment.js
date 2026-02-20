@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { confirmedFromPayment } from './../../lnd_responses/index.js';
+import { confirmedFromPayment } from '../../lnd_responses/index.js';
 
 const makeArgs = overrides => {
   const args = {
@@ -47,7 +46,9 @@ const makeArgs = overrides => {
     value_sat: '1',
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -99,7 +100,9 @@ const makeExpected = overrides => {
     tokens: 2,
   };
 
-  Object.keys(overrides).forEach(k => expected[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    expected[k] = overrides[k]
+  }
 
   return expected;
 };
@@ -147,8 +150,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => confirmedFromPayment(args), new Error(error), 'Err');
     } else {
@@ -157,4 +160,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

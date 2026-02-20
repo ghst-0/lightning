@@ -1,10 +1,10 @@
 import { createHash } from 'node:crypto';
 import EventEmitter from 'node:events';
 
-import { emitSubscriptionError } from './../../grpc/index.js';
-import { forwardFromHtlcEvent } from './../../lnd_responses/index.js';
+import { emitSubscriptionError } from '../../grpc/index.js';
+import { forwardFromHtlcEvent } from '../../lnd_responses/index.js';
 import getPayment from './get_payment.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const event = 'payment';

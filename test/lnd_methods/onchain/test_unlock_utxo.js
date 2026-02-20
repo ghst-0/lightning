@@ -1,6 +1,6 @@
-import 'node:assert';
+import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { unlockUtxo } from './../../../lnd_methods/index.js';
+import { unlockUtxo } from '../../../lnd_methods/index.js';
 
 const id = Buffer.alloc(32).toString('hex');
 
@@ -12,7 +12,9 @@ const makeArgs = overrides => {
     transaction_vout: 0,
   };
 
-  Object.keys(overrides).forEach(k => args[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    args[k] = overrides[k]
+  }
 
   return args;
 };
@@ -49,14 +51,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(unlockUtxo(args), error, 'Got expected error');
     } else {
       await unlockUtxo(args);
     }
-
-    return;
   });
-});
+}

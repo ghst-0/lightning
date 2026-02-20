@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const method = 'estimateFee';
 const target = 6;
@@ -32,7 +32,7 @@ export default (args, cbk) => {
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
-          return cbk([400, 'ExpecteAuthenticatedLndToGetMinRelayFeeRate']);
+          return cbk([400, 'ExpectedAuthenticatedLndToGetMinRelayFeeRate']);
         }
 
         return cbk();

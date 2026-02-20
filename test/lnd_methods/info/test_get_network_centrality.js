@@ -1,14 +1,13 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getNetworkCentrality } from './../../../index.js';
+import { getNetworkCentrality } from '../../../index.js';
 
 const makeLnd = ({err, res}) => {
   const response = {
     betweenness_centrality: {'00': {value: 0.5, normalized_value: 0.1}},
   };
 
-  const r = res !== undefined ? res : response;
+  const r = res === undefined ? response : res;
 
   return {default: {getNodeMetrics: ({}, cbk) => cbk(err, r)}};
 };
@@ -52,14 +51,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getNetworkCentrality(args), error, 'Got error');
     } else {
       deepStrictEqual(await getNetworkCentrality(args), expected, 'Got res');
     }
-
-    return;
   });
-});
+}

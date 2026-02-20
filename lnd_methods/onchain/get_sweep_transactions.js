@@ -3,7 +3,7 @@ import { componentsOfTransaction } from '@alexbosworth/blockchain';
 import { returnResult } from 'asyncjs-util';
 
 import getChainTransactions from './get_chain_transactions.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const {isArray} = Array;
 const method = 'listSweeps';

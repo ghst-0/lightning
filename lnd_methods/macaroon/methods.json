@@ -292,10 +292,6 @@
     "methods": ["DeriveKey", "DeriveNextKey"],
     "type": "wallet"
   },
-  "getPublicKey": {
-    "methods": ["DeriveKey", "DeriveNextKey"],
-    "type": "wallet"
-  },
   "getRouteConfidence": {
     "depends_on": [
       "getForwardingConfidence",

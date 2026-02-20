@@ -3,8 +3,8 @@ import asyncMapSeries from 'async/mapSeries.js';
 import { chanFormat } from 'bolt07';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from './../../lnd_requests/index.js';
-import { rpcResolutionAsResolution } from './../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
+import { rpcResolutionAsResolution } from '../../lnd_responses/index.js';
 
 const emptyTxId = Buffer.alloc(32).toString('hex');
 const {isArray} = Array;

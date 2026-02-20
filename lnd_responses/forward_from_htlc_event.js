@@ -1,7 +1,9 @@
 import { chanFormat } from 'bolt07';
-import { htlcTypes } from './constants';
-import { safeTokens } from './../bolt00/index.js';
 
+import constants from './constants.json' with { type: 'json'};
+import { safeTokens } from '../bolt00/index.js';
+
+const { htlcTypes } = constants;
 const bufferAsHex = buffer => buffer.toString('hex');
 const nsPerMs = BigInt(1e6);
 
@@ -69,7 +71,7 @@ export default htlc => {
     throw new Error('ExpectedHtlcEventTypeToDeriveForwardFromHtlcEvent');
   }
 
-  if (!!htlc.forward_event) {
+  if (htlc.forward_event) {
     if (!htlc.forward_event.info) {
       throw new Error('ExpectedHtlcInfoInForwardEvent');
     }
@@ -99,7 +101,7 @@ export default htlc => {
     throw new Error('ExpectedIncomingHtlcIdToDeriveForward');
   }
 
-  if (!!htlc.link_fail_event) {
+  if (htlc.link_fail_event) {
     if (!htlc.link_fail_event.failure_detail) {
       throw new Error('ExpectedLinkFailureDetailInLinkFailureEvent');
     }
@@ -164,16 +166,16 @@ export default htlc => {
       external_failure: undefined,
       fee: undefined,
       fee_mtokens: undefined,
-      in_channel: !!isSend ? undefined : incoming.channel,
-      in_payment: !!isSend ? undefined : incomingId,
+      in_channel: isSend ? undefined : incoming.channel,
+      in_payment: isSend ? undefined : incomingId,
       internal_failure: undefined,
       is_confirmed: !!htlc.settle_event,
       is_failed: isFailure,
       is_receive: isReceive,
       is_send: isSend,
       mtokens: undefined,
-      out_channel: !!isReceive ? undefined : outgoing.channel,
-      out_payment: !!isReceive ? undefined : outgoingId,
+      out_channel: isReceive ? undefined : outgoing.channel,
+      out_payment: isReceive ? undefined : outgoingId,
       secret: bufferAsHex(settleEvent.preimage) || undefined,
       timeout: undefined,
       tokens: undefined,
@@ -196,22 +198,22 @@ export default htlc => {
 
   return {
     at: createdAt.toISOString(),
-    cltv_delta: !isForward ? undefined : cltvDelta,
+    cltv_delta: isForward ? cltvDelta : undefined,
     external_failure: (htlc.link_fail_event || {}).wire_failure,
-    fee: !isForward ? undefined : safeTokens({mtokens: feeMtok}).tokens,
-    fee_mtokens: !isForward ? undefined : feeMtok,
-    in_channel: !!isSend ? undefined : incoming.channel,
-    in_payment: !!isSend ? undefined : incomingId,
+    fee: isForward ? safeTokens({ mtokens: feeMtok }).tokens : undefined,
+    fee_mtokens: isForward ? feeMtok : undefined,
+    in_channel: isSend ? undefined : incoming.channel,
+    in_payment: isSend ? undefined : incomingId,
     internal_failure: (htlc.link_fail_event || {}).failure_detail,
     is_confirmed: false,
     is_failed: !!htlc.link_fail_event,
     is_receive: isReceive,
     is_send: isSend,
-    mtokens: !!isReceive ? undefined : info.outgoing_amt_msat,
-    out_channel: !!isReceive ? undefined : outgoing.channel,
-    out_payment: !!isReceive ? undefined : outgoingId,
+    mtokens: isReceive ? undefined : info.outgoing_amt_msat,
+    out_channel: isReceive ? undefined : outgoing.channel,
+    out_payment: isReceive ? undefined : outgoingId,
     secret: bufferAsHex(settleEvent.preimage) || undefined,
-    timeout: !!isReceive ? undefined : outgoingCltvHeight,
-    tokens: !!isReceive ? undefined : tokens,
+    timeout: isReceive ? undefined : outgoingCltvHeight,
+    tokens: isReceive ? undefined : tokens,
   };
 };

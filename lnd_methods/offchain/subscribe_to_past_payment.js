@@ -1,8 +1,8 @@
 import EventEmitter from 'node:events';
 
 import emitPayment from './emit_payment.js';
-import { handleRemoveListener } from './../../grpc/index.js';
-import { isLnd } from './../../lnd_requests/index.js';
+import { handleRemoveListener } from '../../grpc/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
 
 const events = ['confirmed', 'failed', 'paying'];
 const hexToBuffer = hex => Buffer.from(hex, 'hex');

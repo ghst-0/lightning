@@ -1,6 +1,6 @@
 import test from 'node:test';
-import 'node:assert';
-import method from './../../../lnd_methods/offchain/subscribe_to_pay.js';
+import { throws } from 'node:assert/strict';
+import method from '../../../lnd_methods/offchain/subscribe_to_pay.js';
 
 const tests = [
   {
@@ -34,16 +34,13 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => method(args), new Error(error), 'Got err');
 
       return end();
-    } else {
-      const sub = method(args);
-
-      return end();
     }
+    return end();
   });
-});
+}

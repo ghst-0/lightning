@@ -1,15 +1,14 @@
-import 'node:assert';
-import 'node:assert';
+import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getInfoResponse } from './../fixtures/index.js';
-import { getWalletInfo } from './../../../index.js';
+import { getInfoResponse } from '../fixtures/index.js';
+import { getWalletInfo } from '../../../index.js';
 
 const makeLnd = ({custom, err, res}) => {
   const response = getInfoResponse;
 
   return {
     default: {
-      getInfo: ({}, cbk) => cbk(err, res !== undefined ? res : response),
+      getInfo: ({}, cbk) => cbk(err, res === undefined ? response : res),
     },
   };
 };
@@ -93,14 +92,12 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, async () => {
+for (const { args, description, error, expected } of tests) {
+  test(description, async () => {
     if (error) {
       await rejects(() => getWalletInfo(args), error, 'Got error');
     } else {
       deepStrictEqual(await getWalletInfo(args), expected, 'Got info');
     }
-
-    return;
   });
-});
+}

@@ -1,4 +1,3 @@
-import {AuthenticatedLnd} from '../../lnd_grpc';
 import {
   AuthenticatedLightningArgs,
   AuthenticatedLightningMethod,

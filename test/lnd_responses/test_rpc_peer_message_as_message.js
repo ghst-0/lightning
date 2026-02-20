@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { rpcPeerMessageAsMessage } from './../../lnd_responses/index.js';
+import { rpcPeerMessageAsMessage } from '../../lnd_responses/index.js';
 
 const makeArgs = overrides => {
   const response = {
@@ -10,7 +9,9 @@ const makeArgs = overrides => {
     type: 44444,
   };
 
-  Object.keys(overrides || {}).forEach(key => response[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    response[key] = overrides[key]
+  }
 
   return response;
 };
@@ -23,7 +24,9 @@ const makeExpected = overrides => {
     type: 44444,
   };
 
-  Object.keys(overrides || {}).forEach(key => expected[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    expected[key] = overrides[key]
+  }
 
   return expected;
 };
@@ -55,8 +58,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => rpcPeerMessageAsMessage(args), new Error(error), 'Got err');
     } else {
@@ -65,4 +68,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

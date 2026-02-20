@@ -1,5 +1,5 @@
 import test from 'node:test';
-import { handleRemoveListener } from './../../grpc/index.js';
+import { handleRemoveListener } from '../../grpc/index.js';
 
 const tests = [
   {
@@ -24,10 +24,10 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, expected } of tests) {
+  test(description, (t, end) => {
     handleRemoveListener(args);
 
     return end();
   });
-});
+}

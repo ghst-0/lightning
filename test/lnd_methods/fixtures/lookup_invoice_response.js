@@ -53,7 +53,7 @@
     settled: <Invoice Is Confirmed Bool>
     state: <Invoice Status String>
     value: <Tokens Value String>
-    value_msat: <Milliltokens Value String>
+    value_msat: <Millitokens Value String>
   }
 */
 export default ({}) => {

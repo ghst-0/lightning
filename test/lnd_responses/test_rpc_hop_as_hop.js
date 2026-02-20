@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { rpcHopAsHop } from './../../lnd_responses/index.js';
+import { rpcHopAsHop } from '../../lnd_responses/index.js';
 
 const makeArgs = overrides => {
   const args = {
@@ -15,7 +14,9 @@ const makeArgs = overrides => {
     tlv_payload: true,
   };
 
-  Object.keys(overrides || {}).forEach(key => args[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    args[key] = overrides[key]
+  }
 
   return args;
 };
@@ -32,7 +33,9 @@ const makeExpected = overrides => {
     timeout: 1,
   };
 
-  Object.keys(overrides || {}).forEach(key => expected[key] = overrides[key]);
+  for (const key of Object.keys(overrides || {})) {
+    expected[key] = overrides[key]
+  }
 
   return expected;
 };
@@ -105,8 +108,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => rpcHopAsHop(args), new Error(error), 'Got err');
     } else {
@@ -115,4 +118,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

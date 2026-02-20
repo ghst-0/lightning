@@ -1,7 +1,6 @@
-import 'node:assert';
+import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import 'node:assert';
-import { htlcAsPayment } from './../../lnd_responses/index.js';
+import { htlcAsPayment } from '../../lnd_responses/index.js';
 
 const makeHtlc = overrides => {
   const htlc = {
@@ -18,7 +17,9 @@ const makeHtlc = overrides => {
     state: 'SETTLED',
   };
 
-  Object.keys(overrides).forEach(k => htlc[k] = overrides[k]);
+  for (const k of Object.keys(overrides)) {
+    htlc[k] = overrides[k]
+  }
 
   return htlc;
 };
@@ -131,8 +132,8 @@ const tests = [
   },
 ];
 
-tests.forEach(({args, description, error, expected}) => {
-  return test(description, (t, end) => {
+for (const { args, description, error, expected } of tests) {
+  test(description, (t, end) => {
     if (error) {
       throws(() => htlcAsPayment(args), new Error(error), 'Got expected err');
     } else {
@@ -141,4 +142,4 @@ tests.forEach(({args, description, error, expected}) => {
 
     return end();
   });
-});
+}

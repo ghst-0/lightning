@@ -1,9 +1,9 @@
 import EventEmitter from 'node:events';
 import asyncDoUntil from 'async/doUntil.js';
 
-import { handleRemoveListener } from './../../grpc/index.js';
-import { isLnd } from './../../lnd_requests/index.js';
-import { rpcInvoiceAsInvoice } from './../../lnd_responses/index.js';
+import { handleRemoveListener } from '../../grpc/index.js';
+import { isLnd } from '../../lnd_requests/index.js';
+import { rpcInvoiceAsInvoice } from '../../lnd_responses/index.js';
 
 const events = ['end', 'error', 'invoice_updated', 'status'];
 const restartSubscriptionMs = 1000 * 30;
