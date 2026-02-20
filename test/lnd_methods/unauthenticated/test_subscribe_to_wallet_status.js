@@ -1,9 +1,8 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const EventEmitter = require('node:events');
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {subscribeToWalletStatus} = require('./../../../lnd_methods');
+import 'node:assert';
+import EventEmitter from 'node:events';
+import 'node:assert';
+import test from 'node:test';
+import { subscribeToWalletStatus } from './../../../lnd_methods/index.js';
 
 const makeLnd = overrides => {
   const data = {state: 'LOCKED'};
@@ -117,7 +116,7 @@ tests.forEach(({args, description, error, expected}) => {
 
     const sub = subscribeToWalletStatus(args);
 
-    if (!!error) {
+    if (error) {
       sub.once('error', err => {
         deepStrictEqual(err, error, 'Got expected error');
 

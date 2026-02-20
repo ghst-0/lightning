@@ -1,4 +1,4 @@
-const {chanFormat} = require('bolt07');
+import { chanFormat } from 'bolt07';
 
 const {isArray} = Array;
 
@@ -34,7 +34,7 @@ const {isArray} = Array;
     public_key: <Forward Edge Public Key Hex String>
   }]
 */
-module.exports = args => {
+export default args => {
   if (!args.destination) {
     throw new Error('ExpectedPaymentRequestDestinationToCalculateRoute');
   }

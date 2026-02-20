@@ -1,6 +1,6 @@
 const isBoolean = n => n === false || n === true;
 const isHash = n => !!n && /^[0-9A-F]{64}$/i.test(n);
-const isNumber = n => !isNaN(n);
+const isNumber = n => !Number.isNaN(n);
 
 /** Convert an RPC sweep into a sweep
 
@@ -36,7 +36,7 @@ const isNumber = n => !isNaN(n);
     type: <Outpoint Constraint Script Type String>
   }
 */
-module.exports = args => {
+export default args => {
   if (!args) {
     throw new Error('ExpectedSweepDetailsToDerivePendingSweep');
   }

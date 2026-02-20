@@ -1,12 +1,11 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const EventEmitter = require('events');
-const {rejects} = require('node:assert').strict;
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {lookupInvoiceResponse} = require('./../fixtures');
-const {subscribeToInvoice} = require('./../../../');
+import 'node:assert';
+import EventEmitter from 'node:events';
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { lookupInvoiceResponse } from './../fixtures/index.js';
+import { subscribeToInvoice } from './../../../index.js';
 
 const emitter = new EventEmitter();
 
@@ -100,7 +99,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => subscribeToInvoice(args), new Error(error), 'Got error');
     } else {
       let gotEnd;

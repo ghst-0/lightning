@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {backupsFromSnapshot} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { backupsFromSnapshot } from './../../lnd_responses/index.js';
 
 const multiChanBackup = {
   chan_points: [{funding_txid_bytes: Buffer.alloc(32), output_index: 2}],
@@ -141,7 +140,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => backupsFromSnapshot(args), new Error(error), 'Got error');
     } else {
       const res = backupsFromSnapshot(args);

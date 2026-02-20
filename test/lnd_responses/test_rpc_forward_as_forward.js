@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {rpcForwardAsForward} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { rpcForwardAsForward } from './../../lnd_responses/index.js';
 
 const makeForward = override => {
   const forward = {
@@ -130,7 +129,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => rpcForwardAsForward(args), new Error(error), 'Got error');
     } else {
       const forward = rpcForwardAsForward(args);

@@ -1,3 +1,3 @@
-const chainId = require('./chain_id');
+import chainId from './chain_id.js';
 
-module.exports = {chainId};
+export { chainId };

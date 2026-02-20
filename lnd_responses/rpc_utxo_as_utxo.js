@@ -1,4 +1,4 @@
-const constants = require('./constants');
+import constants from './constants';
 
 const formats = constants.addressFormats;
 const {keys} = Object;
@@ -31,7 +31,7 @@ const {keys} = Object;
     transaction_vout: <Transaction Output Index Number>
   }
 */
-module.exports = utxo => {
+export default utxo => {
   if (!utxo) {
     throw new Error('ExpectedRpcUtxoToDeriveUtxoDetails');
   }

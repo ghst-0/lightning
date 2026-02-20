@@ -1,8 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
-
-const {isLnd} = require('./../../lnd_requests');
-const {rpcTxAsTransaction} = require('./../../lnd_responses');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcTxAsTransaction } from './../../lnd_responses/index.js';
 
 const isHash = n => !!n && /^[0-9A-F]{64}$/i.test(n);
 const method = 'getTransaction';
@@ -41,9 +40,9 @@ const type = 'wallet';
     [transaction]: <Raw Transaction Hex String>
   }
 */
-module.exports = ({id, lnd}, cbk) => {
+export default ({id, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isHash(id)) {
@@ -60,17 +59,17 @@ module.exports = ({id, lnd}, cbk) => {
       // Get transaction
       getTransaction: ['validate', ({}, cbk) => {
         return lnd[type][method]({txid: id}, (err, res) => {
-          if (!!err && notSupported.test(err.details)) {
+          if (err && notSupported.test(err.details)) {
             return cbk([501, 'GetChainTransactionMethodNotSupported']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedGetChainTransactionError', {err}]);
           }
 
           try {
             return cbk(null, rpcTxAsTransaction(res));
-          } catch (err) {
+          } catch {
             return cbk([503, err.message]);
           }
         });

@@ -1,9 +1,11 @@
-const {decodeBase58Address} = require('@alexbosworth/blockchain');
-const {decodeBech32Address} = require('@alexbosworth/blockchain');
-const {p2pkhOutputScript} = require('@alexbosworth/blockchain');
-const {p2shOutputScript} = require('@alexbosworth/blockchain');
-const {p2wpkhOutputScript} = require('@alexbosworth/blockchain');
-const {p2wshOutputScript} = require('@alexbosworth/blockchain');
+import {
+  decodeBase58Address,
+  decodeBech32Address,
+  p2pkhOutputScript,
+  p2shOutputScript,
+  p2wpkhOutputScript,
+  p2wshOutputScript
+} from '@alexbosworth/blockchain';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const p2wpkhAddressLength = 20;
@@ -22,12 +24,12 @@ const p2wshAddressLength = 32;
     [script]: <Output Script Hex String>
   }
 */
-module.exports = args => {
+export default args => {
   if (!args.bech32_address && !args.p2pkh_address && !args.p2sh_address) {
     return {};
   }
 
-  if (!!args.p2pkh_address) {
+  if (args.p2pkh_address) {
     try {
       const {hash} = decodeBase58Address({address: args.p2pkh_address});
 
@@ -37,7 +39,7 @@ module.exports = args => {
     }
   }
 
-  if (!!args.p2sh_address) {
+  if (args.p2sh_address) {
     try {
       const {hash} = decodeBase58Address({address: args.p2sh_address});
 
@@ -52,7 +54,7 @@ module.exports = args => {
       address: args.bech32_address,
     });
 
-    if (!!version) {
+    if (version) {
       throw new Error('ExpectedV0VersionForScriptFromChainAddress');
     }
 

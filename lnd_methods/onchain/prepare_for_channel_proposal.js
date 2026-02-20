@@ -1,10 +1,8 @@
-const {randomBytes} = require('crypto');
-
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
-
-const {getPublicKey} = require('./../address');
-const {isLnd} = require('./../../lnd_requests');
+import { randomBytes } from 'node:crypto';
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
+import { getPublicKey } from './../address/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const family = 0;
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
@@ -35,9 +33,9 @@ const type = 'default';
     id: <Pending Channel Id Hex String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (args.cooperative_close_delay > maxCooperativeCloseDelay) {
@@ -99,7 +97,7 @@ module.exports = (args, cbk) => {
           },
         },
         err => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorPreparingForChanPropose', {err}]);
           }
 

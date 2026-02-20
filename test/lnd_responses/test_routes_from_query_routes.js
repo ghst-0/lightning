@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {routesFromQueryRoutes} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { routesFromQueryRoutes } from './../../lnd_responses/index.js';
 
 const recordType = '11903';
 const {stringify} = JSON;
@@ -135,7 +134,7 @@ const tests = [
 
 tests.forEach(({description, error, expected, response}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => routesFromQueryRoutes({response}), new Error(error));
 
       return end();

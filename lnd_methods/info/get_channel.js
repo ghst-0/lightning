@@ -1,9 +1,8 @@
-const asyncAuto = require('async/auto');
-const {chanNumber} = require('bolt07');
-const {returnResult} = require('asyncjs-util');
-
-const {channelEdgeAsChannel} = require('./../../lnd_responses');
-const {isLnd} = require('./../../lnd_requests');
+import asyncAuto from 'async/auto.js';
+import { chanNumber } from 'bolt07';
+import { returnResult } from 'asyncjs-util';
+import { channelEdgeAsChannel } from './../../lnd_responses/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const edgeIsZombieErrorMessage = 'edge marked as zombie';
 const edgeNotFoundErrorMessage = 'edge not found';
@@ -52,9 +51,9 @@ const type = 'default';
     [updated_at]: <Channel Last Updated At ISO 8601 Date String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!!args.id && !!args.transaction_id) {
@@ -79,7 +78,7 @@ module.exports = (args, cbk) => {
       // Channel arguments
       request: ['validate', ({}, cbk) => {
         // Exit early when a channel id is specified
-        if (!!args.id) {
+        if (args.id) {
           return cbk(null, {chan_id: chanNumber({channel: args.id}).number});
         }
 
@@ -91,15 +90,15 @@ module.exports = (args, cbk) => {
       // Get channel
       getChannel: ['request', ({request}, cbk) => {
         return args.lnd[type][method](request, (err, response) => {
-          if (!!err && err.details === edgeIsZombieErrorMessage) {
+          if (err && err.details === edgeIsZombieErrorMessage) {
             return cbk([404, 'FullChannelDetailsNotFound']);
           }
 
-          if (!!err && err.details === edgeNotFoundErrorMessage) {
+          if (err && err.details === edgeNotFoundErrorMessage) {
             return cbk([404, 'FullChannelDetailsNotFound']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedGetChannelInfoError', {err}]);
           }
 

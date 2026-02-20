@@ -1,10 +1,9 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
-const defaultType = 'ecdsa';
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
 const isHex = n => !!n && !(n.length % 2) && /^[0-9A-F]*$/i.test(n);
 const isSchnorrSig = signature => signature.length === 64;
@@ -36,9 +35,9 @@ const unimplementedError = '12 UNIMPLEMENTED: unknown service signrpc.Signer';
     signature: <Signature Hex String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (args.key_family === undefined) {
@@ -72,11 +71,11 @@ module.exports = (args, cbk) => {
           schnorr_sig: args.type === types.schnorr || undefined,
         },
         (err, res) => {
-          if (!!err && err.message === unimplementedError) {
+          if (err && err.message === unimplementedError) {
             return cbk([400, 'ExpectedSignerRpcLndBuildTagToSignBytes']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorWhenSigningBytes', {err}]);
           }
 
@@ -88,7 +87,7 @@ module.exports = (args, cbk) => {
             return cbk([503, 'ExpectedSignatureInSignMessageResponse']);
           }
 
-          if (!res.signature.length) {
+          if (res.signature.length === 0) {
             return cbk([503, 'ExpectedSignatureInSignBytesResponse']);
           }
 

@@ -1,10 +1,9 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const EventEmitter = require('node:events');
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {subscribeToPayViaRoutes} = require('./../../../');
+import 'node:assert';
+import EventEmitter from 'node:events';
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { subscribeToPayViaRoutes } from './../../../index.js';
 
 const deletePayment = ({}, cbk) => cbk();
 
@@ -381,7 +380,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => subscribeToPayViaRoutes(args), new Error(error), 'Got err');
 
       return end();

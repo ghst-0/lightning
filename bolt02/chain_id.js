@@ -1,4 +1,6 @@
-const {chains} = require('./ids');
+import ids from './ids.json' with { type:'json' };
+
+const { chains } = ids;
 
 /** Chain id for chain
 
@@ -12,7 +14,7 @@ const {chains} = require('./ids');
     [chain]: <Chain Id Hex String>
   }
 */
-module.exports = ({chain, network}) => {
+export default ({chain, network}) => {
   if (!chain || !network) {
     return {};
   }

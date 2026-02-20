@@ -1,7 +1,7 @@
-const {randomBytes} = require('crypto');
+import { randomBytes } from 'node:crypto';
 
-const {isLnd} = require('./../../lnd_requests');
-const subscribeToPay = require('./subscribe_to_pay');
+import { isLnd } from './../../lnd_requests/index.js';
+import subscribeToPay from './subscribe_to_pay.js';
 
 const defaultCltvDelta = 144;
 const isPublicKey = n => !!n && /^[0-9A-F]{66}$/i.test(n);
@@ -181,7 +181,7 @@ const type = 'router';
     }
   }
 */
-module.exports = args => {
+export default args => {
   if (!isPublicKey(args.destination)) {
     throw new Error('ExpectedDestinationWhenPayingViaDetails');
   }

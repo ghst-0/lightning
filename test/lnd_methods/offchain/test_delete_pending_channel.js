@@ -1,7 +1,6 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {deletePendingChannel} = require('./../../../lnd_methods');
+import 'node:assert';
+import test from 'node:test';
+import { deletePendingChannel } from './../../../lnd_methods/index.js';
 
 const tx1 = '010000000100000000000000000000000000000000000000000000000000000000000000000000000000ffffffff0000000000';
 const tx2 = '010000000200000000000000000000000000000000000000000000000000000000000000000000000000ffffffff01010101010101010101010101010101010101010101010101010101010101010000000000ffffffff0101000000000000000a0000000000000000000000000000';
@@ -81,7 +80,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => deletePendingChannel(args), error, 'Got error');
     } else {
       await deletePendingChannel(args);

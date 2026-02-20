@@ -1,4 +1,4 @@
-import type {MergeExclusive} from 'type-fest';
+import type { MergeExclusive } from 'type-fest';
 import {
   AuthenticatedLightningArgs,
   AuthenticatedLightningMethod,

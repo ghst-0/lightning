@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const chanPolicyAsPolicy = require('./../../lnd_responses/channel_policy_as_policy');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import chanPolicyAsPolicy from './../../lnd_responses/channel_policy_as_policy.js';
 
 const makeExpected = overrides => {
   const expected = {
@@ -140,7 +139,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => chanPolicyAsPolicy(args), new Error(error), 'Got error');
     } else {
       const policy = chanPolicyAsPolicy(args);

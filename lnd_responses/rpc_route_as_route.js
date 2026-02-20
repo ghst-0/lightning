@@ -1,4 +1,4 @@
-const rpcHopAsHop = require('./rpc_hop_as_hop');
+import rpcHopAsHop from './rpc_hop_as_hop.js';
 
 const {isArray} = Array;
 const millitokensPerToken = BigInt(1e3);
@@ -51,7 +51,7 @@ const millitokensPerToken = BigInt(1e3);
     [total_mtokens]: <Total Payment Millitokens String>
   }
 */
-module.exports = route => {
+export default route => {
   if (!route) {
     throw new Error('ExpectedRpcRouteToDeriveRouteDetailsFor');
   }

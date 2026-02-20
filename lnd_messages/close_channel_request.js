@@ -25,7 +25,7 @@ const hashAsTxId = hash => hash.slice().reverse().toString('hex');
     transaction_vout: <Transaction Output Index Number>
   }
 */
-module.exports = args => {
+export default args => {
   return {
     address: args.delivery_address || undefined,
     is_force_close: args.force || undefined,

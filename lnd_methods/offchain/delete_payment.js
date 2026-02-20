@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const hexAsBytes = hex => Buffer.from(hex, 'hex');
 const isHash = n => !!n && /^[0-9A-F]{64}$/i.test(n);
@@ -22,9 +22,9 @@ const type = 'default';
 
   @returns via cbk or Promise
 */
-module.exports = ({id, lnd}, cbk) => {
+export default ({id, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isHash(id)) {
@@ -41,11 +41,11 @@ module.exports = ({id, lnd}, cbk) => {
       // Delete the payment
       deletePayment: ['validate', ({}, cbk) => {
         return lnd[type][method]({payment_hash: hexAsBytes(id)}, err => {
-          if (!!err && notSupported.test(err.details)) {
+          if (err && notSupported.test(err.details)) {
             return cbk([501, 'DeletePaymentMethodNotSupported']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorDeletingPayment', {err}]);
           }
 

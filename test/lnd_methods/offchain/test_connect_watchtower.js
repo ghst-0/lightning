@@ -1,7 +1,6 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {connectWatchtower} = require('./../../../');
+import 'node:assert';
+import test from 'node:test';
+import { connectWatchtower } from './../../../index.js';
 
 const makeLnd = err => {
   return {tower_client: {addTower: ({}, cbk) => cbk(err)}};
@@ -57,7 +56,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(connectWatchtower(args), error, 'Got expected error');
     } else {
       await connectWatchtower(args);

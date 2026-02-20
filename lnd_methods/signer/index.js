@@ -1,12 +1,12 @@
-const beginGroupSigningSession = require('./begin_group_signing_session');
-const diffieHellmanComputeSecret = require('./diffie_hellman_compute_secret');
-const endGroupSigningSession = require('./end_group_signing_session');
-const signBytes = require('./sign_bytes');
-const signTransaction = require('./sign_transaction');
-const updateGroupSigningSession = require('./update_group_signing_session');
-const verifyBytesSignature = require('./verify_bytes_signature');
+import beginGroupSigningSession from './begin_group_signing_session.js';
+import diffieHellmanComputeSecret from './diffie_hellman_compute_secret.js';
+import endGroupSigningSession from './end_group_signing_session.js';
+import signBytes from './sign_bytes.js';
+import signTransaction from './sign_transaction.js';
+import updateGroupSigningSession from './update_group_signing_session.js';
+import verifyBytesSignature from './verify_bytes_signature.js';
 
-module.exports = {
+export {
   beginGroupSigningSession,
   diffieHellmanComputeSecret,
   endGroupSigningSession,

@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const hexAsBase64 = hex => Buffer.from(hex, 'hex').toString('base64');
@@ -32,9 +32,9 @@ const type = 'wallet';
     signed_by: <Public Key Hex String>
   }
 */
-module.exports = ({address, lnd, message, signature}, cbk) => {
+export default ({address, lnd, message, signature}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!address) {
@@ -64,11 +64,11 @@ module.exports = ({address, lnd, message, signature}, cbk) => {
           signature: hexAsBase64(signature),
         },
         (err, res) => {
-          if (!!err && err.details === notSupportedError) {
+          if (err && err.details === notSupportedError) {
             return cbk([501, 'BackingLndDoesNotSupportVerifyingAddrMessages']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedVerifyChainAddrMessageError', {err}]);
           }
 

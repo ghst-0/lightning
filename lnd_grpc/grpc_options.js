@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   defaults: true,
   enums: String,
   keepCase: true,

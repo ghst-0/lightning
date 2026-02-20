@@ -1,9 +1,8 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {ignoreAsIgnoredNodes} = require('./../../lnd_requests');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { ignoreAsIgnoredNodes } from './../../lnd_requests/index.js';
 
 const tests = [
   {
@@ -40,7 +39,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => ignoreAsIgnoredNodes(args), new Error(error), 'Got error');
     } else if (!!expected.ignore) {
       const {ignored} = ignoreAsIgnoredNodes(args);

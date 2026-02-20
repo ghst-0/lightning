@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {paymentFailure} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { paymentFailure } from './../../lnd_responses/index.js';
 
 const makeFailure = ({fail, overrides}) => {
   const failure = {
@@ -257,7 +256,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => paymentFailure(args), new Error(error), 'Got error');
     } else {
       deepStrictEqual(paymentFailure(args), expected, 'Payment failure map');

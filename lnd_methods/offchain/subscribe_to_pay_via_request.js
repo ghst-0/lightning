@@ -1,5 +1,6 @@
-const {isLnd} = require('./../../lnd_requests');
-const subscribeToPay = require('./subscribe_to_pay');
+import { isLnd } from './../../lnd_requests/index.js';
+
+import subscribeToPay from './subscribe_to_pay.js';
 
 const method = 'sendPaymentV2';
 const type = 'router';
@@ -164,7 +165,7 @@ const type = 'router';
     }
   }
 */
-module.exports = args => {
+export default args => {
   if (!args.request) {
     throw new Error('ExpectedPaymentRequestToPayWhenSubscribingToPayment');
   }

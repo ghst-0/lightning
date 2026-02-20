@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const bufferFromHex = hex => Buffer.from(hex, 'hex');
 const defaultMessageType = 32768;
@@ -29,9 +29,9 @@ const type = 'default';
 
   @returns via cbk or Promise
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
@@ -57,7 +57,7 @@ module.exports = (args, cbk) => {
           type: args.type || defaultMessageType,
         },
         err => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorSendingMessageToPeer', {err}]);
           }
 

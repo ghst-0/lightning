@@ -1,23 +1,17 @@
-const {createHash} = require('crypto');
-const EventEmitter = require('events');
+import { createHash } from 'node:crypto';
+import EventEmitter from 'node:events';
 
-const asyncDoUntil = require('async/doUntil');
-const {chanFormat} = require('bolt07');
-
-const {emitSubscriptionError} = require('./../../grpc');
-const {forwardFromHtlcEvent} = require('./../../lnd_responses');
-const getPayment = require('./get_payment');
-const {isLnd} = require('./../../lnd_requests');
+import { emitSubscriptionError } from './../../grpc/index.js';
+import { forwardFromHtlcEvent } from './../../lnd_responses/index.js';
+import getPayment from './get_payment.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
-const cancelError = 'Cancelled on client';
 const event = 'payment';
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
 const method = 'subscribeHtlcEvents';
-const restartForwardListenerDelayMs = 1e3;
 const sha256 = preimage => createHash('sha256').update(preimage).digest();
 const type = 'router';
-const unknownFailureMessage = '2 UNKNOWN: unknown failure detail type: <nil>';
 
 /** Subscribe to successful outgoing payments
 
@@ -70,7 +64,7 @@ const unknownFailureMessage = '2 UNKNOWN: unknown failure detail type: <nil>';
     tokens: <Total Tokens Paid Rounded Down Number>
   }
 */
-module.exports = ({lnd}) => {
+export default ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToPayments');
   }
@@ -103,7 +97,7 @@ module.exports = ({lnd}) => {
         id: bufferAsHex(sha256(hexAsBuffer(htlc.secret))),
       },
       (err, res) => {
-        if (!!err) {
+        if (err) {
           return;
         }
 

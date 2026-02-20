@@ -1,4 +1,4 @@
-const {failureReason} = require('./constants');
+import { failureReason } from './constants';
 
 const is256Hex = n => !!n && /^[0-9A-F]{64}$/i.test(n);
 
@@ -22,7 +22,7 @@ const is256Hex = n => !!n && /^[0-9A-F]{64}$/i.test(n);
     is_route_not_found: <Failure Due to No Route To Destination Found Bool>
   }
 */
-module.exports = payment => {
+export default payment => {
   const state = payment.failure_reason;
 
   if (!is256Hex(payment.payment_hash)) {

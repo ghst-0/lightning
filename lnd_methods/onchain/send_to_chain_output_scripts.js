@@ -1,17 +1,16 @@
-const asyncAuto = require('async/auto');
-const {idForTransaction} = require('@alexbosworth/blockchain');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { idForTransaction } from '@alexbosworth/blockchain';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
 const initialConfirmationCount = 0;
 const {isArray} = Array;
-const {isBuffer} = Buffer;
 const method = 'sendOutputs';
 const minFeeRate = 1;
-const strategy = type => !type ? undefined : `STRATEGY_${type.toUpperCase()}`;
+const strategy = type => type ? `STRATEGY_${ type.toUpperCase() }` : undefined;
 const type = 'wallet';
 const unconfirmedConfCount = 0;
 const weightPerKWeight = 1e3;
@@ -49,16 +48,16 @@ const weightPerVByte = 4;
     transaction: <Raw Transaction Hex String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
           return cbk([400, 'ExpectedLndToSendToChainOutputScripts']);
         }
 
-        if (!isArray(args.send_to) || !args.send_to.length) {
+        if (!isArray(args.send_to) || args.send_to.length === 0) {
           return cbk([400, 'ExpectedSendToOutputScriptsAndTokens']);
         }
 
@@ -82,7 +81,7 @@ module.exports = (args, cbk) => {
           spend_unconfirmed: args.utxo_confirmations === unconfirmedConfCount,
         },
         (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([500, 'UnexpectedSendToChainOutputScriptsErr', {err}]);
           }
 
@@ -92,7 +91,7 @@ module.exports = (args, cbk) => {
 
           try {
             idForTransaction({transaction: bufferAsHex(res.raw_tx)});
-          } catch (err) {
+          } catch {
             return cbk([500, 'ExpectedRawTransactionInSendToOutputsResponse']);
           }
 

@@ -1,9 +1,12 @@
-const {confirmedFromPayment} = require('./../../lnd_responses');
-const {failureFromPayment} = require('./../../lnd_responses');
-const {pendingFromPayment} = require('./../../lnd_responses');
-const {routingFailureFromHtlc} = require('./../../lnd_responses');
-const {states} = require('./payment_states');
+import {
+  confirmedFromPayment,
+  failureFromPayment,
+  pendingFromPayment,
+  routingFailureFromHtlc
+} from './../../lnd_responses/index.js';
+import payment_states from './payment_states.json' with { type: 'json' };
 
+const { states } = payment_states;
 const failedStatus = 'FAILED';
 const {isArray} = Array;
 
@@ -16,7 +19,7 @@ const {isArray} = Array;
     emitter: <EventEmitter Object>
   }
 */
-module.exports = ({data, emitter}) => {
+export default ({data, emitter}) => {
   try {
     switch (data.status) {
     case states.confirmed:
@@ -26,7 +29,7 @@ module.exports = ({data, emitter}) => {
       return emitter.emit('failed', failureFromPayment(data));
 
     case states.paying:
-      const hasHtlcs = !!data && isArray(data.htlcs) && !!data.htlcs.length;
+      const hasHtlcs = !!data && isArray(data.htlcs) && data.htlcs.length > 0;
 
       // Exit early when no HTLCs are attached
       if (!hasHtlcs) {
@@ -34,12 +37,12 @@ module.exports = ({data, emitter}) => {
       }
 
       // Emit routing failures
-      data.htlcs.filter(n => n.status === failedStatus).forEach(htlc => {
-        return emitter.emit('routing_failure', routingFailureFromHtlc(htlc));
-      });
+      for (const htlc of data.htlcs.filter(n => n.status === failedStatus)) {
+        emitter.emit('routing_failure', routingFailureFromHtlc(htlc))
+      }
 
       // Exit early when the HTLCs have no pending payments
-      if (!data.htlcs.find(n => n.status === states.paying)) {
+      if (!data.htlcs.some(n => n.status === states.paying)) {
         return;
       }
 

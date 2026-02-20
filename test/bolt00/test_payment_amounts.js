@@ -1,8 +1,7 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {paymentAmounts} = require('./../../bolt00');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { paymentAmounts } from './../../bolt00/index.js';
 
 const tests = [
   {
@@ -69,7 +68,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => paymentAmounts(args), new Error(error), 'Got expected err');
     } else {
       const amounts = paymentAmounts(args);

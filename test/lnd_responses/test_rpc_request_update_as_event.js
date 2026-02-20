@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const method = require('./../../lnd_responses/rpc_request_update_as_event');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import method from './../../lnd_responses/rpc_request_update_as_event.js';
 
 const makeArgs = overrides => {
   const args = {
@@ -125,7 +124,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => method(args), new Error(error), 'Error');
     } else {
       const res = method(args);

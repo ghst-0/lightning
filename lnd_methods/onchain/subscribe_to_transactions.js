@@ -1,7 +1,7 @@
-const EventEmitter = require('events');
+import EventEmitter from 'node:events';
 
-const {isLnd} = require('./../../lnd_requests');
-const {rpcTxAsTransaction} = require('./../../lnd_responses');
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcTxAsTransaction } from './../../lnd_responses/index.js';
 
 const cancelError = 'Cancelled on client';
 const {isArray} = Array;
@@ -44,7 +44,7 @@ const type = 'default';
     [transaction]: <Raw Transaction Hex String>
   }
 */
-module.exports = ({lnd}) => {
+export default ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToTransactions');
   }
@@ -55,17 +55,15 @@ module.exports = ({lnd}) => {
   // Cancel the subscription when all listeners are removed
   eventEmitter.on('removeListener', () => {
     // Exit early when there are still listeners
-    if (!!eventEmitter.listenerCount('chain_transaction')) {
+    if (eventEmitter.listenerCount('chain_transaction')) {
       return;
     }
 
     subscription.cancel();
-
-    return;
   });
 
   const emitErr = err => {
-    if (!!err && err.details === cancelError) {
+    if (err && err.details === cancelError) {
       subscription.removeAllListeners();
     }
 

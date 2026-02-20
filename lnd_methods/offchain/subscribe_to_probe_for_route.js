@@ -1,13 +1,11 @@
-const EventEmitter = require('events');
+import EventEmitter from 'node:events';
+import asyncAuto from 'async/auto.js';
+import asyncWhilst from 'async/whilst.js';
 
-const asyncAuto = require('async/auto');
-const asyncWhilst = require('async/whilst');
-
-const {getRouteToDestination} = require('./../info');
-const {getIdentity} = require('./../info');
-const {isLnd} = require('./../../lnd_requests');
-const {mtokensAmount} = require('./../../bolt00');
-const subscribeToPayViaRoutes = require('./subscribe_to_pay_via_routes');
+import { getRouteToDestination, getIdentity } from './../info/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
+import { mtokensAmount } from './../../bolt00/index.js';
+import subscribeToPayViaRoutes from './subscribe_to_pay_via_routes.js';
 
 const defaultPathTimeoutMs = 1000 * 60;
 const defaultProbeTimeoutMs = 1000 * 60 * 60 * 24;
@@ -177,7 +175,7 @@ const {nextTick} = process;
     }
   }
 */
-module.exports = args => {
+export default args => {
   if (!isPublicKey(args.destination)) {
     throw new Error('ExpectedDestinationPublicKeyToSubscribeToProbe');
   }
@@ -206,11 +204,13 @@ module.exports = args => {
   let isTimedOut = false;
   const temporaryChannelFailures = [];
 
-  if (!!args.ignore) {
-    args.ignore.forEach(n => ignore.push({
-      from_public_key: n.from_public_key,
-      to_public_key: n.to_public_key,
-    }));
+  if (args.ignore) {
+    for (const n of args.ignore) {
+      ignore.push({
+        from_public_key: n.from_public_key,
+        to_public_key: n.to_public_key,
+      })
+    }
   }
 
   const emitError = err => {
@@ -231,15 +231,13 @@ module.exports = args => {
     emitError([503, 'ProbeTimeout']);
 
     emitter.emit('end');
-
-    return;
   },
   args.probe_timeout_ms || defaultProbeTimeoutMs);
 
   asyncWhilst(
     cbk => nextTick(() => cbk(null, !isFinal)),
     cbk => {
-      return asyncAuto({
+      asyncAuto({
         // Get public key
         getInfo: cbk => getIdentity({lnd: args.lnd}, cbk),
 
@@ -274,7 +272,7 @@ module.exports = args => {
         {
           const routes = [getNextRoute.route].filter(n => !!n);
 
-          if (!routes.length) {
+          if (routes.length === 0) {
             return cbk(null, {});
           }
 
@@ -299,14 +297,14 @@ module.exports = args => {
             const from = penultimate || getInfo;
 
             // Ignore the final pair
-            currentRoute.hops.forEach(hop => {
-              return ignore.push({
+            for (const hop of currentRoute.hops) {
+              ignore.push({
                 from_public_key: from.public_key,
                 to_public_key: hop.public_key,
-              });
-            });
+              })
+            }
 
-            return next();
+              return next();
           },
           args.path_timeout_ms || defaultPathTimeoutMs);
 
@@ -316,12 +314,12 @@ module.exports = args => {
             }
 
             // Exit early when the probe timed out
-            if (!!isTimedOut) {
+            if (isTimedOut) {
               return;
             }
 
             // Exit early when the probe found a completed route
-            if (!!isFinal) {
+            if (isFinal) {
               return emitter.emit('probe_success', {route: failure.route});
             }
 
@@ -345,8 +343,6 @@ module.exports = args => {
               route: failure.route,
               update: failure.update,
             });
-
-            return;
           });
 
           // Probing finished
@@ -357,22 +353,20 @@ module.exports = args => {
           });
 
           sub.on('error', err => {
-            if (!!isTimedOut) {
+            if (isTimedOut) {
               return;
             }
 
             return emitError(err);
           });
-
-          return;
         }],
       },
       (err, res) => {
-        if (!!err) {
+        if (err) {
           return cbk(err);
         }
 
-        if (!!isFinal) {
+        if (isFinal) {
           return cbk();
         }
 
@@ -385,19 +379,17 @@ module.exports = args => {
     },
     err => {
       // Exit early when the probe timed out
-      if (!!isTimedOut) {
+      if (isTimedOut) {
         return;
       }
 
       clearTimeout(probeTimeout);
 
-      if (!!err) {
+      if (err) {
         emitError(err);
       }
 
       emitter.emit('end');
-
-      return;
     },
   );
 

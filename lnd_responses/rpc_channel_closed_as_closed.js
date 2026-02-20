@@ -1,4 +1,4 @@
-const {chanFormat} = require('bolt07');
+import { chanFormat } from 'bolt07';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const emptyTxId = Buffer.alloc(32);
@@ -29,7 +29,7 @@ const {isBuffer} = Buffer;
     updated_at: <Update Received At ISO 8601 Date String>
   }
 */
-module.exports = update => {
+export default update => {
   if (!update) {
     throw new Error('ExpectedChannelClosedUpdateDetails');
   }

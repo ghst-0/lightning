@@ -1,13 +1,13 @@
-const cancelHodlInvoice = require('./cancel_hodl_invoice');
-const createHodlInvoice = require('./create_hodl_invoice');
-const createInvoice = require('./create_invoice');
-const getInvoice = require('./get_invoice');
-const getInvoices = require('./get_invoices');
-const settleHodlInvoice = require('./settle_hodl_invoice');
-const subscribeToInvoice = require('./subscribe_to_invoice');
-const subscribeToInvoices = require('./subscribe_to_invoices');
+import cancelHodlInvoice from './cancel_hodl_invoice.js';
+import createHodlInvoice from './create_hodl_invoice.js';
+import createInvoice from './create_invoice.js';
+import getInvoice from './get_invoice.js';
+import getInvoices from './get_invoices.js';
+import settleHodlInvoice from './settle_hodl_invoice.js';
+import subscribeToInvoice from './subscribe_to_invoice.js';
+import subscribeToInvoices from './subscribe_to_invoices.js';
 
-module.exports = {
+export {
   cancelHodlInvoice,
   createHodlInvoice,
   createInvoice,

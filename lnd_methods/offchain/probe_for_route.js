@@ -1,8 +1,7 @@
-const asyncAuto = require('async/auto');
-const asyncTimeout = require('async/timeout');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const subscribeToProbeForRoute = require('./subscribe_to_probe_for_route');
+import subscribeToProbeForRoute from './subscribe_to_probe_for_route.js';
 
 const defaultProbeTimeoutMs = 1000 * 60;
 const {isArray} = Array;
@@ -88,9 +87,9 @@ const isHex = n => !(n.length % 2) && /^[0-9A-F]*$/i.test(n);
     }
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!args.destination || !isHex(args.destination)) {
@@ -114,8 +113,6 @@ module.exports = (args, cbk) => {
 
       // Start probe and return a successful route if found
       probe: ['validate', ({}, cbk) => {
-        const result = {};
-        let isFinished = false;
         let timeout;
 
         const sub = subscribeToProbeForRoute({
@@ -156,8 +153,6 @@ module.exports = (args, cbk) => {
         sub.once('end', () => finished(null, {}));
         sub.once('error', err => finished(err));
         sub.once('probe_success', ({route}) => finished(null, {route}));
-
-        return;
       }],
     },
     returnResult({reject, resolve, of: 'probe'}, cbk));

@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {infoAsWalletInfo} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { infoAsWalletInfo } from './../../lnd_responses/index.js';
 
 const makeInfo = overrides => {
   const info = {
@@ -158,7 +157,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => infoAsWalletInfo(args), new Error(error), 'Got error');
     } else {
       deepStrictEqual(infoAsWalletInfo(args), expected, 'Info as wallet info');

@@ -1,8 +1,7 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getInvoice} = require('./../../../');
-const {lookupInvoiceResponse} = require('./../fixtures');
+import 'node:assert';
+import test from 'node:test';
+import { getInvoice } from './../../../index.js';
+import { lookupInvoiceResponse } from './../fixtures/index.js';
 
 const id = Buffer.alloc(32).toString('hex');
 
@@ -48,7 +47,7 @@ const tests = [
 
 tests.forEach(({args, description, error}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(getInvoice(args), error, 'Got expected err');
     } else {
       await getInvoice(args);

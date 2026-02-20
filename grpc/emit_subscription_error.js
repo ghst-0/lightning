@@ -10,11 +10,11 @@ const cancelError = 'Cancelled on client';
   @returns
   <Error Emission Function>
 */
-module.exports = ({emitter, subscription}) => {
+export default ({emitter, subscription}) => {
   return err => {
     subscription.cancel();
 
-    if (!!err && err.details === cancelError) {
+    if (err && err.details === cancelError) {
       subscription.removeAllListeners();
     }
 

@@ -1,8 +1,8 @@
-const EventEmitter = require('events');
+import EventEmitter from 'node:events';
+import { forwardPaymentActions } from './payment_states';
 
-const {forwardPaymentActions} = require('./payment_states');
-const {isLnd} = require('./../../lnd_requests');
-const {rpcForwardAsForwardRequest} = require('./../../lnd_responses');
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcForwardAsForwardRequest } from './../../lnd_responses/index.js';
 
 const bufferFromHex = hex => Buffer.from(hex, 'hex');
 const event = 'forward_request';
@@ -50,7 +50,7 @@ const type = 'router';
     tokens: <Tokens to Forward to Next Peer Rounded Down Number>
   }
 */
-module.exports = ({lnd}) => {
+export default ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToForwardRequests');
   }
@@ -69,13 +69,11 @@ module.exports = ({lnd}) => {
   // Cancel the subscription when all listeners are removed
   emitter.on('removeListener', () => {
     // Exit early when there are still listeners
-    if (!!emitter.listenerCount(event)) {
+    if (emitter.listenerCount(event)) {
       return;
     }
 
     sub.cancel();
-
-    return;
   });
 
   sub.on('data', data => {

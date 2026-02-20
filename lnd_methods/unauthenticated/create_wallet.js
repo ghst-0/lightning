@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const bufferAsBase64 = buffer => buffer.toString('base64');
 const {isBuffer} = Buffer;
@@ -25,9 +25,9 @@ const utf8AsBuf = utf8 => Buffer.from(utf8, 'utf8');
     macaroon: <Base64 Encoded Admin Macaroon String>
   }
 */
-module.exports = ({lnd, passphrase, password, seed}, cbk) => {
+export default ({lnd, passphrase, password, seed}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -48,12 +48,12 @@ module.exports = ({lnd, passphrase, password, seed}, cbk) => {
       // Create wallet
       createWallet: ['validate', ({}, cbk) => {
         return lnd[type][method]({
-          aezeed_passphrase: !!passphrase ? utf8AsBuf(passphrase) : undefined,
+          aezeed_passphrase: passphrase ? utf8AsBuf(passphrase) : undefined,
           cipher_seed_mnemonic: seed.split(' '),
           wallet_password: utf8AsBuf(password),
         },
         (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedInitWalletError', {err}]);
           }
 

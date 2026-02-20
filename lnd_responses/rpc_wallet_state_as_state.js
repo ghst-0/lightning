@@ -21,7 +21,7 @@ const stateWaiting = 'WAITING_TO_START';
     [is_waiting]: <Wallet Is Waiting To Start Bool>
   }
 */
-module.exports = args => {
+export default args => {
   if (!args) {
     throw new Error('ExpectedStateResponse');
   }

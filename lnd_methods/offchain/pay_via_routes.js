@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
-const subscribeToPayViaRoutes = require('./subscribe_to_pay_via_routes');
+import { isLnd } from './../../lnd_requests/index.js';
+import subscribeToPayViaRoutes from './subscribe_to_pay_via_routes.js';
 
 const {isArray} = Array;
 const isHash = n => /^[0-9A-F]{64}$/i.test(n);
@@ -88,9 +88,9 @@ const notFound = -1;
     }
   ]
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!!args.id && !isHash(args.id)) {
@@ -101,11 +101,11 @@ module.exports = (args, cbk) => {
           return cbk([400, 'ExpectedLndForToPayViaSpecifiedRoutes']);
         }
 
-        if (!isArray(args.routes) || !args.routes.length) {
+        if (!isArray(args.routes) || args.routes.length === 0) {
           return cbk([400, 'ExpectedArrayOfRoutesToPayViaRoutes']);
         }
 
-        if (!!args.routes.filter(n => !n).length) {
+        if (args.routes.filter(n => !n).length) {
           return cbk([400, 'ExpectedArrayOfRoutesToAttemptPayingOver']);
         }
 
@@ -113,11 +113,11 @@ module.exports = (args, cbk) => {
           return cbk([400, 'ExpectedArrayOfHopsForPayViaRoute']);
         }
 
-        if (!!args.routes.find(n => n.hops.find(hop => !hop.public_key))) {
+        if (args.routes.some(n => n.hops.find(hop => !hop.public_key))) {
           return cbk([400, 'ExpectedPublicKeyInPayViaRouteHops']);
         }
 
-        if (!!args.routes.find(n => n.hops.length > maxHopsCount)) {
+        if (args.routes.some(n => n.hops.length > maxHopsCount)) {
           return cbk([400, 'ExpectedRouteWithFewerThanMaxHops']);
         }
 
@@ -139,11 +139,11 @@ module.exports = (args, cbk) => {
         sub.on('success', success => result.success = success);
 
         sub.on('end', () => {
-          if (!result.failures.length && !result.success) {
+          if (result.failures.length === 0 && !result.success) {
             return cbk([503, 'FailedToReceiveDiscreteFailureOrSuccess']);
           }
 
-          if (!!result.success) {
+          if (result.success) {
             return cbk(null, {
               confirmed_at: result.success.confirmed_at,
               failures: result.failures,
@@ -178,8 +178,6 @@ module.exports = (args, cbk) => {
 
         sub.on('error', err => result.failures.push(err));
         sub.on('failure', ({failure}) => result.failures.push(failure));
-
-        return;
       }],
     },
     returnResult({reject, resolve, of: 'payViaRoutes'}, cbk));

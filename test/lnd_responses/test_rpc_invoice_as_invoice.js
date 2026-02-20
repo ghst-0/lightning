@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {rpcInvoiceAsInvoice} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { rpcInvoiceAsInvoice } from './../../lnd_responses/index.js';
 
 const makeInput = overrides => {
   const response = {
@@ -255,7 +254,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => rpcInvoiceAsInvoice(args), new Error(error), 'Got err');
     } else {
       deepStrictEqual(rpcInvoiceAsInvoice(args), expected, 'Map to invoice');

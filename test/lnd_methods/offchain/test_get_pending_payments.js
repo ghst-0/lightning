@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getPendingPayments} = require('./../../../');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { getPendingPayments } from './../../../index.js';
 
 const makeLnd = args => {
   return {
@@ -147,7 +146,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => getPendingPayments(args), error, 'Got error');
     } else {
       const {payments} = await getPendingPayments(args);

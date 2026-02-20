@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getMasterPublicKeys} = require('./../../../lnd_methods');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { getMasterPublicKeys } from './../../../lnd_methods/index.js';
 
 const makeExpected = overrides => {
   const res = {
@@ -83,7 +82,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => getMasterPublicKeys(args), error, 'Got error');
     } else {
       const {keys} = await getMasterPublicKeys(args);

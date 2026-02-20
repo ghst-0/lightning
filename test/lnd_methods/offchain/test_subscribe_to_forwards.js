@@ -1,9 +1,8 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const EventEmitter = require('node:events');
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {subscribeToForwards} = require('./../../../');
+import 'node:assert';
+import EventEmitter from 'node:events';
+import test from 'node:test';
+import 'node:assert';
+import { subscribeToForwards } from './../../../index.js';
 
 const emitter = new EventEmitter();
 
@@ -61,7 +60,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => subscribeToForwards(args), new Error(error), 'Got error');
     } else {
       let gotEnd;

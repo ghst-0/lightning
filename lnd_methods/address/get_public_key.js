@@ -1,7 +1,6 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
-
-const {isLnd} = require('./../../lnd_requests');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const methodNextKey = 'deriveNextKey';
 const methodIndexLookup = 'deriveKey';
@@ -27,9 +26,9 @@ const type = 'wallet';
     public_key: <Public Key Hex String>
   }
 */
-module.exports = ({family, index, lnd}, cbk) => {
+export default ({family, index, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (family === undefined) {
@@ -52,7 +51,7 @@ module.exports = ({family, index, lnd}, cbk) => {
           key_index: index,
         },
         (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrGettingPublicKeyFromSeed', {err}]);
           }
 

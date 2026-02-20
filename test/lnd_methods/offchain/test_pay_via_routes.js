@@ -1,10 +1,9 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const EventEmitter = require('node:events');
-const {rejects} = require('node:assert').strict;
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
-
-const {payViaRoutes} = require('./../../../');
+import 'node:assert';
+import EventEmitter from 'node:events';
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { payViaRoutes } from './../../../index.js';
 
 const preimage = Buffer.alloc(32);
 
@@ -391,7 +390,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       try {
         await payViaRoutes(args);
       } catch (gotErr) {

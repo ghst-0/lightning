@@ -1,11 +1,9 @@
-const EventEmitter = require('events');
+import EventEmitter from 'node:events';
+import asyncDoUntil from 'async/doUntil.js';
 
-const asyncDoUntil = require('async/doUntil');
-const {chanFormat} = require('bolt07');
-
-const {forwardFromHtlcEvent} = require('./../../lnd_responses');
-const {handleRemoveListener} = require('./../../grpc');
-const {isLnd} = require('./../../lnd_requests');
+import { forwardFromHtlcEvent } from './../../lnd_responses/index.js';
+import { handleRemoveListener } from './../../grpc/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const event = 'forward';
 const events = ['error', 'forward'];
@@ -54,7 +52,7 @@ const unknownFailureMessage = '2 UNKNOWN: unknown failure detail type: <nil>';
     [tokens]: <Sending Tokens Number>
   }
 */
-module.exports = ({lnd}) => {
+export default ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToForwards');
   }
@@ -90,8 +88,6 @@ module.exports = ({lnd}) => {
     } catch (err) {
       emitErr([503, err.message]);
     }
-
-    return;
   });
 
   sub.on('error', err => {
@@ -102,7 +98,7 @@ module.exports = ({lnd}) => {
 
   asyncDoUntil(
     cbk => {
-      if (!!sub.listenerCount('data')) {
+      if (sub.listenerCount('data')) {
         return setTimeout(cbk, restartForwardListenerDelayMs);
       }
 
@@ -114,8 +110,6 @@ module.exports = ({lnd}) => {
         } catch (err) {
           emitErr([503, err.message]);
         }
-
-        return;
       });
 
       subscription.on('error', err => {
@@ -131,13 +125,11 @@ module.exports = ({lnd}) => {
     },
     cbk => cbk(null, !emitter.listenerCount('forward')),
     err => {
-      if (!!err) {
+      if (err) {
         return emitErr(err);
       }
 
       emitter.emit('end', {});
-
-      return;
     }
   );
 

@@ -1,7 +1,6 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
-
-const {isLnd} = require('./../../lnd_requests');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const {isArray} = Array;
 const {keys} = Object;
@@ -27,9 +26,9 @@ const type = 'default';
     }]
   }
 */
-module.exports = ({id, lnd}, cbk) => {
+export default ({id, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -42,11 +41,11 @@ module.exports = ({id, lnd}, cbk) => {
       // Get methods and associated permissions
       getMethods: ['validate', ({}, cbk) => {
         return lnd[type][method]({}, (err, res) => {
-          if (!!err && notSupported.test(err.details)) {
+          if (err && notSupported.test(err.details)) {
             return cbk([501, 'ListPermissionsMethodNotSupported']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrInListPermissionsResponse', {err}]);
           }
 
@@ -62,15 +61,15 @@ module.exports = ({id, lnd}, cbk) => {
 
           const endpoints = keys(list);
 
-          if (!endpoints.length) {
+          if (endpoints.length === 0) {
             return cbk([503, 'ExpectedMethodsForListPermissionsRequest']);
           }
 
-          if (endpoints.filter(n => !list[n]).length) {
+          if (endpoints.some(n => !list[n])) {
             return cbk([503, 'ExpectedMethodDataForListPermissionsRequest']);
           }
 
-          if (!!endpoints.find(n => !isArray(list[n].permissions))) {
+          if (endpoints.some(n => !isArray(list[n].permissions))) {
             return cbk([503, 'ExpectedArrayOfPermissionsForMethodInList']);
           }
 

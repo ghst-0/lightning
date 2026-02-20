@@ -9,6 +9,6 @@
   @returns
   <Is Expected LND Object Bool>
 */
-module.exports = ({lnd, method, type}) => {
+export default ({lnd, method, type}) => {
   return !!lnd && !!lnd[type] && !!lnd[type][method];
 };

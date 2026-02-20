@@ -1,14 +1,13 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
-const {rpcAddressesAsAddresses} = require('./../../lnd_responses');
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcAddressesAsAddresses } from './../../lnd_responses/index.js';
 
 const err404 = 'unknown method ListAddresses for service walletrpc.WalletKit';
 const {isArray} = Array;
 const method = 'listAddresses';
 const type = 'wallet';
-const unsupportedErrorMessage = 'unknown service walletrpc.WalletKit';
 
 /** Get the wallet chain addresses
 
@@ -29,9 +28,9 @@ const unsupportedErrorMessage = 'unknown service walletrpc.WalletKit';
     }]
   }
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -45,11 +44,11 @@ module.exports = ({lnd}, cbk) => {
       getAddresses: ['validate', ({}, cbk) => {
         return lnd[type][method]({}, (err, res) => {
           // LND 0.15.5 and below do not support listing account addresses
-          if (!!err && err.details === err404) {
+          if (err && err.details === err404) {
             return cbk([501, 'BackingLndDoesNotSupportGettingChainAddresses']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorListingAccountAddresses', {err}]);
           }
 

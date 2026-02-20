@@ -1,14 +1,10 @@
-const asyncAuto = require('async/auto');
-const {chanFormat} = require('bolt07');
-const {featureFlagDetails} = require('bolt09');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {channelEdgeAsChannel} = require('./../../lnd_responses');
-const {isLnd} = require('./../../lnd_requests');
-const {rpcNodeAsNode} = require('./../../lnd_responses');
+import { channelEdgeAsChannel, rpcNodeAsNode } from './../../lnd_responses/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const {isArray} = Array;
-const {keys} = Object;
 const method = 'describeGraph';
 const type = 'default';
 
@@ -59,9 +55,9 @@ const type = 'default';
     }]
   }
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -74,7 +70,7 @@ module.exports = ({lnd}, cbk) => {
       // Get network graph
       getGraph: ['validate', ({}, cbk) => {
         return lnd[type][method]({}, (err, networkGraph) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'GetNetworkGraphError', {err}]);
           }
 

@@ -1,9 +1,8 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const EventEmitter = require('node:events');
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {subscribeToPayments} = require('./../../../');
+import 'node:assert';
+import EventEmitter from 'node:events';
+import test from 'node:test';
+import 'node:assert';
+import { subscribeToPayments } from './../../../index.js';
 
 const tick = () => new Promise(resolve => process.nextTick(resolve));
 
@@ -146,7 +145,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       throws(() => subscribeToPayments(args), new Error(error), 'Got err');
     } else {
       const sub = subscribeToPayments(args);

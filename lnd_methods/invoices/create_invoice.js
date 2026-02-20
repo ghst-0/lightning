@@ -1,15 +1,14 @@
-const asyncAuto = require('async/auto');
-const {parsePaymentRequest} = require('invoices');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { parsePaymentRequest } from 'invoices';
+import { returnResult } from 'asyncjs-util';
 
-const {createChainAddress} = require('./../address');
-const getInvoice = require('./get_invoice');
-const {isLnd} = require('./../../lnd_requests');
-const {mtokensAmount} = require('./../../bolt00');
-const {routeHintFromRoute} = require('./../../lnd_requests');
+import { createChainAddress } from './../address/index.js';
+import getInvoice from './get_invoice.js';
+import { isLnd, routeHintFromRoute } from './../../lnd_requests/index.js';
+import { mtokensAmount } from './../../bolt00/index.js';
 
 const defaultExpirySec = 60 * 60 * 3;
-const hexAsBuffer = hex => !!hex ? Buffer.from(hex, 'hex') : undefined;
+const hexAsBuffer = hex => hex ? Buffer.from(hex, 'hex') : undefined;
 const invoiceExistsError = 'invoice with payment hash already exists';
 const {isArray} = Array;
 const isHex = n => !(n.length % 2) && /^[0-9A-F]*$/i.test(n);
@@ -17,7 +16,6 @@ const method = 'addInvoice';
 const msPerSec = 1e3;
 const {parse} = Date;
 const {round} = Math;
-const tokensAsMtok = tokens => (BigInt(tokens) * BigInt(1e3)).toString();
 const type = 'default';
 
 /** Create a Lightning invoice.
@@ -61,9 +59,9 @@ const type = 'default';
     [tokens]: <Tokens Number>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Payment secret for the invoice
       preimage: cbk => {
         if (!args.secret) {
@@ -109,7 +107,7 @@ module.exports = (args, cbk) => {
           return cbk();
         }
 
-        const format = !!args.is_fallback_nested ? 'np2wpkh' : 'p2wpkh';
+        const format = args.is_fallback_nested ? 'np2wpkh' : 'p2wpkh';
 
         return createChainAddress({format, lnd: args.lnd}, cbk);
       }],
@@ -151,16 +149,16 @@ module.exports = (args, cbk) => {
         'preimage',
         ({addAddress, hints, mtokens, preimage}, cbk) =>
       {
-        const fallbackAddress = !addAddress ? String() : addAddress.address;
+        const fallbackAddress = addAddress ? addAddress.address : String();
         const createdAt = new Date();
-        const expireAt = !args.expires_at ? null : parse(args.expires_at);
+        const expireAt = args.expires_at ? parse(args.expires_at) : null;
 
-        const expiryMs = !expireAt ? null : expireAt - createdAt.getTime();
+        const expiryMs = expireAt ? expireAt - createdAt.getTime() : null;
 
         return args.lnd.default.addInvoice({
-          cltv_expiry: !args.cltv_delta ? undefined : args.cltv_delta,
+          cltv_expiry: args.cltv_delta ? args.cltv_delta : undefined,
           description_hash: hexAsBuffer(args.description_hash),
-          expiry: !expiryMs ? defaultExpirySec : round(expiryMs / msPerSec),
+          expiry: expiryMs ? round(expiryMs / msPerSec) : defaultExpirySec,
           fallback_addr: fallbackAddress,
           is_blinded: !!args.is_encrypting_routes,
           memo: args.description,
@@ -170,11 +168,11 @@ module.exports = (args, cbk) => {
           value_msat: mtokens,
         },
         (err, response) => {
-          if (!!err && err.details === invoiceExistsError) {
+          if (err && err.details === invoiceExistsError) {
             return cbk([409, 'InvoiceWithGivenHashAlreadyExists']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'AddInvoiceError', {err}]);
           }
 
@@ -188,7 +186,7 @@ module.exports = (args, cbk) => {
 
           try {
             parsePaymentRequest({request: response.payment_request});
-          } catch (err) {
+          } catch {
             return cbk([503, 'ExpectedValidPaymentRequestForInvoice']);
           }
 
@@ -220,7 +218,7 @@ module.exports = (args, cbk) => {
         ({addAddress, addInvoice, getInvoice}, cbk) =>
       {
         return cbk(null, {
-          chain_address: !addAddress ? undefined : addAddress.address,
+          chain_address: addAddress ? addAddress.address : undefined,
           created_at: getInvoice.created_at,
           description: addInvoice.description || undefined,
           id: addInvoice.id,

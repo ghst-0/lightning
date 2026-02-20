@@ -1,10 +1,9 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const EventEmitter = require('events');
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getHeight} = require('./../../../');
-const {getInfoResponse} = require('./../fixtures');
+import 'node:assert';
+import EventEmitter from 'node:events';
+import 'node:assert';
+import test from 'node:test';
+import { getHeight } from './../../../index.js';
+import { getInfoResponse } from './../fixtures/index.js';
 
 const makeLnd = overrides => {
   const data = {hash: Buffer.alloc(32), height: 1};
@@ -69,7 +68,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(getHeight(args), error, 'Got expected error');
     } else {
       const got = await getHeight(args);

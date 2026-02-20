@@ -1,4 +1,4 @@
-const signMessage = require('./sign_message');
-const verifyMessage = require('./verify_message');
+import signMessage from './sign_message.js';
+import verifyMessage from './verify_message.js';
 
-module.exports = {signMessage, verifyMessage};
+export { signMessage, verifyMessage };

@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
-const {rpcFeesAsChannelFees} = require('./../../lnd_responses');
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcFeesAsChannelFees } from './../../lnd_responses/index.js';
 
 const {isArray} = Array;
 const method = 'feeReport';
@@ -30,9 +30,9 @@ const type = 'default';
     }]
   }
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -45,7 +45,7 @@ module.exports = ({lnd}, cbk) => {
       // Query for fee rates report
       getFeeReport: ['validate', ({}, cbk) => {
         return lnd[type][method]({}, (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'GetFeeReportError', {err}]);
           }
 

@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {verifyMessage} = require('./../../../');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { verifyMessage } from './../../../index.js';
 
 const tests = [
   {
@@ -63,7 +62,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => verifyMessage(args), error, 'Got expected error');
     } else {
       deepStrictEqual(await verifyMessage(args), expected, 'Got result');

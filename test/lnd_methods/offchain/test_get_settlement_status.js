@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getSettlementStatus} = require('./../../../');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { getSettlementStatus } from './../../../index.js';
 
 const makeLnd = ({err, res}) => {
   const result = res === undefined ? {offchain: true, settled: true} : res;
@@ -90,7 +89,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(getSettlementStatus(args), error, 'Got expected error');
     } else {
       const res = await getSettlementStatus(args);

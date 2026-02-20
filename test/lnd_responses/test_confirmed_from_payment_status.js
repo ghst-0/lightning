@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {confirmedFromPaymentStatus} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { confirmedFromPaymentStatus } from './../../lnd_responses/index.js';
 
 const makeHtlc = overrides => {
   const htlc = {
@@ -154,7 +153,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => confirmedFromPaymentStatus(args), new Error(error), 'Err');
     } else {
       deepStrictEqual(confirmedFromPaymentStatus(args), expected, 'Mapped');

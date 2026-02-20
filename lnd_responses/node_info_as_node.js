@@ -1,5 +1,5 @@
-const channelEdgeAsChannel = require('./channel_edge_as_channel');
-const rpcNodeAsNode = require('./rpc_node_as_node');
+import channelEdgeAsChannel from './channel_edge_as_channel.js';
+import rpcNodeAsNode from './rpc_node_as_node.js';
 
 const {isArray} = Array;
 
@@ -91,7 +91,7 @@ const {isArray} = Array;
     [updated_at]: <Last Known Update ISO 8601 Date String>
   }
 */
-module.exports = args => {
+export default args => {
   if (!args) {
     throw new Error('ExpectedNodeDetailsToDeriveNodeInfo');
   }

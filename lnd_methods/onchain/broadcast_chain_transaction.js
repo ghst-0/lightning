@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {idForTransaction} = require('@alexbosworth/blockchain');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { idForTransaction } from '@alexbosworth/blockchain';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const bufFromHex = hex => Buffer.from(hex, 'hex');
 const method = 'publishTransaction';
@@ -26,9 +26,9 @@ const type = 'wallet';
     id: <Transaction Id Hex String>
   }
 */
-module.exports = ({description, lnd, transaction}, cbk) => {
+export default ({description, lnd, transaction}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -37,7 +37,7 @@ module.exports = ({description, lnd, transaction}, cbk) => {
 
         try {
           idForTransaction({transaction});
-        } catch (err) {
+        } catch {
           return cbk([400, 'ExpectedTransactionHexStringToBroadcastToPeers']);
         }
 
@@ -51,7 +51,7 @@ module.exports = ({description, lnd, transaction}, cbk) => {
           tx_hex: bufFromHex(transaction),
         },
         (err, res) => {
-          if (!!err && minRelayFeeError.test(err.details)) {
+          if (err && minRelayFeeError.test(err.details)) {
             const [, got, expected] = err.details.match(minRelayFeeError);
 
             return cbk([
@@ -64,7 +64,7 @@ module.exports = ({description, lnd, transaction}, cbk) => {
             ]);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrBroadcastingRawTx', {err}]);
           }
 
@@ -72,7 +72,7 @@ module.exports = ({description, lnd, transaction}, cbk) => {
             return cbk([503, 'ExpectedResultOfBroadcastRawTransaction']);
           }
 
-          if (!!res.publish_error) {
+          if (res.publish_error) {
             return cbk([503, 'FailedToBroadcastRawTransaction', {res}]);
           }
 

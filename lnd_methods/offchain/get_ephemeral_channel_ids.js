@@ -1,8 +1,7 @@
-const asyncAuto = require('async/auto');
-const {chanFormat} = require('bolt07');
-const {returnResult} = require('asyncjs-util');
-
-const {isLnd} = require('./../../lnd_requests');
+import asyncAuto from 'async/auto.js';
+import { chanFormat } from 'bolt07';
+import { returnResult } from 'asyncjs-util';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const {isArray} = Array;
 const method = 'listAliases';
@@ -27,9 +26,9 @@ const type = 'default';
     }]
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
@@ -42,11 +41,11 @@ module.exports = (args, cbk) => {
       // Get the list of channel ids
       getChannelIds: ['validate', ({}, cbk) => {
         return args.lnd[type][method]({}, (err, res) => {
-          if (!!err && notSupported.test(err.details)) {
+          if (err && notSupported.test(err.details)) {
             return cbk([501, 'ListAliasesMethodNotSupported']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedGetChannelIdsError', {err}]);
           }
 

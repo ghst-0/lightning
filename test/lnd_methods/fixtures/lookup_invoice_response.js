@@ -56,7 +56,7 @@
     value_msat: <Milliltokens Value String>
   }
 */
-module.exports = ({}) => {
+export default ({}) => {
   return {
     add_index: '1',
     amt_paid_msat: '0',

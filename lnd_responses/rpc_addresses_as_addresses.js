@@ -26,7 +26,7 @@ const isBoolean = n => n === false || n === true;
     }]
   }
 */
-module.exports = ({accounts}) => {
+export default ({accounts}) => {
   if (!isArray(accounts)) {
     throw new Error('ExpectedArrayOfAccountsWithAddresses');
   }

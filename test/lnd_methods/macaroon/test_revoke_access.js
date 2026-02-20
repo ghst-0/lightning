@@ -1,7 +1,6 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {revokeAccess} = require('./../../../');
+import 'node:assert';
+import test from 'node:test';
+import { revokeAccess } from './../../../index.js';
 
 const id = '1';
 
@@ -71,7 +70,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => revokeAccess(args), error, 'Got expected error');
     } else {
       await revokeAccess(args);

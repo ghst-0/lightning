@@ -1,6 +1,5 @@
-const {featureFlagDetails} = require('bolt09');
-
-const htlcAsPayment = require('./htlc_as_payment');
+import { featureFlagDetails } from 'bolt09';
+import htlcAsPayment from './htlc_as_payment.js';
 
 const dateFrom = epoch => new Date(1e3 * epoch).toISOString();
 const emptyHash = Buffer.alloc(32).toString('hex');
@@ -120,7 +119,7 @@ const mtokensPerToken = BigInt(1e3);
     tokens: <Tokens Number>
   }
 */
-module.exports = args => {
+export default args => {
   if (!args) {
     throw new Error('ExpectedResponseWhenLookingUpInvoice');
   }

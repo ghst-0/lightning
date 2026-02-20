@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {rpcPeerAsPeer} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { rpcPeerAsPeer } from './../../lnd_responses/index.js';
 
 const makePeer = overrides => {
   const response = {
@@ -148,7 +147,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => rpcPeerAsPeer(args), new Error(error), 'Got expected err');
     } else {
       deepStrictEqual(rpcPeerAsPeer(args), expected, 'RPC peer mapped');

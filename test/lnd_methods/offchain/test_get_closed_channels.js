@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getClosedChannels} = require('./../../../');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { getClosedChannels } from './../../../index.js';
 
 const makeLnd = (err, override, response) => {
   const channel = {
@@ -321,7 +320,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(getClosedChannels(args), error, 'Got expected error');
     } else {
       const {channels} = await getClosedChannels(args);

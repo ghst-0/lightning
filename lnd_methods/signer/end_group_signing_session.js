@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
@@ -29,9 +29,9 @@ const type = 'signer';
     [signature]: <Combined Signature Hex String>
   }
 */
-module.exports = ({id, lnd, signatures}, cbk) => {
+export default ({id, lnd, signatures}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!id) {
@@ -42,7 +42,7 @@ module.exports = ({id, lnd, signatures}, cbk) => {
           return cbk([400, 'ExpectedAuthenticatedLndToFinishMuSig2Session']);
         }
 
-        if (isArray(signatures) && !signatures.length) {
+        if (isArray(signatures) && signatures.length === 0) {
           return cbk([400, 'ExpectedPartialSignaturesToCombineToEndSession']);
         }
 
@@ -57,7 +57,7 @@ module.exports = ({id, lnd, signatures}, cbk) => {
         }
 
         return lnd[type].muSig2Cleanup({session_id: hexAsBuffer(id)}, err => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorCleaningUpMuSig2Session', {err}]);
           }
 
@@ -77,7 +77,7 @@ module.exports = ({id, lnd, signatures}, cbk) => {
           session_id: hexAsBuffer(id),
         },
         (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorFinishingMuSig2Session', {err}]);
           }
 

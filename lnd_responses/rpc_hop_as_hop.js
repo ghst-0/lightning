@@ -1,4 +1,4 @@
-const {chanFormat} = require('bolt07');
+import { chanFormat } from 'bolt07';
 
 const millitokensPerToken = BigInt(1e3);
 
@@ -40,7 +40,7 @@ const millitokensPerToken = BigInt(1e3);
     [timeout]: <Timeout Block Height Number>
   }
 */
-module.exports = hop => {
+export default hop => {
   if (!hop) {
     throw new Error('ExpectedRpcHopToDeriveHop');
   }

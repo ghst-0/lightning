@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getWalletVersion} = require('./../../../');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { getWalletVersion } from './../../../index.js';
 
 const makeResponse = overrides => {
   const response = {
@@ -88,7 +87,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => getWalletVersion(args), error, 'Got error');
     } else {
       deepStrictEqual(await getWalletVersion(args), expected, 'Got info');

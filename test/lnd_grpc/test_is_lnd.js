@@ -1,7 +1,6 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
-
-const {isLnd} = require('./../../lnd_grpc');
+import 'node:assert';
+import test from 'node:test';
+import { isLnd } from './../../lnd_grpc/index.js';
 
 const tests = [
   {

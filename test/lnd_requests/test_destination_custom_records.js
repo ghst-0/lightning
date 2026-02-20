@@ -1,7 +1,6 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-
-const {destinationCustomRecords} = require('./../../lnd_requests');
+import 'node:assert';
+import test from 'node:test';
+import { destinationCustomRecords } from './../../lnd_requests/index.js';
 
 const tests = [
   {

@@ -1,8 +1,7 @@
-const {chanFormat} = require('bolt07');
-
-const {channelTypes} = require('./constants');
-const parseThawHeight = require('./parse_thaw_height');
-const rpcHtlcAsPayment = require('./rpc_htlc_as_payment');
+import { chanFormat } from 'bolt07';
+import { channelTypes } from './constants';
+import parseThawHeight from './parse_thaw_height.js';
+import rpcHtlcAsPayment from './rpc_htlc_as_payment.js';
 
 const {isArray} = Array;
 const msPerSec = 1e3;
@@ -124,7 +123,7 @@ const outpointDelimiter = ':';
     unsettled_balance: <Unsettled Balance Tokens Number>
   }
 */
-module.exports = args => {
+export default args => {
   if (args.active === undefined) {
     throw new Error('ExpectedChannelActiveStateInChannelMessage');
   }

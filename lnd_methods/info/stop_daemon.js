@@ -1,13 +1,11 @@
-const asyncAuto = require('async/auto');
-const asyncRetry = require('async/retry');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import asyncRetry from 'async/retry.js';
+import { returnResult } from 'asyncjs-util';
 
-const getWalletInfo = require('./get_wallet_info');
-const {isLnd} = require('./../../lnd_requests');
+import getWalletInfo from './get_wallet_info.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
-const connectionFailureMessage = 'FailedToConnectToDaemon';
-const interval = retryCount => 10 * Math.pow(2, retryCount);
-const {isArray} = Array;
+const interval = retryCount => 10 * 2 ** retryCount;
 const method = 'stopDaemon';
 const times = 10;
 const type = 'default';
@@ -22,9 +20,9 @@ const type = 'default';
 
   @returns via cbk or Promise
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, lnd, type})) {
@@ -37,7 +35,7 @@ module.exports = ({lnd}, cbk) => {
       // Stop the daemon
       stopDaemon: ['validate', ({}, cbk) => {
         return lnd[type][method]({}, err => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorStoppingLightningDaemon', {err}]);
           }
 

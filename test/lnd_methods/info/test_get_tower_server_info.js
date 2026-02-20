@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getTowerServerInfo} = require('./../../../lnd_methods');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { getTowerServerInfo } from './../../../lnd_methods/index.js';
 
 const makeLnd = (err, res) => {
   return {tower_server: {getInfo: ({}, cbk) => cbk(err, res)}};
@@ -90,7 +89,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => getTowerServerInfo(args), error, 'Got expected err');
     } else {
       deepStrictEqual(await getTowerServerInfo(args), expected, 'Got info');

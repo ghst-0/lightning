@@ -1,10 +1,9 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const EventEmitter = require('events');
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getInfoResponse} = require('./../fixtures');
-const {getRouteConfidence} = require('./../../../');
+import 'node:assert';
+import EventEmitter from 'node:events';
+import 'node:assert';
+import test from 'node:test';
+import { getInfoResponse } from './../fixtures/index.js';
+import { getRouteConfidence } from './../../../index.js';
 
 const makeLnd = ({err, res}) => {
   return {
@@ -13,7 +12,7 @@ const makeLnd = ({err, res}) => {
     },
     router: {
       queryMissionControl: ({}, cbk) => {
-        if (!!err) {
+        if (err) {
           return cbk(err);
         }
 
@@ -37,7 +36,7 @@ const makeLnd = ({err, res}) => {
         });
       },
       queryProbability: ({}, cbk) => {
-        if (!!err) {
+        if (err) {
           return cbk(err);
         }
 
@@ -130,7 +129,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(getRouteConfidence(args), error, 'Got expected error');
     } else {
       const got = await getRouteConfidence(args);

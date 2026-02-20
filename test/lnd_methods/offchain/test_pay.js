@@ -1,11 +1,10 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const EventEmitter = require('node:events');
-const {rejects} = require('node:assert').strict;
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getInfoResponse} = require('./../fixtures');
-const {pay} = require('./../../../');
+import 'node:assert';
+import EventEmitter from 'node:events';
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { getInfoResponse } from './../fixtures/index.js';
+import { pay } from './../../../index.js';
 
 const getInfo = ({}, cbk) => cbk(null, getInfoResponse);
 const preimage = Buffer.alloc(32);
@@ -164,7 +163,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       try {
         await pay(args);
       } catch (gotErr) {

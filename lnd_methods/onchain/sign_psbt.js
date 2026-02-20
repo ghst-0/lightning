@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const hexAsBuf = hex => Buffer.from(hex, 'hex');
@@ -29,9 +29,9 @@ const type = 'wallet';
     transaction: <Signed Raw Transaction Hex String>
   }
 */
-module.exports = ({lnd, psbt}, cbk) => {
+export default ({lnd, psbt}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -48,11 +48,11 @@ module.exports = ({lnd, psbt}, cbk) => {
       // Sign and finalize the funded PSBT
       sign: ['validate', ({}, cbk) => {
         return lnd[type][method]({funded_psbt: hexAsBuf(psbt)}, (err, res) => {
-          if (!!err && notSupported.test(err.details)) {
+          if (err && notSupported.test(err.details)) {
             return cbk([501, 'SignPsbtMethodNotSupported']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorSigningPsbt', {err}]);
           }
 

@@ -1,4 +1,4 @@
-const isNumber = n => !isNaN(n);
+const isNumber = n => !Number.isNaN(n);
 const isString = n => typeof n === 'string';
 
 /** Derive network info details from network info message
@@ -29,7 +29,7 @@ const isString = n => typeof n === 'string';
     total_capacity: <Total Capacity Number>
   }
 */
-module.exports = networkInfo => {
+export default networkInfo => {
   if (!networkInfo) {
     throw new Error('ExpectedRpcNetworkInfo');
   }

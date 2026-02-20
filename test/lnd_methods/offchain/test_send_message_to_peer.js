@@ -1,7 +1,6 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {sendMessageToPeer} = require('./../../../lnd_methods');
+import 'node:assert';
+import test from 'node:test';
+import { sendMessageToPeer } from './../../../lnd_methods/index.js';
 
 const makeLnd = ({err}) => {
   return {default: {sendCustomMessage: ({}, cbk) => cbk(err)}};
@@ -53,7 +52,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(sendMessageToPeer(args), error, 'Got expected error');
     } else {
       await sendMessageToPeer(args);

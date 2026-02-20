@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {beginGroupSigningSession} = require('./../../../');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { beginGroupSigningSession } from './../../../index.js';
 
 const makeLnd = (err, res) => {
   return {
@@ -270,7 +269,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(beginGroupSigningSession(args), error, 'Got expected err');
     } else {
       const res = await beginGroupSigningSession(args);

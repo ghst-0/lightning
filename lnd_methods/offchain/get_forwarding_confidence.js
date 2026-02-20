@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const {ceil} = Math;
 const confidenceDenominator = 1e6;
@@ -26,9 +26,9 @@ const unimplementedError = 'unknown service routerrpc.Router';
     confidence: <Success Confidence Score Out Of One Million Number>
   }
 */
-module.exports = ({from, lnd, mtokens, to}, cbk) => {
+export default ({from, lnd, mtokens, to}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!from) {
@@ -58,11 +58,11 @@ module.exports = ({from, lnd, mtokens, to}, cbk) => {
           to_node: hexAsBuffer(to),
         },
         (err, res) => {
-          if (!!err && err.details === unimplementedError) {
+          if (err && err.details === unimplementedError) {
             return cbk([501, 'QueryProbabilityNotImplemented']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorFromQueryProbability', {err}]);
           }
 

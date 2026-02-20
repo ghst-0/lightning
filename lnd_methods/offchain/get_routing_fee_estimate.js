@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const defaultTimeoutSeconds = 60;
 const method = 'estimateRouteFee';
@@ -26,9 +26,9 @@ const type = 'router';
     timeout: <Estimated Minimum Time Lock Block Height Delay Number>
   }
 */
-module.exports = ({lnd, request, timeout}, cbk) => {
+export default ({lnd, request, timeout}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -49,7 +49,7 @@ module.exports = ({lnd, request, timeout}, cbk) => {
           timeout: msAsSecs(timeout) || defaultTimeoutSeconds,
         },
         (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedGetRoutingFeeEstimateError', {err}]);
           }
 

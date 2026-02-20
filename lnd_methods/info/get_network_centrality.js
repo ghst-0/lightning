@@ -1,7 +1,6 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
-
-const {isLnd} = require('./../../lnd_requests');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const {keys} = Object;
 const method = 'getNodeMetrics';
@@ -29,9 +28,9 @@ const unsupportedErrorMessage = 'unknown service lnrpc.Lightning';
     }]
   }
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -44,11 +43,11 @@ module.exports = ({lnd}, cbk) => {
       // Get node metrics from LND
       getNodeMetrics: ['validate', ({}, cbk) => {
         return lnd[type][method]({types}, (err, res) => {
-          if (!!err && err.details === unsupportedErrorMessage) {
+          if (err && err.details === unsupportedErrorMessage) {
             return cbk([501, 'ExpectedServerSupportForNodeMetricsMethod']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorGettingCentrality', {err}]);
           }
 

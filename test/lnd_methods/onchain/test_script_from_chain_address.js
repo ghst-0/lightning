@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const scriptFromChainAddress = require('./../../../lnd_methods/onchain/script_from_chain_address');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import scriptFromChainAddress from './../../../lnd_methods/onchain/script_from_chain_address.js';
 
 const tests = [
   {
@@ -73,7 +72,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => scriptFromChainAddress(args), new Error(error), 'Got error');
     } else {
       const {script} = scriptFromChainAddress(args);

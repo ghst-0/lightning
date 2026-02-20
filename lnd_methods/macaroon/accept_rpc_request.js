@@ -1,5 +1,5 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
 const feedback = {replace_response: false};
 
@@ -12,9 +12,9 @@ const feedback = {replace_response: false};
 
   @returns via cbk or Promise
 */
-module.exports = ({id, subscription}, cbk) => {
+export default ({id, subscription}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!id) {
@@ -31,7 +31,7 @@ module.exports = ({id, subscription}, cbk) => {
       // Send accept feedback to the stream
       accept: ['validate', ({}, cbk) => {
         return subscription.write({feedback, ref_msg_id: id}, err => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorAcceptingRpcRequest', {err}]);
           }
 

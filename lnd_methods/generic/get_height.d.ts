@@ -1,5 +1,5 @@
-import {AuthenticatedLnd} from '../../lnd_grpc';
-import {AuthenticatedLightningMethod} from '../../typescript';
+import { AuthenticatedLnd } from '../../lnd_grpc';
+import { AuthenticatedLightningMethod } from '../../typescript';
 
 export type GetHeightResult = {
   /** Best Chain Hash Hex String */

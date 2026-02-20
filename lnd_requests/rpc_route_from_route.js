@@ -1,6 +1,6 @@
-const rpcHopFromHop = require('./rpc_hop_from_hop');
+import rpcHopFromHop from './rpc_hop_from_hop.js';
 
-const isNumber = n => !isNaN(n);
+const isNumber = n => !Number.isNaN(n);
 
 /** RPC formatted route from a route
 
@@ -60,7 +60,7 @@ const isNumber = n => !isNaN(n);
     total_time_lock: <Route Total Timelock Number>
   }
 */
-module.exports = args => {
+export default args => {
   if (!isNumber(args.fee)) {
     throw new Error('ExpectedFeeNumberToMapRouteToRpcRoute');
   }

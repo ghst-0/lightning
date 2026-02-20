@@ -1,4 +1,4 @@
-const {featureFlagDetails} = require('bolt09');
+import { featureFlagDetails } from 'bolt09';
 
 const colorTemplate = '#000000';
 const {isArray} = Array;
@@ -46,7 +46,7 @@ const msPerSec = 1e3;
     [updated_at]: <Last Known Update ISO 8601 Date String>
   }
 */
-module.exports = args => {
+export default args => {
   if (!args) {
     throw new Error('ExpectedNodeDetailsToMapRpcNodeToNode');
   }

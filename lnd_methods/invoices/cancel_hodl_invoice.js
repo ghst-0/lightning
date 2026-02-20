@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const bufferFromHex = hex => Buffer.from(hex, 'hex');
 const isHex = n => !(n.length % 2) && /^[0-9A-F]*$/i.test(n);
@@ -21,9 +21,9 @@ const isHex = n => !(n.length % 2) && /^[0-9A-F]*$/i.test(n);
 
   @returns via cbk or Promise
 */
-module.exports = ({id, lnd}, cbk) => {
+export default ({id, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!id || !isHex(id)) {
@@ -42,7 +42,7 @@ module.exports = ({id, lnd}, cbk) => {
         const paymentHash = bufferFromHex(id);
 
         return lnd.invoices.cancelInvoice({payment_hash: paymentHash}, err => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorCancelingHodlInvoice', {err}]);
           }
 

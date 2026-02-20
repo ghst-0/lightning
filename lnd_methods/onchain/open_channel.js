@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {addPeer} = require('./../peers');
-const {isLnd} = require('./../../lnd_requests');
+import { addPeer } from './../peers/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const anchors = 'ANCHORS';
 const defaultChainFeeConfTarget = 6;
@@ -75,9 +75,9 @@ const type = 'default';
     transaction_vout: <Funding Transaction Output Index Number>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
@@ -170,21 +170,21 @@ module.exports = (args, cbk) => {
           zero_conf: !!args.is_trusted_funding || undefined,
         };
 
-        if (!!args.chain_fee_tokens_per_vbyte) {
+        if (args.chain_fee_tokens_per_vbyte) {
           options.sat_per_vbyte = args.chain_fee_tokens_per_vbyte;
         } else {
           options.target_conf = defaultChainFeeConfTarget;
         }
 
-        if (!!args.cooperative_close_address) {
+        if (args.cooperative_close_address) {
           options.close_address = args.cooperative_close_address;
         }
 
-        if (!!args.give_tokens) {
+        if (args.give_tokens) {
           options.push_sat = args.give_tokens;
         }
 
-        if (!!args.is_simplified_taproot) {
+        if (args.is_simplified_taproot) {
           options.commitment_type = simplifiedTaprootChannelType;
         }
 
@@ -208,7 +208,6 @@ module.exports = (args, cbk) => {
               transaction_id: chan.chan_pending.txid.reverse().toString('hex'),
               transaction_vout: chan.chan_pending.output_index,
             });
-            break;
 
           case 'confirmation':
             break;
@@ -247,7 +246,7 @@ module.exports = (args, cbk) => {
             return cbk([400, 'InsufficientFundsToCreateChannel', {err: n}]);
           }
 
-          if (/disconnected$/.test(n.details)) {
+          if (n.details.endsWith('disconnected')) {
             return cbk([503, 'RemotePeerDisconnected']);
           }
 
@@ -284,8 +283,6 @@ module.exports = (args, cbk) => {
             return cbk([503, 'FailedToOpenChannel', {err: n.details}]);
           }
         });
-
-        return;
       }],
     },
     returnResult({reject, resolve, of: 'openChannel'}, cbk));

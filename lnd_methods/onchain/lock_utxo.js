@@ -1,16 +1,14 @@
-const {randomBytes} = require('crypto');
+import { randomBytes } from 'node:crypto';
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
+import { isLnd } from './../../lnd_requests/index.js';
 
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
-
-const {isLnd} = require('./../../lnd_requests');
-
-const asSecs = date => !date ? null : (Date.parse(date) - Date.now()) / 1e3;
+const asSecs = date => date ? (Date.parse(date) - Date.now()) / 1e3 : null;
 const bufferToHex = buffer => buffer.toString('hex');
 const expirationAsDate = epoch => new Date(Number(epoch) * 1e3).toISOString();
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
 const isHash = n => !!n && /^[0-9A-F]{64}$/i.test(n);
-const isNumber = n => !isNaN(n);
+const isNumber = n => !Number.isNaN(n);
 const makeId = () => randomBytes(32).toString('hex');
 const method = 'leaseOutput';
 const minExpireSecs = 1;
@@ -40,9 +38,9 @@ const utxoNotFoundMessage = 'unknown output';
     id: <Locking Id Hex String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!!args.expires_at && asSecs(args.expires_at) < minExpireSecs) {
@@ -77,15 +75,15 @@ module.exports = (args, cbk) => {
           },
         },
         (err, res) => {
-          if (!!err && err.details === utxoNotFoundMessage) {
+          if (err && err.details === utxoNotFoundMessage) {
             return cbk([404, 'OutpointToLockNotFoundInUtxoSet']);
           }
 
-          if (!!err && unsuppportedErr.test(err.details)) {
+          if (err && unsuppportedErr.test(err.details)) {
             return cbk([501, 'BackingLndDoesNotSupportLockingUtxos']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorLockingUtxo', {err}]);
           }
 

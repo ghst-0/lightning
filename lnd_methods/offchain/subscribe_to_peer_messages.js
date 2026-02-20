@@ -1,12 +1,7 @@
-const EventEmitter = require('events');
-
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
-
-const {emitSubscriptionError} = require('./../../grpc');
-const {handleRemoveListener} = require('./../../grpc');
-const {isLnd} = require('./../../lnd_requests');
-const {rpcPeerMessageAsMessage} = require('./../../lnd_responses');
+import EventEmitter from 'node:events';
+import { emitSubscriptionError, handleRemoveListener } from './../../grpc/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcPeerMessageAsMessage } from './../../lnd_responses/index.js';
 
 const events = ['message_received'];
 const method = 'SubscribeCustomMessages';
@@ -33,7 +28,7 @@ const type = 'default';
     type: <Message Type Number>
   }
 */
-module.exports = ({lnd}) => {
+export default ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedLndToSubscribeToPeerMessages');
   }

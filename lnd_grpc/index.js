@@ -1,5 +1,5 @@
-const authenticatedLndGrpc = require('./authenticated_lnd_grpc');
-const isLnd = require('./is_lnd');
-const unauthenticatedLndGrpc = require('./unauthenticated_lnd_grpc');
+import authenticatedLndGrpc from './authenticated_lnd_grpc.js';
+import isLnd from './is_lnd.js';
+import unauthenticatedLndGrpc from './unauthenticated_lnd_grpc.js';
 
-module.exports = {authenticatedLndGrpc, isLnd, unauthenticatedLndGrpc};
+export { authenticatedLndGrpc, isLnd, unauthenticatedLndGrpc };

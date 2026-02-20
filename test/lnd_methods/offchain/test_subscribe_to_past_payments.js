@@ -1,9 +1,8 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const EventEmitter = require('node:events');
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {subscribeToPastPayments} = require('./../../../lnd_methods');
+import 'node:assert';
+import EventEmitter from 'node:events';
+import test from 'node:test';
+import 'node:assert';
+import { subscribeToPastPayments } from './../../../lnd_methods/index.js';
 
 const nextTick = () => new Promise(cbk => process.nextTick(() => cbk()));
 
@@ -259,7 +258,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       throws(() => subscribeToPastPayments(args), new Error(error), 'Got err');
     } else {
       const payments = [];

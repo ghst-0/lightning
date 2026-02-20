@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const method = 'signMessage';
 const utf8AsBuffer = utf8 => Buffer.from(utf8, 'utf8');
@@ -21,9 +21,9 @@ const type = 'default';
     signature: <Signature String>
   }
 */
-module.exports = ({lnd, message}, cbk) => {
+export default ({lnd, message}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -40,7 +40,7 @@ module.exports = ({lnd, message}, cbk) => {
       // Sign message
       sign: ['validate', ({}, cbk) => {
         return lnd[type][method]({msg: utf8AsBuffer(message)}, (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedSignMessageError', {err}]);
           }
 

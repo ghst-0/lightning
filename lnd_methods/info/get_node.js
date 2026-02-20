@@ -1,20 +1,14 @@
-const asyncAuto = require('async/auto');
-const asyncMapLimit = require('async/mapLimit');
-const {featureFlagDetails} = require('bolt09');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import asyncMapLimit from 'async/mapLimit.js';
+import { returnResult } from 'asyncjs-util';
+import { nodeInfoAsNode } from './../../lnd_responses/index.js';
+import getChannel from './get_channel.js';
+import { isLnd } from './../../lnd_requests/index.js';
+import getWalletVersion from './get_wallet_version.js';
 
-const {nodeInfoAsNode} = require('./../../lnd_responses');
-const getChannel = require('./get_channel');
-const {isLnd} = require('./../../lnd_requests');
-const getWalletVersion = require('./get_wallet_version');
-
-const badVers = ['0.11.0-beta', '0.11.1-beta', '0.12.0-beta', '0.12.1-beta'];
-const colorTemplate = '#000000';
+const badVers = new Set(['0.11.0-beta', '0.11.1-beta', '0.12.0-beta', '0.12.1-beta']);
 const getChannelLimit = 20;
-const {isArray} = Array;
-const {keys} = Object;
 const method = 'getNodeInfo';
-const msPerSec = 1e3;
 const nodeNotFoundError = 'unable to find node';
 const type = 'default';
 
@@ -69,9 +63,9 @@ const type = 'default';
     [updated_at]: <Last Known Update ISO 8601 Date String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
@@ -92,11 +86,11 @@ module.exports = (args, cbk) => {
           pub_key: args.public_key,
         },
         (err, res) => {
-          if (!!err && err.details === nodeNotFoundError) {
+          if (err && err.details === nodeNotFoundError) {
             return cbk([404, 'NodeIsUnknown']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'FailedToRetrieveNodeDetails', {err}]);
           }
 
@@ -112,7 +106,7 @@ module.exports = (args, cbk) => {
       getVersion: ['validate', ({}, cbk) => {
         return getWalletVersion({lnd: args.lnd}, (err, res) => {
           // Ignore errors on wallet version
-          if (!!err) {
+          if (err) {
             return cbk();
           }
 
@@ -123,7 +117,7 @@ module.exports = (args, cbk) => {
       // Get channels
       getChannels: ['getNode', 'getVersion', ({getNode, getVersion}, cbk) => {
         // In LND 0.13.0 and after the returned channel data is accurate
-        if (!!getVersion && !badVers.includes(getVersion.version)) {
+        if (!!getVersion && !badVers.has(getVersion.version)) {
           return cbk(null, getNode.channels);
         }
 

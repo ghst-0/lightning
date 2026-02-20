@@ -1,7 +1,6 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
-
-const {isLnd} = require('./../../lnd_requests');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const invalidPasswordError = 'invalid passphrase for master public key';
 const method = 'unlockWallet';
@@ -17,9 +16,9 @@ const utf8AsBuffer = utf8 => Buffer.from(utf8, 'utf8');
 
   @returns via cbk or Promise
 */
-module.exports = ({lnd, password}, cbk) => {
+export default ({lnd, password}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -39,11 +38,11 @@ module.exports = ({lnd, password}, cbk) => {
           wallet_password: utf8AsBuffer(password),
         },
         err => {
-          if (!!err && err.details === invalidPasswordError) {
+          if (err && err.details === invalidPasswordError) {
             return cbk([401, 'InvalidWalletUnlockPassword']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedUnlockWalletErr', {err}]);
           }
 

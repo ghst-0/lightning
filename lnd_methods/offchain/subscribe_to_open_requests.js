@@ -1,7 +1,7 @@
-const EventEmitter = require('events');
+import EventEmitter from 'node:events';
 
-const {channelAcceptAsOpenRequest} = require('./../../lnd_responses');
-const {isLnd} = require('./../../lnd_requests');
+import { channelAcceptAsOpenRequest } from './../../lnd_responses/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const channelRequestEvent = 'channel_request';
 const method = 'channelAcceptor';
@@ -66,7 +66,7 @@ const type = 'default';
   @event 'error'
   <Error Object>
 */
-module.exports = ({lnd}) => {
+export default ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedLndToSubscribeToChannelRequests');
   }
@@ -145,7 +145,7 @@ module.exports = ({lnd}) => {
 
   emitter.on('removeListener', event => {
     // Exit early when there are still listeners to channel requests
-    if (!!emitter.listenerCount(channelRequestEvent)) {
+    if (emitter.listenerCount(channelRequestEvent)) {
       return;
     }
 

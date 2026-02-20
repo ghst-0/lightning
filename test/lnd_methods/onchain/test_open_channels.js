@@ -1,9 +1,8 @@
-const EventEmitter = require('node:events');
-const {rejects} = require('node:assert').strict;
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
-
-const {openChannels} = require('./../../../lnd_methods');
+import EventEmitter from 'node:events';
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { openChannels } from './../../../lnd_methods/index.js';
 
 const emitter = new EventEmitter();
 const nodeKey1 = Buffer.alloc(33).toString('hex');
@@ -23,7 +22,7 @@ const makeLnd = ({data, error}) => {
       openChannel: ({}) => {
         const eventEmitter = new EventEmitter();
 
-        if (!!error) {
+        if (error) {
           process.nextTick(() => eventEmitter.emit('error', error));
         } else if (data !== undefined) {
           process.nextTick(() => eventEmitter.emit('data', data));
@@ -190,7 +189,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(openChannels(args), error, 'Got error');
     } else {
       const {pending} = await openChannels(args);

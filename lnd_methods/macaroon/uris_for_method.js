@@ -1,7 +1,6 @@
-const methods = require('./methods');
+import methods from './methods';
+import { packageTypes, serviceTypes } from './../../grpc/index.js';
 
-const {packageTypes} = require('./../../grpc');
-const {serviceTypes} = require('./../../grpc');
 
 const flatten = arr => arr.flat(Infinity);
 const type = n => [methods[n]].concat((methods[n].depends_on || []).map(type));
@@ -21,7 +20,7 @@ const uriForMethod = (rpc, service, method) => `/${rpc}.${service}/${method}`;
     uris: [<Permission URI String>]
   }
 */
-module.exports = ({method}) => {
+export default ({method}) => {
   if (!method) {
     throw new Error('ExpectedMethodNameToDeriveMacaroonUris');
   }

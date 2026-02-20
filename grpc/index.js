@@ -1,16 +1,20 @@
-const {defaultSocket} = require('./grpc_services');
-const emitSubscriptionError = require('./emit_subscription_error');
-const {grpcSslCipherSuites} = require('./grpc_services');
-const handleRemoveListener = require('./handle_remove_listener');
-const {maxReceiveMessageLength} = require('./grpc_services');
-const {packageTypes} = require('./grpc_services');
-const {protoFiles} = require('./grpc_services');
-const {protosDir} = require('./grpc_services');
-const {serviceTypes} = require('./grpc_services');
-const {unauthenticatedPackageTypes} = require('./grpc_services');
-const {unauthenticatedServiceTypes} = require('./grpc_services');
+import grpc_services from './grpc_services.json' with { type: 'json' };
+import emitSubscriptionError from './emit_subscription_error.js';
+import handleRemoveListener from './handle_remove_listener.js';
 
-module.exports = {
+const {
+  defaultSocket,
+  grpcSslCipherSuites,
+  maxReceiveMessageLength,
+  packageTypes,
+  protoFiles,
+  protosDir,
+  serviceTypes,
+  unauthenticatedPackageTypes,
+  unauthenticatedServiceTypes
+} = grpc_services;
+
+export {
   defaultSocket,
   emitSubscriptionError,
   grpcSslCipherSuites,

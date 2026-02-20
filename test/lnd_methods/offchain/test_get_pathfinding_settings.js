@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getPathfindingSettings} = require('./../../../lnd_methods');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { getPathfindingSettings } from './../../../lnd_methods/index.js';
 
 const makeLnd = ({config, empty, err, overrides}) => {
   if (!!empty) {
@@ -85,7 +84,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => getPathfindingSettings(args), error, 'Got error');
     } else {
       const res = await getPathfindingSettings(args);

@@ -18,7 +18,7 @@ const bufferFromHex = hex => Buffer.from(hex, 'hex');
     }
   }
 */
-module.exports = args => {
+export default args => {
   const tlv = (args.messages || []).reduce((sum, {type, value}) => {
     sum[type] = bufferFromHex(value);
 

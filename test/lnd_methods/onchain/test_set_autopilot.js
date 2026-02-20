@@ -1,7 +1,6 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
-
-const {setAutopilot} = require('./../../../lnd_methods');
+import 'node:assert';
+import test from 'node:test';
+import { setAutopilot } from './../../../lnd_methods/index.js';
 
 const makeLnd = args => {
   return {
@@ -188,7 +187,7 @@ tests.forEach(({args, description, expected}) => {
         strictEqual(errMessage, expected.error_message, 'Got expected err');
       }
 
-      if (!!err) {
+      if (err) {
         return end();
       }
 

@@ -1,7 +1,6 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
-
-const {isLnd} = require('./../../lnd_requests');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const accessDeniedMessage = 'permission denied';
 const asPermission = n => ({action: n.split(':')[1], entity: n.split(':')[0]});
@@ -29,9 +28,9 @@ const type = 'default';
     is_valid: <Access Token is Valid For Described Permissions Bool>
   }
 */
-module.exports = ({lnd, macaroon, permissions}, cbk) => {
+export default ({lnd, macaroon, permissions}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -56,15 +55,15 @@ module.exports = ({lnd, macaroon, permissions}, cbk) => {
           permissions: permissions.map(permission => asPermission(permission)),
         },
         (err, res) => {
-          if (!!err && notSupported.test(err.details)) {
+          if (err && notSupported.test(err.details)) {
             return cbk([501, 'VerifyAccessMethodNotSupported']);
           }
 
-          if (!!err && err.details === accessDeniedMessage) {
+          if (err && err.details === accessDeniedMessage) {
             return cbk(null, {is_valid: false});
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorFromCheckMacaroonMethod', {err}]);
           }
 

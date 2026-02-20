@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const isHash = n => !!n && /^[0-9A-F]{64}$/i.test(n);
 const method = 'labelTransaction';
@@ -23,9 +23,9 @@ const unknownTransactionErr = 'cannot label transaction not known to wallet';
 
   @returns via cbk or Promise
 */
-module.exports = ({description, id, lnd}, cbk) => {
+export default ({description, id, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!description) {
@@ -51,15 +51,15 @@ module.exports = ({description, id, lnd}, cbk) => {
           txid: Buffer.from(id, 'hex').reverse(),
         },
         err => {
-          if (!!err && err.details === notSupportedError) {
+          if (err && err.details === notSupportedError) {
             return cbk([501, 'BackingLndDoesNotSupportUpdatingTransactions']);
           }
 
-          if (!!err && err.details === unknownTransactionErr) {
+          if (err && err.details === unknownTransactionErr) {
             return cbk([404, 'FailedToFindTransactionToUpdate']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrUpdatingChainTransaction', {err}]);
           }
 

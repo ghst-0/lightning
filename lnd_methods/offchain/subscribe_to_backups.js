@@ -1,7 +1,7 @@
-const EventEmitter = require('events');
+import EventEmitter from 'node:events';
 
-const {backupsFromSnapshot} = require('./../../lnd_responses');
-const {isLnd} = require('./../../lnd_requests');
+import { backupsFromSnapshot } from './../../lnd_responses/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const cancelError = 'Cancelled on client';
 const method = 'subscribeChannelBackups';
@@ -31,7 +31,7 @@ const type = 'default';
     }]
   }
 */
-module.exports = ({lnd}) => {
+export default ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToBackups');
   }
@@ -42,19 +42,17 @@ module.exports = ({lnd}) => {
   // Cancel the subscription when all listeners are removed
   eventEmitter.on('removeListener', () => {
     // Exit early when there are still listeners
-    if (!!eventEmitter.listenerCount('backup')) {
+    if (eventEmitter.listenerCount('backup')) {
       return;
     }
 
     subscription.cancel();
-
-    return;
   });
 
   const emitError = err => {
     subscription.cancel();
 
-    if (!!err && err.details === cancelError) {
+    if (err && err.details === cancelError) {
       subscription.removeAllListeners();
     }
 
@@ -64,8 +62,6 @@ module.exports = ({lnd}) => {
     }
 
     eventEmitter.emit('error', err);
-
-    return;
   };
 
   subscription.on('data', snapshot => {

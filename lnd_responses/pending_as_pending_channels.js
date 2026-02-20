@@ -1,4 +1,4 @@
-const {channelTypes} = require('./constants');
+import { channelTypes } from './constants';
 
 const {isArray} = Array;
 const remoteInitiator = 'INITIATOR_REMOTE';
@@ -125,7 +125,7 @@ const outpointSeparator = ':';
     }]
   }
 */
-module.exports = args => {
+export default args => {
   if (!args) {
     throw new Error('ExpectedPendingChannelResponse');
   }

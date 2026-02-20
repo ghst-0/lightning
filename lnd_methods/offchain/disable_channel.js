@@ -1,12 +1,12 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const action = 'DISABLE';
 const internalByteOrderId = id => Buffer.from(id, 'hex').reverse();
 const isHash = n => !!n && /^[0-9A-F]{64}$/i.test(n);
-const isNumber = n => !isNaN(n);
+const isNumber = n => !Number.isNaN(n);
 const method = 'updateChanStatus';
 const notSupported = /unknown/;
 const type = 'router';
@@ -25,9 +25,9 @@ const type = 'router';
 
   @returns via cbk or Promise
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
@@ -55,11 +55,11 @@ module.exports = (args, cbk) => {
           },
         },
         err => {
-          if (!!err && notSupported.test(err.details)) {
+          if (err && notSupported.test(err.details)) {
             return cbk([501, 'DisableChannelMethodNotSupported']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorDisablingChannel', {err}]);
           }
 

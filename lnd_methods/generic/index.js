@@ -1,4 +1,4 @@
-const getHeight = require('./get_height');
-const getRouteConfidence = require('./get_route_confidence');
+import getHeight from './get_height.js';
+import getRouteConfidence from './get_route_confidence.js';
 
-module.exports = {getHeight, getRouteConfidence};
+export { getHeight, getRouteConfidence };

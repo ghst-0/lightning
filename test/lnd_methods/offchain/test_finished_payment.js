@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const method = require('./../../../lnd_methods/offchain/finished_payment');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import method from './../../../lnd_methods/offchain/finished_payment.js';
 
 const makeArgs = overrides => {
   const args = {
@@ -134,7 +133,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(method(args), error, 'Got expected error');
     } else {
       deepStrictEqual(await method(args), expected, 'Got expected result');

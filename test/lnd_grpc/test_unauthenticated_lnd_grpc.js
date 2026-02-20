@@ -1,9 +1,8 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {equal} = require('node:assert').strict;
-const {join} = require('path');
-const test = require('node:test');
-
-const {unauthenticatedLndGrpc} = require('./../../');
+import 'node:assert';
+import 'node:assert';
+import { join } from 'path';
+import test from 'node:test';
+import { unauthenticatedLndGrpc } from './../../index.js';
 
 const expectedServices = ['status', 'unlocker'];
 

@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const {isArray} = Array;
 const method = 'listMacaroonIDs';
@@ -23,9 +23,9 @@ const type = 'default';
     ids: [<Root Access Id Number>]
   }
 */
-module.exports = ({id, lnd}, cbk) => {
+export default ({id, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -38,11 +38,11 @@ module.exports = ({id, lnd}, cbk) => {
       // Get access ids
       getIds: ['validate', ({}, cbk) => {
         return lnd[type][method]({}, (err, res) => {
-          if (!!err && notSupported.test(err.details)) {
+          if (err && notSupported.test(err.details)) {
             return cbk([501, 'ListRootMacaroonIdsMethodNotSupported']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorInListRootIdsResponse', {err}]);
           }
 
@@ -54,7 +54,7 @@ module.exports = ({id, lnd}, cbk) => {
             return cbk([503, 'ExpectedArrayOfRootKeyIdsInListIdsResponse']);
           }
 
-          if (!!res.root_key_ids.filter(n => !n).length) {
+          if (res.root_key_ids.some(n => !n)) {
             return cbk([503, 'UnexpectedEmptyMacarootRootIdInListResponse']);
           }
 

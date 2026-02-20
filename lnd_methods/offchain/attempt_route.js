@@ -1,4 +1,4 @@
-const subscribeToPayViaRoutes = require('./subscribe_to_pay_via_routes');
+import subscribeToPayViaRoutes from './subscribe_to_pay_via_routes.js';
 
 const defaultPathTimeoutMs = 1000 * 60;
 
@@ -37,7 +37,7 @@ const defaultPathTimeoutMs = 1000 * 60;
   {
   }
 */
-module.exports = args => {
+export default args => {
   if (!args.route) {
     return cbk(null, {});
   }
@@ -59,14 +59,14 @@ module.exports = args => {
     const from = penultimate || {public_key: args.public_key};
 
     // Ignore the final pair
-    args.route.hops.forEach(hop => {
-      return ignore.push({
+    for (const hop of args.route.hops) {
+      ignore.push({
         from_public_key: from.public_key,
         to_public_key: hop.public_key,
-      });
-    });
+      })
+    }
 
-    return finished();
+      return finished();
   },
   args.path_timeout_ms || defaultPathTimeoutMs);
 
@@ -76,12 +76,12 @@ module.exports = args => {
     }
 
     // Exit early when the probe timed out
-    if (!!isTimedOut) {
+    if (isTimedOut) {
       return;
     }
 
     // Exit early when the probe found a completed route
-    if (!!isFinal) {
+    if (isFinal) {
       return emitter.emit('probe_success', {route: failure.route});
     }
 
@@ -95,8 +95,6 @@ module.exports = args => {
       route: failure.route,
       update: failure.update,
     });
-
-    return;
   });
 
   // Probing finished
@@ -107,12 +105,10 @@ module.exports = args => {
   });
 
   sub.on('error', err => {
-    if (!!isTimedOut) {
+    if (isTimedOut) {
       return;
     }
 
     emitter.emit('error', err);
-
-    return;
   });
 };

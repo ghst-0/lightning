@@ -1,5 +1,5 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
 const bufferFromHex = hex => Buffer.from(hex, 'hex');
 const isId = n => /^[0-9A-F]{64}$/i.test(n);
@@ -15,9 +15,9 @@ const type = 'default';
 
   @returns via cbk or Promise
 */
-module.exports = ({id, lnd}, cbk) => {
+export default ({id, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isId(id)) {
@@ -37,7 +37,7 @@ module.exports = ({id, lnd}, cbk) => {
           shim_cancel: {pending_chan_id: bufferFromHex(id)},
         },
         err => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorCancelingPendingChannel', {err}]);
           }
 

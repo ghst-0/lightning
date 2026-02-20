@@ -1,9 +1,8 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const method = require('./../../../lnd_methods/macaroon/handle_rpc_request_update');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import method from './../../../lnd_methods/macaroon/handle_rpc_request_update.js';
 
 const tests = [
   {
@@ -222,7 +221,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       throws(() => method(args), new Error(error), 'Got expected error');
     } else {
       const res = method(args);

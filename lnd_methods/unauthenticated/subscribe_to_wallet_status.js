@@ -1,6 +1,6 @@
-const EventEmitter = require('events');
+import EventEmitter from 'node:events';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const cancelError = 'Cancelled on client';
 const events = ['active', 'locked', 'error', 'starting'];
@@ -52,7 +52,7 @@ const type = 'status';
   // The wallet is waiting for leader election
   @event 'waiting'
 */
-module.exports = ({lnd}) => {
+export default ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToWalletStatus');
   }
@@ -65,17 +65,15 @@ module.exports = ({lnd}) => {
     const listenerCounts = events.map(n => emitter.listenerCount(n));
 
     // Exit early when there are still listeners
-    if (!!sumOf(listenerCounts)) {
+    if (sumOf(listenerCounts)) {
       return;
     }
 
     subscription.cancel();
-
-    return;
   });
 
   const emitError = err => {
-    if (!!err && err.details === cancelError) {
+    if (err && err.details === cancelError) {
       subscription.removeAllListeners();
     }
 

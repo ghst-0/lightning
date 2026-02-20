@@ -1,12 +1,10 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const EventEmitter = require('events');
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const BN = require('bn.js');
-
-const {getInfoResponse} = require('./../fixtures');
-const {getRouteToDestination} = require('./../../../');
+import 'node:assert';
+import EventEmitter from 'node:events';
+import 'node:assert';
+import test from 'node:test';
+import BN from 'bn.js';
+import { getInfoResponse } from './../fixtures/index.js';
+import { getRouteToDestination } from './../../../index.js';
 
 const customRecords = {};
 
@@ -225,7 +223,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => getRouteToDestination(args), error, 'Got error');
     } else {
       deepStrictEqual(await getRouteToDestination(args), expected, 'Got res');

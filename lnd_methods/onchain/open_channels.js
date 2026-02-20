@@ -1,12 +1,11 @@
-const {randomBytes} = require('crypto');
+import { randomBytes } from 'node:crypto';
+import asyncAuto from 'async/auto.js';
+import asyncEach from 'async/each.js';
+import asyncMap from 'async/map.js';
+import { returnResult } from 'asyncjs-util';
 
-const asyncAuto = require('async/auto');
-const asyncEach = require('async/each');
-const asyncMap = require('async/map');
-const {returnResult} = require('asyncjs-util');
-
-const cancelPendingChannel = require('./cancel_pending_channel');
-const {isLnd} = require('./../../lnd_requests');
+import cancelPendingChannel from './cancel_pending_channel.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const anchors = 'ANCHORS';
 const bufferFromHex = hex => Buffer.from(hex, 'hex');
@@ -77,9 +76,9 @@ const type = 'default';
     }]
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isArray(args.channels)) {
@@ -90,11 +89,11 @@ module.exports = (args, cbk) => {
           return cbk([400, 'ExpectedChannelDetailsToOpenChannels']);
         }
 
-        if (!!args.channels.find(n => !n.capacity)) {
+        if (args.channels.find(n => !n.capacity)) {
           return cbk([400, 'ExpectedCapacityOfChannelsToOpenChannels']);
         }
 
-        if (!!args.channels.find(n => !isPublicKey(n.partner_public_key))) {
+        if (args.channels.find(n => !isPublicKey(n.partner_public_key))) {
           return cbk([400, 'ExpectedPeerPublicKeyToOpenChannels']);
         }
 
@@ -130,12 +129,12 @@ module.exports = (args, cbk) => {
         const [lastChannel] = toOpen.map(n => n.id).reverse();
 
         return asyncMap(toOpen, (channel, cbk) => {
-          const baseType = !!channel.is_trusted_funding ? anchors : undefined;
+          const baseType = channel.is_trusted_funding ? anchors : undefined;
           let isDone = false;
           const isSelfPublish = !!args.is_avoiding_broadcast;
           const remoteReserve = reserve(!!channel.is_allowing_minimal_reserve);
 
-          const commit = !!channel.is_simplified_taproot ? taproot : baseType;
+          const commit = channel.is_simplified_taproot ? taproot : baseType;
 
           const channelOpen = args.lnd[type][method]({
             base_fee: channel.base_fee_mtokens || undefined,

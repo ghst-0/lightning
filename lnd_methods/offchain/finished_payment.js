@@ -1,5 +1,5 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
 /** Convert payment finished details to a finished payment response
 
@@ -102,9 +102,9 @@ const {returnResult} = require('asyncjs-util');
     tokens: <Tokens Paid Rounded Down Number>
   }
 */
-module.exports = ({confirmed, failed}, cbk) => {
+export default ({confirmed, failed}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Determine if there is an error
       checkFailure: cbk => {
         if (!confirmed && !failed) {
@@ -116,23 +116,23 @@ module.exports = ({confirmed, failed}, cbk) => {
           return cbk();
         }
 
-        if (!!failed.is_canceled) {
+        if (failed.is_canceled) {
           return cbk([503, 'PaymentExecutionCanceled']);
         }
 
-        if (!!failed.is_insufficient_balance) {
+        if (failed.is_insufficient_balance) {
           return cbk([503, 'InsufficientBalanceToAttemptPayment']);
         }
 
-        if (!!failed.is_invalid_payment) {
+        if (failed.is_invalid_payment) {
           return cbk([503, 'PaymentRejectedByDestination']);
         }
 
-        if (!!failed.is_pathfinding_timeout) {
+        if (failed.is_pathfinding_timeout) {
           return cbk([503, 'PaymentAttemptsTimedOut']);
         }
 
-        if (!!failed.is_route_not_found) {
+        if (failed.is_route_not_found) {
           return cbk([503, 'PaymentPathfindingFailedToFindPossibleRoute']);
         }
 

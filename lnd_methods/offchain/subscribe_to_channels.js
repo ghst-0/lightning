@@ -1,12 +1,8 @@
-const EventEmitter = require('events');
-
-const {isLnd} = require('./../../lnd_requests');
-const {rpcChannelAsChannel} = require('./../../lnd_responses');
-const {rpcClosedChannelAsClosed} = require('./../../lnd_responses');
-const {rpcOutpointAsUpdate} = require('./../../lnd_responses');
+import EventEmitter from 'node:events';
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcChannelAsChannel, rpcClosedChannelAsClosed, rpcOutpointAsUpdate } from './../../lnd_responses/index.js';
 
 const asError = msg => new Error(msg);
-const emptyTxId = Buffer.alloc(32).toString('hex');
 const eventActive = 'channel_active_changed';
 const eventClosed = 'channel_closed';
 const eventOpen = 'channel_opened';
@@ -122,7 +118,7 @@ const updateOpening = 'pending_open_channel';
     transaction_vout: <Blockchain Transaction Output Index Number>
   }
 */
-module.exports = ({lnd}) => {
+export default ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToChannels');
   }
@@ -137,13 +133,11 @@ module.exports = ({lnd}) => {
     const listenerCounts = events.map(n => eventEmitter.listenerCount(n));
 
     // Exit early when there are still listeners
-    if (!!sumOf(listenerCounts)) {
+    if (sumOf(listenerCounts)) {
       return;
     }
 
     subscription.cancel();
-
-    return;
   });
 
   const emitError = err => {
@@ -217,8 +211,6 @@ module.exports = ({lnd}) => {
     } catch (err) {
       return emitError(err);
     }
-
-    return;
   });
 
   subscription.on('end', () => eventEmitter.emit('end'));

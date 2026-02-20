@@ -1,7 +1,6 @@
-const {deepEqual} = require('node:assert').strict;
-const test = require('node:test');
-
-const {safeTokens} = require('./../../bolt00');
+import 'node:assert';
+import test from 'node:test';
+import { safeTokens } from './../../bolt00/index.js';
 
 const tests = [
   {

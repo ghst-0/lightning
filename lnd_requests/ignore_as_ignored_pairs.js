@@ -1,4 +1,4 @@
-const {chanNumber} = require('bolt07');
+import { chanNumber } from 'bolt07';
 
 const {isArray} = Array;
 
@@ -23,7 +23,7 @@ const {isArray} = Array;
     }]
   }
 */
-module.exports = ({ignore}) => {
+export default ({ignore}) => {
   if (!ignore) {
     return {};
   }

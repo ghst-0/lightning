@@ -1,7 +1,6 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-
-const method = require('./../../../lnd_methods/signer/input_signing_method');
+import 'node:assert';
+import test from 'node:test';
+import method from './../../../lnd_methods/signer/input_signing_method.js';
 
 const makeArgs = override => {
   const args = {

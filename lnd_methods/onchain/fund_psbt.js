@@ -1,9 +1,8 @@
-const asyncAuto = require('async/auto');
-const {componentsOfTransaction} = require('@alexbosworth/blockchain');
-const {returnResult} = require('asyncjs-util');
-const {unsignedTxFromPsbt} = require('@alexbosworth/blockchain');
+import asyncAuto from 'async/auto.js';
+import { componentsOfTransaction, unsignedTxFromPsbt } from '@alexbosworth/blockchain';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const asOutpoint = n => `${n.transaction_id}:${n.transaction_vout}`;
 const defaultChangeType = () => 'CHANGE_ADDRESS_TYPE_P2TR';
@@ -15,7 +14,7 @@ const {isBuffer} = Buffer;
 const isKnownChangeFormat = format => !format || format === 'p2tr';
 const method = 'fundPsbt';
 const notSupported = /unknown.*walletrpc.WalletKit/;
-const strategy = type => !type ? undefined : `STRATEGY_${type.toUpperCase()}`;
+const strategy = type => type ? `STRATEGY_${ type.toUpperCase() }` : undefined;
 const type = 'wallet';
 const txIdFromBuffer = buffer => buffer.slice().reverse().toString('hex');
 
@@ -73,9 +72,9 @@ const txIdFromBuffer = buffer => buffer.slice().reverse().toString('hex');
     psbt: <Unsigned PSBT Hex String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isKnownChangeFormat(args.change_format)) {
@@ -103,11 +102,11 @@ module.exports = (args, cbk) => {
 
       // Fee setting for the funded PSBT
       fee: ['validate', ({}, cbk) => {
-        if (!!args.fee_tokens_per_vbyte) {
+        if (args.fee_tokens_per_vbyte) {
           return cbk(null, {fee_tokens_per_vbyte: args.fee_tokens_per_vbyte});
         }
 
-        if (!!args.target_confirmations) {
+        if (args.target_confirmations) {
           return cbk(null, {target_confirmations: args.target_confirmations});
         }
 
@@ -167,19 +166,19 @@ module.exports = (args, cbk) => {
         return args.lnd[type][method]({
           change_type: defaultChangeType(args.change_type),
           coin_selection_strategy: strategy(args.utxo_selection),
-          min_confs: minConfs !== undefined ? minConfs : undefined,
-          psbt: !!args.psbt ? Buffer.from(args.psbt, 'hex') : undefined,
+          min_confs: minConfs === undefined ? undefined : minConfs,
+          psbt: args.psbt ? Buffer.from(args.psbt, 'hex') : undefined,
           raw: funding || undefined,
           sat_per_vbyte: fee.fee_tokens_per_vbyte || undefined,
           spend_unconfirmed: minConfs === Number() || undefined,
           target_conf: fee.target_confirmations || undefined,
         },
         (err, res) => {
-          if (!!err && notSupported.test(err.details)) {
+          if (err && notSupported.test(err.details)) {
             return cbk([501, 'FundPsbtMethodNotSupported']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorFundingTransaction', {err}]);
           }
 
@@ -199,11 +198,11 @@ module.exports = (args, cbk) => {
             return cbk([503, 'ExpectedArrayOfUtxoLocksForFundedTransaction']);
           }
 
-          if (!!res.locked_utxos.filter(n => !n).length) {
+          if (res.locked_utxos.some(n => !n)) {
             return cbk([503, 'ExpectedNonEmptyLockedUtxosForFundedPsbt']);
           }
 
-          if (!!res.locked_utxos.find(n => !n.outpoint)) {
+          if (res.locked_utxos.some(n => !n.outpoint)) {
             return cbk([503, 'ExpectedOutpointInLockedUtxosForFundedPsbt']);
           }
 
@@ -251,8 +250,8 @@ module.exports = (args, cbk) => {
           const lock = locks.find(n => asOutpoint(n) === asOutpoint(input));
 
           return {
-            lock_expires_at: !!lock ? lock.expires_at : undefined,
-            lock_id: !!lock ? lock.id : undefined,
+            lock_expires_at: lock ? lock.expires_at : undefined,
+            lock_id: lock ? lock.id : undefined,
             transaction_id: input.transaction_id,
             transaction_vout: input.transaction_vout,
           };

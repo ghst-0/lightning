@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const errorUnimplemented = 'unknown service peersrpc.Peers';
 const method = 'updateNodeAnnouncement';
@@ -22,9 +22,9 @@ const type = 'peers';
 
   @returns via cbk or Promise
 */
-module.exports = ({color, lnd}, cbk) => {
+export default ({color, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!color) {
@@ -41,11 +41,11 @@ module.exports = ({color, lnd}, cbk) => {
       // Update the node alias with the updated alias
       updateAlias: ['validate', ({}, cbk) => {
         return lnd[type][method]({color}, (err, res) => {
-          if (!!err && err.details === errorUnimplemented) {
+          if (err && err.details === errorUnimplemented) {
             return cbk([400, 'ExpectedPeersRpcLndBuildTagToUpdateColor']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorUpdatingNodeColor', {err}]);
           }
 

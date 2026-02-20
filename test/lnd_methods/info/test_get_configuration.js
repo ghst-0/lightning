@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getConfiguration} = require('./../../../');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { getConfiguration } from './../../../index.js';
 
 const makeLnd = ({custom, err, res}) => {
   const response = {config: {type: 'value'}, log: ['log']};
@@ -70,7 +69,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => getConfiguration(args), error, 'Got error');
     } else {
       deepStrictEqual(await getConfiguration(args), expected, 'Got info');

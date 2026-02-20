@@ -41,7 +41,7 @@ const streamAuth = 'stream_auth';
     [uri]: <RPC URI String>
   }
 */
-module.exports = args => {
+export default args => {
   if (!args) {
     throw new Error('ExpectedRpcRequestUpdateDetailsToDeriveUpdateEvent');
   }

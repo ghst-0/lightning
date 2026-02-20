@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
-const {rpcNetworkAsNetworkInfo} = require('./../../lnd_responses');
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcNetworkAsNetworkInfo } from './../../lnd_responses/index.js';
 
 const method = 'getNetworkInfo';
 const type = 'default';
@@ -27,9 +27,9 @@ const type = 'default';
     total_capacity: <Total Capacity Number>
   }
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -42,7 +42,7 @@ module.exports = ({lnd}, cbk) => {
       // Get network info
       getInfo: ['validate', ({}, cbk) => {
         return lnd[type][method]({}, (err, networkInfo) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedGetNetworkInfoError', {err}]);
           }
 

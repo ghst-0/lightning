@@ -1,7 +1,6 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {addPeer} = require('./../../../');
+import 'node:assert';
+import test from 'node:test';
+import { addPeer } from './../../../index.js';
 
 const makeLnd = args => {
   const peersRes = {
@@ -133,7 +132,7 @@ const tests = [
 
 tests.forEach(({args, description, error}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(addPeer(args), error, 'Got expected error');
     } else {
       await addPeer(args);

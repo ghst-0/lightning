@@ -14,7 +14,7 @@ const mtokensPerToken = BigInt(1e3);
     tokens: <Tokens Rounded Up Number>
   }
 */
-module.exports = ({mtokens}) => {
+export default ({mtokens}) => {
   // Get a normalized number of mtokens, rounded down
   const tokens = Number(BigInt(mtokens) / mtokensPerToken);
 

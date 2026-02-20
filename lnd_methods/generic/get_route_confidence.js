@@ -1,10 +1,10 @@
-const asyncAuto = require('async/auto');
-const asyncReduce = require('async/reduce');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import asyncReduce from 'async/reduce.js';
+import { returnResult } from 'asyncjs-util';
 
-const getForwardingConfidence = require('./../offchain/get_forwarding_confidence');
-const getForwardingReputations = require('./../offchain/get_forwarding_reputations');
-const getIdentity = require('./../info/get_identity');
+import getForwardingConfidence from './../offchain/get_forwarding_confidence.js';
+import getForwardingReputations from './../offchain/get_forwarding_reputations.js';
+import getIdentity from './../info/get_identity.js';
 
 const combine = (a, b) => Math.round(a / 1e6 * b / 1e6);
 const decBase = 10;
@@ -35,9 +35,9 @@ const unimplemented = 'QueryProbabilityNotImplemented';
     confidence: <Confidence Score Out Of One Million Number>
   }
 */
-module.exports = ({from, hops, lnd}, cbk) => {
+export default ({from, hops, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isArray(hops)) {
@@ -71,7 +71,7 @@ module.exports = ({from, hops, lnd}, cbk) => {
           return {
             channel: hop.channel,
             forward_mtokens: hop.forward_mtokens,
-            from_public_key: !i ? source.public_key : hops[i - 1].public_key,
+            from_public_key: i ? hops[i - 1].public_key : source.public_key,
             to_public_key: hops[i].public_key,
           };
         });
@@ -83,7 +83,7 @@ module.exports = ({from, hops, lnd}, cbk) => {
       getScores: ['source', ({source}, cbk) => {
         const pairs = hops.slice().map((hop, i) => {
           return {
-            from: !i ? source.public_key : hops[i - 1].public_key,
+            from: i ? hops[i - 1].public_key : source.public_key,
             mtokens: hop.forward_mtokens,
             to: hops[i].public_key,
           };
@@ -97,7 +97,7 @@ module.exports = ({from, hops, lnd}, cbk) => {
             to: pair.to,
           },
           (err, res) => {
-            if (!!err) {
+            if (err) {
               return cbk(err);
             }
 
@@ -105,7 +105,7 @@ module.exports = ({from, hops, lnd}, cbk) => {
           });
         },
         (err, confidence) => {
-          if (!!err) {
+          if (err) {
             const [, message] = err;
 
             return message === unimplemented ? cbk() : cbk(err);
@@ -159,7 +159,7 @@ module.exports = ({from, hops, lnd}, cbk) => {
 
         const successOdds = (totalOdds / totalDenominator).toString();
 
-        return cbk(null, {confidence: parseInt(successOdds, decBase)});
+        return cbk(null, {confidence: Number.parseInt(successOdds, decBase)});
       }],
     },
     returnResult({reject, resolve, of: 'odds'}, cbk));

@@ -1,13 +1,10 @@
-const asyncAuto = require('async/auto');
-const asyncMap = require('async/map');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
-const {pendingAsPendingChannels} = require('./../../lnd_responses');
+import { isLnd } from './../../lnd_requests/index.js';
+import { pendingAsPendingChannels } from './../../lnd_responses/index.js';
 
-const {isArray} = Array;
 const method = 'pendingChannels';
-const outpointSeparator = ':';
 const type = 'default';
 
 /** Get pending channels.
@@ -75,9 +72,9 @@ const type = 'default';
     }]
   }
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -90,7 +87,7 @@ module.exports = ({lnd}, cbk) => {
       // Get pending channels
       getPending: ['validate', ({}, cbk) => {
         return lnd[type][method]({include_raw_tx: true}, (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedPendingChannelsErr', {err}]);
           }
 

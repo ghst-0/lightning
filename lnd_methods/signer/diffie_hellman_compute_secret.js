@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const defaultKeyFamily = 6;
 const defaultKeyIndex = 0;
@@ -31,9 +31,9 @@ const unimplementedError = 'unknown service signrpc.Signer';
     secret: <Shared Secret Hex String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
@@ -57,11 +57,11 @@ module.exports = (args, cbk) => {
           },
         },
         (err, res) => {
-          if (!!err && err.details === unimplementedError) {
+          if (err && err.details === unimplementedError) {
             return cbk([400, 'ExpectedLndWithSupportForDeriveSharedKey']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpetedErrorDerivingSharedKey', {err}]);
           }
 
@@ -73,7 +73,7 @@ module.exports = (args, cbk) => {
             return cbk([503, 'ExpectedSharedKeyBufferInDeriveKeyResponse']);
           }
 
-          if (!res.shared_key.length) {
+          if (res.shared_key.length === 0) {
             return cbk([503, 'UnexpectedSharedKeyLengthInDeriveKeyResponse']);
           }
 

@@ -1,5 +1,5 @@
-const mtokensAmount = require('./mtokens_amount');
-const paymentAmounts = require('./payment_amounts');
-const safeTokens = require('./safe_tokens');
+import mtokensAmount from './mtokens_amount.js';
+import paymentAmounts from './payment_amounts.js';
+import safeTokens from './safe_tokens.js';
 
-module.exports = {mtokensAmount, paymentAmounts, safeTokens};
+export  { mtokensAmount, paymentAmounts, safeTokens };

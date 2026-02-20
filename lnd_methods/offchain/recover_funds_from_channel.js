@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
-const verifyBackup = require('./verify_backup');
+import { isLnd } from './../../lnd_requests/index.js';
+import verifyBackup from './verify_backup.js';
 
 const existsErr = 'unable to unpack single backups: channel already exists';
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
@@ -20,9 +20,9 @@ const type = 'default';
 
   @returns via cbk or Promise
 */
-module.exports = ({backup, lnd}, cbk) => {
+export default ({backup, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!backup) {
@@ -49,11 +49,11 @@ module.exports = ({backup, lnd}, cbk) => {
           chan_backups: {chan_backups: [{chan_backup: hexAsBuffer(backup)}]},
         },
         err => {
-          if (!!err && err.details === existsErr) {
+          if (err && err.details === existsErr) {
             return cbk([400, 'ChannelAlreadyExists']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorRestoringChanFromBackup', {err}]);
           }
 

@@ -1,12 +1,11 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {getPublicKey} = require('./../address');
-const {isLnd} = require('./../../lnd_requests');
+import { getPublicKey } from './../address/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const family = 0;
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
-const maxCooperativeCloseDelay = 5e4;
 const method = 'openChannel';
 const type = 'default';
 
@@ -39,9 +38,9 @@ const type = 'default';
 
   @returns via cbk or Promise
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!args.capacity) {
@@ -153,8 +152,6 @@ module.exports = (args, cbk) => {
 
           return cbk([503, 'UnexpectedErrorProposingChannelToPeer', {err}]);
         });
-
-        return;
       }],
     },
     returnResult({reject, resolve, of: 'openChannel'}, cbk));

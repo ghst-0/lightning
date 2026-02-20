@@ -1,7 +1,6 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
-
-const {chainId} = require('./../../bolt02');
+import 'node:assert';
+import test from 'node:test';
+import { chainId } from './../../bolt02/index.js';
 
 const tests = [
   {

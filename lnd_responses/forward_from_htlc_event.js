@@ -1,7 +1,6 @@
-const {chanFormat} = require('bolt07');
-
-const {htlcTypes} = require('./constants');
-const {safeTokens} = require('./../bolt00');
+import { chanFormat } from 'bolt07';
+import { htlcTypes } from './constants';
+import { safeTokens } from './../bolt00/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const nsPerMs = BigInt(1e6);
@@ -65,7 +64,7 @@ const nsPerMs = BigInt(1e6);
     [tokens]: <Sending Tokens Number>
   }
 */
-module.exports = htlc => {
+export default htlc => {
   if (!htlc.event_type) {
     throw new Error('ExpectedHtlcEventTypeToDeriveForwardFromHtlcEvent');
   }

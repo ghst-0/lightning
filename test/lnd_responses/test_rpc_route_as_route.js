@@ -1,8 +1,7 @@
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {rpcRouteAsRoute} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { rpcRouteAsRoute } from './../../lnd_responses/index.js';
 
 const makeRoute = override => {
   const route = {
@@ -83,7 +82,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => rpcRouteAsRoute(args), new Error(error), 'Got error');
     } else {
       const route = rpcRouteAsRoute(args);

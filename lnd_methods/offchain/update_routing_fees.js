@@ -1,14 +1,13 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
-const {rpcFailedPolicyAsFail} = require('./../../lnd_responses');
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcFailedPolicyAsFail } from './../../lnd_responses/index.js';
 
 const defaultBaseFee = 1;
 const defaultCltvDelta = 144;
 const defaultRate = 1;
 const feeRatio = 1e6;
-const {floor} = Math;
 const {isArray} = Array;
 const method = 'updateChannelPolicy';
 const surcharge = discount => discount === undefined ? undefined : -discount;
@@ -55,9 +54,9 @@ const type = 'default';
     }]
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!!args.base_fee_mtokens && args.base_fee_tokens !== undefined) {
@@ -67,8 +66,6 @@ module.exports = (args, cbk) => {
         if (!isLnd({method, type, lnd: args.lnd})) {
           return cbk([400, 'ExpectedLndForRoutingFeesUpdate']);
         }
-
-        const isGlobal = !args.transaction_id && !args.transaction_vout;
 
         if (args.transaction_vout !== undefined && !args.transaction_id) {
           return cbk([400, 'UnexpectedTransactionIdForGlobalFeeUpdate']);
@@ -83,7 +80,7 @@ module.exports = (args, cbk) => {
 
       // Determine what base fee rate to use
       baseFeeMillitokens: ['validate', ({}, cbk) => {
-        if (!!args.base_fee_mtokens) {
+        if (args.base_fee_mtokens) {
           return cbk(null, args.base_fee_mtokens);
         }
 
@@ -130,7 +127,7 @@ module.exports = (args, cbk) => {
 
         return args.lnd[type][method]({
           base_fee_msat: baseFeeMillitokens,
-          chan_point: !isGlobal ? chan : undefined,
+          chan_point: isGlobal ? undefined : chan,
           fee_rate: rate / feeRatio,
           global: isGlobal || undefined,
           inbound_fee: inboundFee,
@@ -140,7 +137,7 @@ module.exports = (args, cbk) => {
           time_lock_delta: args.cltv_delta || defaultCltvDelta,
         },
         (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorUpdatingRoutingFees', {err}]);
           }
 

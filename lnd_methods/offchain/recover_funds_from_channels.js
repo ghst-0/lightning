@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
 const isHex = n => !!n && !(n.length % 2) && /^[0-9A-F]*$/i.test(n);
@@ -19,9 +19,9 @@ const type = 'default';
 
   @returns via cbk or Promise
 */
-module.exports = ({backup, lnd}, cbk) => {
+export default ({backup, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isHex(backup)) {
@@ -41,7 +41,7 @@ module.exports = ({backup, lnd}, cbk) => {
           multi_chan_backup: hexAsBuffer(backup),
         },
         err => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrWhenRestoringChannelFunds', {err}]);
           }
 

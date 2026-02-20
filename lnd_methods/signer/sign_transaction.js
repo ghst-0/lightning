@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const inputSigningMethod = require('./input_signing_method');
-const {isLnd} = require('./../../lnd_requests');
+import inputSigningMethod from './input_signing_method.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const hexAsBuffer = hex => Buffer.from(hex || '', 'hex');
@@ -48,12 +48,12 @@ const unimplementedError = '12 UNIMPLEMENTED: unknown service signrpc.Signer';
     signatures: [<Signature Hex String>]
   }
 */
-module.exports = ({inputs, lnd, spending, transaction}, cbk) => {
+export default ({inputs, lnd, spending, transaction}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
-        if (!isArray(inputs) || !inputs.length) {
+        if (!isArray(inputs) || inputs.length === 0) {
           return cbk([400, 'ExpectedInputsToSignTransaction']);
         }
 
@@ -78,7 +78,7 @@ module.exports = ({inputs, lnd, spending, transaction}, cbk) => {
         const v1Spends = outputs.filter(n => isV1(bufferAsHex(n.pk_script)));
 
         // Exit early when there is no need to provide prev outs, non-taproot
-        if (!v1Spends.length) {
+        if (v1Spends.length === 0) {
           return cbk();
         }
 
@@ -111,11 +111,11 @@ module.exports = ({inputs, lnd, spending, transaction}, cbk) => {
           }),
         },
         (err, res) => {
-          if (!!err && err.message === unimplementedError) {
+          if (err && err.message === unimplementedError) {
             return cbk([400, 'ExpectedLndBuiltWithSignerRpcBuildTag']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorWhenSigning', {err}]);
           }
 
@@ -123,7 +123,7 @@ module.exports = ({inputs, lnd, spending, transaction}, cbk) => {
             return cbk([503, 'UnexpectedEmptyResponseWhenSigning']);
           }
 
-          if (!isArray(res.raw_sigs) || !res.raw_sigs.length) {
+          if (!isArray(res.raw_sigs) || res.raw_sigs.length === 0) {
             return cbk([503, 'ExpectedSignaturesInSignatureResponse']);
           }
 

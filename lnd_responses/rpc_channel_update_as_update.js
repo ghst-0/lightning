@@ -1,4 +1,4 @@
-const {chanFormat} = require('bolt07');
+import { chanFormat } from 'bolt07';
 
 const asDiscount = fee => !fee ? 0 : -fee;
 const bufferAsHex = buffer => buffer.toString('hex');
@@ -50,7 +50,7 @@ const now = () => new Date().toISOString();
     updated_at: <Update Received At ISO 8601 Date String>
   }
 */
-module.exports = update => {
+export default update => {
   if (!update) {
     throw new Error('ExpectedChannelUpdateDetails');
   }

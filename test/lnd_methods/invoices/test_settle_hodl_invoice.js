@@ -1,7 +1,6 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {settleHodlInvoice} = require('./../../../');
+import 'node:assert';
+import test from 'node:test';
+import { settleHodlInvoice } from './../../../index.js';
 
 const secret = Buffer.alloc(32).toString('hex');
 
@@ -53,7 +52,7 @@ const tests = [
 
 tests.forEach(({args, description, error}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => settleHodlInvoice(args), error, 'Got error');
     } else {
       await settleHodlInvoice(args);

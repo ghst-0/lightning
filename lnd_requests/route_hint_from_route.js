@@ -1,4 +1,4 @@
-const {chanNumber} = require('bolt07');
+import { chanNumber } from 'bolt07';
 
 const {isArray} = Array;
 
@@ -30,7 +30,7 @@ const firstHopOffset = 1;
     }]
   }
 */
-module.exports = ({route}) => {
+export default ({route}) => {
   if (!isArray(route) || !route.length) {
     throw new Error('ExpectedRouteArrayToDeriveHints');
   }

@@ -1,6 +1,6 @@
-const EventEmitter = require('events');
+import EventEmitter from 'node:events';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const cancelError = 'Cancelled on client';
 const events = ['connected', 'disconnected', 'error'];
@@ -32,7 +32,7 @@ const type = 'default';
     public_key: <Disconnected Peer Public Key Hex String>
   }
 */
-module.exports = ({lnd}) => {
+export default ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToPeers');
   }
@@ -45,17 +45,15 @@ module.exports = ({lnd}) => {
     const listenerCounts = events.map(n => emitter.listenerCount(n));
 
     // Exit early when there are still listeners
-    if (!!sumOf(listenerCounts)) {
+    if (sumOf(listenerCounts)) {
       return;
     }
 
     subscription.cancel();
-
-    return;
   });
 
   const emitError = err => {
-    if (!!err && err.details === cancelError) {
+    if (err && err.details === cancelError) {
       subscription.removeAllListeners();
     }
 
@@ -82,9 +80,6 @@ module.exports = ({lnd}) => {
 
     case 'PEER_ONLINE':
       return emitter.emit('connected', {public_key: peer.pub_key});
-
-    default:
-      return;
     }
   });
 

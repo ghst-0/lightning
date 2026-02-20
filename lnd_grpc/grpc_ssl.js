@@ -1,6 +1,5 @@
-const grpc = require('@grpc/grpc-js');
-
-const decodeSerialized = require('./decode_serialized');
+import grpc from '@grpc/grpc-js';
+import decodeSerialized from './decode_serialized.js';
 
 const {createSsl} = grpc.credentials;
 
@@ -15,6 +14,6 @@ const {createSsl} = grpc.credentials;
     ssl: <SSL gRPC Object>
   }
 */
-module.exports = ({cert}) => {
+export default ({cert}) => {
   return {ssl: createSsl(decodeSerialized({serialized: cert}).decoded)};
 };

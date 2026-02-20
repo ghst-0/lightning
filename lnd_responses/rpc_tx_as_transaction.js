@@ -2,7 +2,7 @@ const {abs} = Math;
 const {isArray} = Array;
 const isBool = n => n === false || n === true;
 const isHash = n => !!n && /^[0-9A-F]{64}$/i.test(n);
-const isNumber = n => !!n && !isNaN(n);
+const isNumber = n => !!n && !Number.isNaN(n);
 const msPerSec = 1e3;
 const notFound = -1;
 const nullHash = '0000000000000000000000000000000000000000000000000000000000000000';
@@ -51,7 +51,7 @@ const outpointAsComponents = n => n.split(':');
     [transaction]: <Raw Transaction Hex String>
   }
 */
-module.exports = tx => {
+export default tx => {
   if (!tx) {
     throw new Error('ExpectedRpcTransactionToDeriveTransactionDetails');
   }

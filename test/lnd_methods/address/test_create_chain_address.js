@@ -1,8 +1,7 @@
-const {equal} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {createChainAddress} = require('./../../../');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { createChainAddress } from './../../../index.js';
 
 const tests = [
   {
@@ -178,7 +177,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => createChainAddress(args), error, 'Got error');
     } else {
       const {address} = await createChainAddress(args);

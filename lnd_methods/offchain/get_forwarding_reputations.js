@@ -1,14 +1,14 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const {isArray} = Array;
 const {isBuffer} = Buffer;
 const method = 'queryMissionControl';
 const notFoundIndex = -1;
-const timeAsDate = n => new Date(parseInt(n, 10) * 1e3).toISOString();
+const timeAsDate = n => new Date(Number.parseInt(n, 10) * 1e3).toISOString();
 const type = 'router';
 
 /** Get the set of forwarding reputations
@@ -33,9 +33,9 @@ const type = 'router';
     }]
   }
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -48,7 +48,7 @@ module.exports = ({lnd}, cbk) => {
       // Get forwarding reputations
       getReputations: ['validate', ({}, cbk) => {
         return lnd[type][method]({}, (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorGettingReputations', {err}]);
           }
 
@@ -85,10 +85,10 @@ module.exports = ({lnd}, cbk) => {
           const isSuccess = !!successAt;
 
           return {
-            failed_tokens: !!isFail ? Number(pair.history.fail_amt_sat) : null,
-            forwarded_tokens: !!isSuccess ? Number(forwardAmount) : null,
-            last_failed_forward_at: !isFail ? null : timeAsDate(lastFailAt),
-            last_forward_at: !!isSuccess ? timeAsDate(successAt) : null,
+            failed_tokens: isFail ? Number(pair.history.fail_amt_sat) : null,
+            forwarded_tokens: isSuccess ? Number(forwardAmount) : null,
+            last_failed_forward_at: isFail ? timeAsDate(lastFailAt) : null,
+            last_forward_at: isSuccess ? timeAsDate(successAt) : null,
             public_key: bufferAsHex(pair.node_from),
             to_public_key: bufferAsHex(pair.node_to),
           };
@@ -100,7 +100,7 @@ module.exports = ({lnd}, cbk) => {
         const nodes = [];
 
         peers.filter(pair => {
-          if (!!nodes.find(n => n.public_key === pair.public_key)) {
+          if (nodes.some(n => n.public_key === pair.public_key)) {
             return;
           }
 

@@ -1,14 +1,13 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
-
-const {isLnd} = require('./../../lnd_requests');
-const {packageTypes} = require('./../../grpc');
-const {versions} = require('./constants');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
+import { isLnd } from './../../lnd_requests/index.js';
+import { packageTypes } from './../../grpc/index.js';
+import { versions } from './constants';
 
 const hasTag = (res, tag) => res.build_tags.includes(tag);
 const {isArray} = Array;
 const isHash = n => !!n && /^[0-9A-F]{40}$/i.test(n);
-const isNumber = n => !isNaN(n);
+const isNumber = n => !Number.isNaN(n);
 const method = 'getVersion';
 const type = 'version';
 const unknownServiceErr = 'unknown service verrpc.Versioner';
@@ -37,9 +36,9 @@ const unknownServiceErr = 'unknown service verrpc.Versioner';
     [version]: <Recognized LND Version String>
   }
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -52,11 +51,11 @@ module.exports = ({lnd}, cbk) => {
       // Get wallet version
       getWalletVersion: ['validate', ({}, cbk) => {
         return lnd[type][method]({}, (err, res) => {
-          if (!!err && err.details === unknownServiceErr) {
+          if (err && err.details === unknownServiceErr) {
             return cbk([501, 'VersionMethodUnsupported']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedGetWalletVersion', {err}]);
           }
 

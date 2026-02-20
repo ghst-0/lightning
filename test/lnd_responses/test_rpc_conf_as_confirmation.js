@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {rpcConfAsConfirmation} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { rpcConfAsConfirmation } from './../../lnd_responses/index.js';
 
 const makeArgs = overrides => {
   const conf = {
@@ -64,7 +63,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => rpcConfAsConfirmation(args), new Error(error), 'Got error');
     } else {
       const channel = rpcConfAsConfirmation(args);

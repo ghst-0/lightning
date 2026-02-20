@@ -1,4 +1,4 @@
-const {chanFormat} = require('bolt07');
+import { chanFormat } from 'bolt07';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const isBoolean = n => n === false || n === true;
@@ -32,7 +32,7 @@ const isBoolean = n => n === false || n === true;
     tokens: <Payment Tokens Number>
   }
 */
-module.exports = args => {
+export default args => {
   if (!args) {
     throw new Error('ExpectedHtlcInHtlcMessage');
   }

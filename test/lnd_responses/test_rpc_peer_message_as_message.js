@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {rpcPeerMessageAsMessage} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { rpcPeerMessageAsMessage } from './../../lnd_responses/index.js';
 
 const makeArgs = overrides => {
   const response = {
@@ -58,7 +57,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => rpcPeerMessageAsMessage(args), new Error(error), 'Got err');
     } else {
       deepStrictEqual(rpcPeerMessageAsMessage(args), expected, 'Mapped');

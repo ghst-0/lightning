@@ -1,9 +1,8 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const EventEmitter = require('node:events');
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {subscribeToPeerMessages} = require('./../../../lnd_methods');
+import 'node:assert';
+import EventEmitter from 'node:events';
+import test from 'node:test';
+import 'node:assert';
+import { subscribeToPeerMessages } from './../../../lnd_methods/index.js';
 
 const makeLnd = overrides => {
   const data = {
@@ -104,7 +103,7 @@ tests.forEach(({args, description, error, expected}) => {
 
     const sub = subscribeToPeerMessages(args);
 
-    if (!!error) {
+    if (error) {
       sub.once('error', err => {
         deepStrictEqual(err, error, 'Got expected error');
 

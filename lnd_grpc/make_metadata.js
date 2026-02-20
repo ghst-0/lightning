@@ -1,4 +1,5 @@
-const grpc = require('@grpc/grpc-js');
+import grpc from '@grpc/grpc-js';
+
 // const grpc = require('grpc');
 
 /** Make metadata
@@ -12,7 +13,7 @@ const grpc = require('@grpc/grpc-js');
     metadata: <Metadata Object>
   }
 */
-module.exports = ({macaroon}) => {
+export default ({macaroon}) => {
   const metadata = new grpc.Metadata();
 
   metadata.add('macaroon', macaroon);

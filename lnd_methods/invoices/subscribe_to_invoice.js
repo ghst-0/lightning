@@ -1,7 +1,7 @@
-const EventEmitter = require('events');
+import EventEmitter from 'node:events';
 
-const {isLnd} = require('./../../lnd_requests');
-const {rpcInvoiceAsInvoice} = require('./../../lnd_responses');
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcInvoiceAsInvoice } from './../../lnd_responses/index.js';
 
 const isHex = n => !(n.length % 2) && /^[0-9A-F]*$/i.test(n);
 const updateEvent = 'invoice_updated';
@@ -73,7 +73,7 @@ const updateEvent = 'invoice_updated';
     tokens: <Tokens Number>
   }
 */
-module.exports = ({id, lnd}) => {
+export default ({id, lnd}) => {
   if (!id || !isHex(id)) {
     throw new Error('ExpectedIdOfInvoiceToSubscribeTo');
   }
@@ -100,8 +100,6 @@ module.exports = ({id, lnd}) => {
     }
 
     subscription.cancel();
-
-    return;
   });
 
   const errored = err => {

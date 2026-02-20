@@ -1,11 +1,8 @@
-const EventEmitter = require('events');
-
-const {featureFlagDetails} = require('bolt09');
-
-const getNode = require('./get_node');
-const {isLnd} = require('./../../lnd_requests');
-const {rpcChannelClosedAsClosed} = require('./../../lnd_responses');
-const {rpcChannelUpdateAsUpdate} = require('./../../lnd_responses');
+import EventEmitter from 'node:events';
+import { featureFlagDetails } from 'bolt09';
+import getNode from './get_node.js';
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcChannelClosedAsClosed, rpcChannelUpdateAsUpdate } from './../../lnd_responses/index.js';
 
 const events = ['channel_closed', 'channel_updated', 'node_updated'];
 const {isArray} = Array;
@@ -77,7 +74,7 @@ const type = 'default';
     updated_at: <Update Received At ISO 8601 Date String>
   }
 */
-module.exports = ({lnd}) => {
+export default ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToChannelGraph');
   }
@@ -101,13 +98,11 @@ module.exports = ({lnd}) => {
     const listenerCounts = events.map(n => eventEmitter.listenerCount(n));
 
     // Exit early when there are still listeners
-    if (!!sumOf(listenerCounts)) {
+    if (sumOf(listenerCounts)) {
       return;
     }
 
     subscription.cancel();
-
-    return;
   });
 
   subscription.on('data', update => {
@@ -156,7 +151,7 @@ module.exports = ({lnd}) => {
       }
 
       // LND 0.11.1 and below don't support features, but above do: exit early
-      if (!!node.features && !!keys(node.features).length) {
+      if (!!node.features && keys(node.features).length > 0) {
         return eventEmitter.emit('node_updated', {
           alias: node.alias,
           color: node.color,
@@ -179,7 +174,7 @@ module.exports = ({lnd}) => {
         public_key: node.identity_key,
       },
       (err, res) => {
-        if (!!err) {
+        if (err) {
           return emitError(err);
         }
 
@@ -193,8 +188,6 @@ module.exports = ({lnd}) => {
         });
       });
     });
-
-    return;
   });
 
   subscription.on('end', () => eventEmitter.emit('end'));

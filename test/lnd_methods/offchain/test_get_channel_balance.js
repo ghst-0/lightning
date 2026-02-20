@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getChannelBalance} = require('./../../../');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { getChannelBalance } from './../../../index.js';
 
 const makeLnd = overrides => {
   const res = {
@@ -155,7 +154,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => getChannelBalance(args), error, 'Got error');
     } else {
       const balances = await getChannelBalance(args);

@@ -1,12 +1,12 @@
-const asyncAuto = require('async/auto');
-const asyncMapSeries = require('async/mapSeries');
-const {chanFormat} = require('bolt07');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import asyncMapSeries from 'async/mapSeries.js';
+import { chanFormat } from 'bolt07';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
-const {rpcResolutionAsResolution} = require('./../../lnd_responses');
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcResolutionAsResolution } from './../../lnd_responses/index.js';
 
-const emptyTxId = Buffer.alloc(32).toString('hex');;
+const emptyTxId = Buffer.alloc(32).toString('hex');
 const {isArray} = Array;
 const method = 'closedChannels';
 const outpointSeparator = ':';
@@ -67,9 +67,9 @@ const outpointSeparator = ':';
     }]
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, lnd: args.lnd, type: 'default'})) {
@@ -89,7 +89,7 @@ module.exports = (args, cbk) => {
           remote_force: args.is_remote_force_close || undefined,
         },
         (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'FailedToRetrieveClosedChannels', {err}]);
           }
 
@@ -148,22 +148,19 @@ module.exports = (args, cbk) => {
             .filter(n => n !== chan.zero_conf_confirmed_scid)
             .map(number => chanFormat({number}));
 
-          const closer = chan.close_initiator;
           const finalTimeLock = Number(chan.time_locked_balance);
           const hasCloseTx = chan.closing_tx_hash !== emptyTxId;
           const hasId = chan.chan_id !== '0';
-          const height = !chan.close_height ? undefined : chan.close_height;
+          const height = chan.close_height ? chan.close_height : undefined;
           let isPartnerClosed;
           let isPartnerInitiated;
           const [txId, vout] = chan.channel_point.split(outpointSeparator);
           const zeroConfId = chan.zero_conf_confirmed_scid;
 
-          const closeTxId = !hasCloseTx ? undefined : chan.closing_tx_hash;
-          const isLocalCooperativeClose = closer === 'INITIATOR_LOCAL';
-          const isRemoteCooperativeClose = closer === 'INITIATOR_REMOTE';
-          const number = !!Number(zeroConfId) ? zeroConfId : chan.chan_id;
+          const closeTxId = hasCloseTx ? chan.closing_tx_hash : undefined;
+          const number = Number(zeroConfId) ? zeroConfId : chan.chan_id;
 
-          const chanId = !hasId ? null : chanFormat({number});
+          const chanId = hasId ? chanFormat({ number }) : null;
 
           // Try and determine if the channel was opened by our peer
           if (chan.open_initiator === 'INITIATOR_LOCAL') {
@@ -212,7 +209,7 @@ module.exports = (args, cbk) => {
             close_transaction_id: closeTxId,
             final_local_balance: Number(chan.settled_balance),
             final_time_locked_balance: finalTimeLock,
-            id: !chanId ? undefined : chanId.channel,
+            id: chanId ? chanId.channel : undefined,
             is_breach_close: chan.close_type === 'BREACH_CLOSE',
             is_cooperative_close: chan.close_type === 'COOPERATIVE_CLOSE',
             is_funding_cancel: chan.close_type === 'FUNDING_CANCELED',

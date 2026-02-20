@@ -34,7 +34,7 @@ const msPerSec = 1e3;
     updated_at: <Updated At ISO 8601 Date String>
   }
 */
-module.exports = ({key, keys, update}) => {
+export default ({key, keys, update}) => {
   if (!update) {
     throw new Error('ExpectedChannelUpdateToDerivePolicy');
   }

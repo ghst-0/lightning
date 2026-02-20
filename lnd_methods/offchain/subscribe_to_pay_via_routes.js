@@ -1,24 +1,20 @@
-const EventEmitter = require('events');
-const {randomBytes} = require('crypto');
+import EventEmitter from 'node:events';
+import { randomBytes } from 'node:crypto';
+import asyncAuto from 'async/auto.js';
+import asyncMapSeries from 'async/mapSeries.js';
+import { chanNumber } from 'bolt07';
+import nextTick from 'async/nextTick.js';
+import { returnResult } from 'asyncjs-util';
 
-const asyncAuto = require('async/auto');
-const asyncMapSeries = require('async/mapSeries');
-const {chanFormat} = require('bolt07');
-const {chanNumber} = require('bolt07');
-const nextTick = require('async/nextTick');
-const {returnResult} = require('asyncjs-util');
-
-const {isLnd} = require('./../../lnd_requests');
-const {paymentFailure} = require('./../../lnd_responses');
-const routeFailureKeys = require('./../offchain/route_failure_keys');
-const {rpcRouteFromRoute} = require('./../../lnd_requests');
+import { isLnd, rpcRouteFromRoute } from './../../lnd_requests/index.js';
+import { paymentFailure } from './../../lnd_responses/index.js';
+import routeFailureKeys from './../offchain/route_failure_keys.js';
 
 const msAsISO = ms => new Date(ms).toISOString();
 const {isArray} = Array;
 const isHash = n => /^[0-9A-F]{64}$/i.test(n);
 const hexAsBytes = hex => Buffer.from(hex, 'hex');
 const method = 'sendToRouteV2';
-const notFoundIndex = -1;
 const {now} = Date;
 const nsAsMs = ns => Number(BigInt(ns) / BigInt(1e6));
 const payHashLength = Buffer.alloc(32).length;
@@ -203,7 +199,7 @@ const unknownWireError = 'unknown wire error';
     tokens: <Total Tokens Sent Number>
   }
 */
-module.exports = args => {
+export default args => {
   if (!!args.id && !isHash(args.id)) {
     throw new Error('ExpectedPaymentHashToPayViaRoutes');
   }
@@ -212,25 +208,27 @@ module.exports = args => {
     throw new Error('ExpectedAuthenticatedLndToPayViaRoutes');
   }
 
-  if (!isArray(args.routes) || !args.routes.length) {
+  if (!isArray(args.routes) || args.routes.length === 0) {
     throw new Error('ExpectedArrayOfPaymentRoutesToPayViaRoutes');
   }
 
   const id = args.id || randomBytes(payHashLength).toString('hex');
 
-  if (!!args.routes.find(n => !isArray(n.hops))) {
+  if (args.routes.some(n => !isArray(n.hops))) {
     throw new Error('ExpectedRouteHopsToPayViaRoutes');
   }
 
-  if (!!args.routes.find(n => n.hops.find(hop => !hop.public_key))) {
+  if (args.routes.some(n => n.hops.find(hop => !hop.public_key))) {
     throw new Error('ExpectedPublicKeyInPayViaRouteHops');
   }
 
   try {
-    args.routes.forEach(({hops}) => {
-      return hops.forEach(({channel}) => chanNumber({channel}));
-    });
-  } catch (err) {
+    for (const { hops } of args.routes) {
+      for (const { channel } of hops) {
+        chanNumber({ channel })
+      }
+    }
+  } catch {
     throw new Error('ExpectedValidRouteChannelIdsForPayViaRoutes');
   }
 
@@ -243,7 +241,7 @@ module.exports = args => {
 
   asyncMapSeries(args.routes, (route, cbk) => {
     // Exit early without trying a payment when there is a definitive result
-    if (!!isPayDone) {
+    if (isPayDone) {
       return nextTick(cbk);
     }
 
@@ -251,7 +249,7 @@ module.exports = args => {
       return cbk([503, 'PathfindingTimeoutExceeded']);
     }
 
-    return asyncAuto({
+    asyncAuto({
       // Wait for subscription pick up
       waitForSubscribers: cbk => nextTick(cbk),
 
@@ -264,15 +262,15 @@ module.exports = args => {
           route: rpcRouteFromRoute(route),
         },
         (err, res) => {
-          if (!!err && err.details === unknownWireError) {
+          if (err && err.details === unknownWireError) {
             return cbk(null, {});
           }
 
-          if (!!err && err.details === timeoutError) {
+          if (err && err.details === timeoutError) {
             return cbk(null, {});
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorWhenPayingViaRoute', {err}]);
           }
 
@@ -280,10 +278,10 @@ module.exports = args => {
             return cbk([503, 'ExpectedResponseFromLndWhenPayingViaRoute']);
           }
 
-          const confAt = !!res.preimage ? res.resolve_time_ns : undefined;
+          const confAt = res.preimage ? res.resolve_time_ns : undefined;
 
           return cbk(null, {
-            confirmed_at: !!confAt ? msAsISO(nsAsMs(confAt)) : undefined,
+            confirmed_at: confAt ? msAsISO(nsAsMs(confAt)) : undefined,
             failure: res.failure,
             preimage: res.preimage,
           });
@@ -305,14 +303,14 @@ module.exports = args => {
         }
 
         // Exit early when this is a real payment
-        if (!!args.id) {
+        if (args.id) {
           return cbk();
         }
 
         args.lnd.default.deletePayment({
           payment_hash: hexAsBytes(id),
         },
-        err => {
+          () => {
           // Ignore errors trying to clean up probe data
           return cbk();
         });
@@ -389,7 +387,7 @@ module.exports = args => {
         }
 
         // A failure instance has been received for this route
-        if (!!failure) {
+        if (failure) {
           payFailed = failure;
 
           emitter.emit('failure', {
@@ -421,7 +419,7 @@ module.exports = args => {
     returnResult({}, cbk));
   },
   err => {
-    if (!!err && !!emitter.listenerCount('error')) {
+    if (err && !!emitter.listenerCount('error')) {
       emitter.emit('error', err);
     }
 

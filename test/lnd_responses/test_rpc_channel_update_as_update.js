@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {rpcChannelUpdateAsUpdate} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { rpcChannelUpdateAsUpdate } from './../../lnd_responses/index.js';
 
 const makeRoutingPolicy = overrides => {
   const policy = {
@@ -191,7 +190,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => rpcChannelUpdateAsUpdate(args), new Error(error), 'Error');
     } else {
       const update = rpcChannelUpdateAsUpdate(args);

@@ -1,7 +1,6 @@
-const grpc = require('@grpc/grpc-js');
-
-const decodeSerialized = require('./decode_serialized');
-const grpcSsl = require('./grpc_ssl');
+import grpc from '@grpc/grpc-js';
+import decodeSerialized from './decode_serialized.js';
+import grpcSsl from './grpc_ssl.js';
 
 const {combineChannelCredentials} = grpc.credentials;
 const {createFromMetadataGenerator} = grpc.credentials;
@@ -10,7 +9,12 @@ const {Metadata} = grpc;
 const generate = macaroon => {
   const metadata = new Metadata();
 
-  try { metadata.add('macaroon', macaroon.toString('hex')); } catch (err) {}
+  try {
+    metadata.add('macaroon', macaroon.toString('hex'));
+  }
+  catch {
+    /**/
+  }
 
   return metadata;
 };
@@ -30,7 +34,7 @@ const generate = macaroon => {
     credentials: <gRPC Credentials Object>
   }
 */
-module.exports = ({cert, macaroon}) => {
+export default ({cert, macaroon}) => {
   if (!macaroon) {
     return {credentials: grpcSsl({cert}).ssl};
   }

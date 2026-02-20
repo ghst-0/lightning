@@ -1,9 +1,8 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getInvoices} = require('./../../../');
-const {lookupInvoiceResponse} = require('./../fixtures');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { getInvoices } from './../../../index.js';
+import { lookupInvoiceResponse } from './../fixtures/index.js';
 
 const id = Buffer.alloc(32).toString('hex');
 
@@ -155,7 +154,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(getInvoices(args), error, 'Got expected err');
     } else {
       const res = await getInvoices(args);

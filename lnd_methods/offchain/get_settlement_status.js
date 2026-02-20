@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {chanNumber} = require('bolt07');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { chanNumber } from 'bolt07';
 
-const {isLnd} = require('./../../lnd_requests');
+import { returnResult } from 'asyncjs-util';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const errorNotFound = 'htlc unknown';
 const errorUninitiated = 'cannot lookup with flag --store-final-htlc-resolutions=false';
@@ -31,9 +31,9 @@ const type = 'default';
     is_settled: <Payment Is Settled Into Non-HTLC Balance Bool>
   }
 */
-module.exports = ({channel, lnd, payment}, cbk) => {
+export default ({channel, lnd, payment}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!channel) {
@@ -58,19 +58,19 @@ module.exports = ({channel, lnd, payment}, cbk) => {
           htlc_index: payment.toString(),
         },
         (err, res) => {
-          if (!!err && err.details === errorNotFound) {
+          if (err && err.details === errorNotFound) {
             return cbk([404, 'PaymentNotFound']);
           }
 
-          if (!!err && err.details === errorUnimplemented) {
+          if (err && err.details === errorUnimplemented) {
             return cbk([501, 'LookupHtlcResolutionMethodUnsupported']);
           }
 
-          if (!!err && err.details == errorUninitiated) {
+          if (err && err.details === errorUninitiated) {
             return cbk([404, 'LookupHtlcResolutionMethodUninitiated']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedLookupHltcError', {err}]);
           }
 

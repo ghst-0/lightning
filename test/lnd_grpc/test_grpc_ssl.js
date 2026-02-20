@@ -1,7 +1,6 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
-
-const grpcSsl = require('./../../lnd_grpc/grpc_ssl');
+import 'node:assert';
+import test from 'node:test';
+import grpcSsl from './../../lnd_grpc/grpc_ssl.js';
 
 const tests = [
   {

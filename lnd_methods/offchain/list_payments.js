@@ -1,12 +1,10 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
+import { rpcPaymentAsPayment } from './../../lnd_responses/index.js';
+import { sortBy } from './../../arrays/index.js';
 
-const {isLnd} = require('./../../lnd_requests');
-const {rpcPaymentAsPayment} = require('./../../lnd_responses');
-const {sortBy} = require('./../../arrays');
-
-const asStart = n => !!n ? Math.floor(new Date(n).getTime() / 1e3) : undefined;
-const asEnd = n => !!n ? Math.ceil(new Date(n).getTime() / 1e3) : undefined;
+const asStart = n => n ? Math.floor(new Date(n).getTime() / 1e3) : undefined;
+const asEnd = n => n ? Math.ceil(new Date(n).getTime() / 1e3) : undefined;
 const defaultLimit = 250;
 const {isArray} = Array;
 const isFailed = payment => !!payment && payment.status === 'FAILED';
@@ -107,9 +105,9 @@ const type = 'default';
     [next]: <Next Opaque Paging Token String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!!args.is_failed && !!args.is_pending) {
@@ -126,7 +124,7 @@ module.exports = (args, cbk) => {
         let limit = args.limit || defaultLimit;
         let offset;
 
-        if (!!args.token) {
+        if (args.token) {
           try {
             const pagingToken = parse(args.token);
 
@@ -148,7 +146,7 @@ module.exports = (args, cbk) => {
           reversed: true,
         },
         (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedGetPaymentsError', {err}]);
           }
 
@@ -177,12 +175,12 @@ module.exports = (args, cbk) => {
           const payments = listPayments.payments
             .filter(payment => {
               // Exit early when looking for failed payments only
-              if (!!args.is_failed) {
+              if (args.is_failed) {
                 return isFailed(payment);
               }
 
               // Exit early when looking for pending payments only
-              if (!!args.is_pending) {
+              if (args.is_pending) {
                 return isPending(payment);
               }
 

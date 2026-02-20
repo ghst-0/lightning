@@ -1,7 +1,6 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const method = require('./../../../lnd_methods/macaroon/accept_rpc_request');
+import 'node:assert';
+import test from 'node:test';
+import method from './../../../lnd_methods/macaroon/accept_rpc_request.js';
 
 const tests = [
   {
@@ -27,7 +26,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => method(args), error, 'Got expected error');
     } else {
       await method(args);

@@ -1,7 +1,6 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {disconnectWatchtower} = require('./../../../lnd_methods');
+import 'node:assert';
+import test from 'node:test';
+import { disconnectWatchtower } from './../../../lnd_methods/index.js';
 
 const makeLnd = err => {
   return {tower_client: {removeTower: ({}, cbk) => cbk(err)}};
@@ -55,7 +54,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(disconnectWatchtower(args), error, 'Got expected error');
     } else {
       await disconnectWatchtower(args);

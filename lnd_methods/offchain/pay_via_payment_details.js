@@ -1,9 +1,9 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const finishedPayment = require('./finished_payment');
-const {isLnd} = require('./../../lnd_requests');
-const subscribeToPayViaDetails = require('./subscribe_to_pay_via_details');
+import finishedPayment from './finished_payment.js';
+import { isLnd } from './../../lnd_requests/index.js';
+import subscribeToPayViaDetails from './subscribe_to_pay_via_details.js';
 
 const isPublicKey = n => !!n && /^[0-9A-F]{66}$/i.test(n);
 const method = 'sendPaymentV2';
@@ -91,9 +91,9 @@ const type = 'router';
     tokens: <Total Tokens Paid Rounded Down Number>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isPublicKey(args.destination)) {
@@ -133,7 +133,7 @@ module.exports = (args, cbk) => {
           });
 
           const finished = (err, res) => {
-            if (!!err) {
+            if (err) {
               return cbk(err);
             }
 
@@ -150,8 +150,6 @@ module.exports = (args, cbk) => {
         } catch (err) {
           return cbk([400, err.message]);
         }
-
-        return;
       }],
     },
     returnResult({reject, resolve, of: 'pay'}, cbk));

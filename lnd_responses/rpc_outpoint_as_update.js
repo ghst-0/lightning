@@ -18,7 +18,7 @@ const {isBuffer} = Buffer;
     transaction_vout: <Transaction Output Index Number>
   }
 */
-module.exports = update => {
+export default update => {
   if (!update) {
     throw new Error('ExpectedUpdateDetailsForRpcOutpointUpdate');
   }

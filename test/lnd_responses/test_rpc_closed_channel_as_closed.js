@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {rpcClosedChannelAsClosed} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { rpcClosedChannelAsClosed } from './../../lnd_responses/index.js';
 
 const makeArgs = overrides => {
   const args = {
@@ -178,7 +177,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => rpcClosedChannelAsClosed(args), new Error(error), 'Error');
     } else {
       const channel = rpcClosedChannelAsClosed(args);

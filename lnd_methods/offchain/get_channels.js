@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
-const {rpcChannelAsChannel} = require('./../../lnd_responses');
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcChannelAsChannel } from './../../lnd_responses/index.js';
 
 const {isArray} = Array;
 const method = 'listChannels';
@@ -86,9 +86,9 @@ const type = 'default';
     }]
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
@@ -103,14 +103,14 @@ module.exports = (args, cbk) => {
         const peer = args.partner_public_key;
 
         return args.lnd[type][method]({
-          active_only: !!args.is_active ? true : undefined,
-          inactive_only: !!args.is_offline ? true : undefined,
-          peer: !peer ? undefined : Buffer.from(peer, 'hex'),
-          private_only: !!args.is_private ? true : undefined,
-          public_only: !!args.is_public ? true : undefined,
+          active_only: args.is_active ? true : undefined,
+          inactive_only: args.is_offline ? true : undefined,
+          peer: peer ? Buffer.from(peer, 'hex') : undefined,
+          private_only: args.is_private ? true : undefined,
+          public_only: args.is_public ? true : undefined,
         },
         (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedGetChannelsError', {err}]);
           }
 

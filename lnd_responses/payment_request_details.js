@@ -1,7 +1,6 @@
-const {featureFlagDetails} = require('bolt09');
-
-const routeFromRouteHint = require('./route_from_route_hint');
-const {safeTokens} = require('./../bolt00');
+import { featureFlagDetails } from 'bolt09';
+import routeFromRouteHint from './route_from_route_hint.js';
+import { safeTokens } from './../bolt00/index.js';
 
 const bufToHex = n => !n.length ? undefined : n.toString('hex');
 const defaultExpireMs = 1000 * 60 * 60;
@@ -76,7 +75,7 @@ const {now} = Date;
     tokens: <Requested Tokens Rounded Down Number>
   }
 */
-module.exports = args => {
+export default args => {
   if (!args.destination) {
     throw new Error('ExpectedDestinationInDecodedPaymentRequest');
   }

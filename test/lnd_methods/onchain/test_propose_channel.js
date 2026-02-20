@@ -1,9 +1,8 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const EventEmitter = require('node:events');
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {proposeChannel} = require('./../../../lnd_methods');
+import 'node:assert';
+import EventEmitter from 'node:events';
+import 'node:assert';
+import test from 'node:test';
+import { proposeChannel } from './../../../lnd_methods/index.js';
 
 const makeLnd = ({err, data}) => {
   const lnd = {
@@ -14,7 +13,7 @@ const makeLnd = ({err, data}) => {
         emitter.cancel = () => {};
 
         process.nextTick(() => {
-          if (!!err) {
+          if (err) {
             return emitter.emit('error', err);
           }
 
@@ -178,7 +177,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(proposeChannel(args), error, 'Got expected error');
     } else {
       const res = await proposeChannel(args);

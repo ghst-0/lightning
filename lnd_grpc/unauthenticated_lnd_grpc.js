@@ -1,16 +1,16 @@
-const {join} = require('path');
-
-const grpc = require('@grpc/grpc-js');
-const {loadSync} = require('@grpc/proto-loader');
-
-const {defaultSocket} = require('./../grpc');
-const grpcOptions = require('./grpc_options');
-const grpcSsl = require('./grpc_ssl');
-const {grpcSslCipherSuites} = require('./../grpc');
-const {packageTypes} = require('./../grpc');
-const {protoFiles} = require('./../grpc');
-const {protosDir} = require('./../grpc');
-const {unauthenticatedServiceTypes} = require('./../grpc');
+import { join } from 'node:path';
+import grpc from '@grpc/grpc-js';
+import { loadSync } from '@grpc/proto-loader';
+import {
+  defaultSocket,
+  grpcSslCipherSuites,
+  packageTypes,
+  protoFiles,
+  protosDir,
+  unauthenticatedServiceTypes
+} from './../grpc/index.js';
+import grpcOptions from './grpc_options.js';
+import grpcSsl from './grpc_ssl.js';
 
 const {GRPC_SSL_CIPHER_SUITES} = process.env;
 const {keys} = Object;
@@ -37,7 +37,7 @@ const pathToProto = file => join(__dirname, protosDir, file);
     }
   }
 */
-module.exports = ({cert, path, socket}) => {
+export default ({cert, path, socket}) => {
   const credentials = grpcSsl({cert}).ssl;
   const lndSocket = socket || defaultSocket;
 
@@ -52,7 +52,7 @@ module.exports = ({cert, path, socket}) => {
 
       const file = protoFiles[service];
 
-      const protoPath = !!path ? join(path, file) : pathToProto(file);
+      const protoPath = path ? join(path, file) : pathToProto(file);
 
       const rpc = grpc.loadPackageDefinition(loadSync(protoPath, grpcOptions));
 

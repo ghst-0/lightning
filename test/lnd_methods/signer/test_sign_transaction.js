@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {signTransaction} = require('./../../../');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { signTransaction } from './../../../index.js';
 
 const makeLnd = (err, res) => {
   return {signer: {signOutputRaw: ({}, cbk) => cbk(err, res)}};
@@ -101,7 +100,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(signTransaction(args), error, 'Got expected error');
     } else {
       const {signatures} = await signTransaction(args);

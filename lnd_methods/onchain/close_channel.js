@@ -1,10 +1,9 @@
-const asyncAuto = require('async/auto');
-const {chanNumber} = require('bolt07');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {addPeer} = require('./../peers');
-const {getChannel} = require('./../info');
-const {isLnd} = require('./../../lnd_requests');
+import { addPeer } from './../peers/index.js';
+import { getChannel } from './../info/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const defaultConfTarget = 6;
 const method = 'closeChannel';
@@ -46,9 +45,9 @@ const type = 'default';
     transaction_vout: <Closing Transaction Vout Number>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         const targetConfs = args.target_confirmations;
@@ -114,12 +113,12 @@ module.exports = (args, cbk) => {
       // Determine what the confirmations to confirm should be
       targetConf: ['validate', ({}, cbk) => {
         // Exit early when a chain fee cannot be specified
-        if (!!args.is_force_close) {
+        if (args.is_force_close) {
           return cbk();
         }
 
         // Exit early when there is a chain fee rate specified
-        if (!!args.tokens_per_vbyte) {
+        if (args.tokens_per_vbyte) {
           return cbk();
         }
 
@@ -147,12 +146,12 @@ module.exports = (args, cbk) => {
           force: !!args.is_force_close,
           max_fee_per_vbyte: args.max_tokens_per_vbyte || undefined,
           no_wait: args.is_graceful_close || undefined,
-          sat_per_vbyte: !!tokensPerVByte ? tokensPerVByte : undefined,
+          sat_per_vbyte: tokensPerVByte ? tokensPerVByte : undefined,
           target_conf: targetConf,
         });
 
         const finished = (err, res) => {
-          if (!!isFinished) {
+          if (isFinished) {
             return;
           }
 
@@ -195,8 +194,6 @@ module.exports = (args, cbk) => {
           default:
             break;
           }
-
-          return;
         });
 
         closeChannel.on('end', () => {});
@@ -206,8 +203,6 @@ module.exports = (args, cbk) => {
         });
 
         closeChannel.on('status', () => {});
-
-        return;
       }],
     },
     returnResult({reject, resolve, of: 'closeChannel'}, cbk));

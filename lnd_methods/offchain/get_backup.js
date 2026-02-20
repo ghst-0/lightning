@@ -1,13 +1,13 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const bufferFromHex = hex => Buffer.from(hex, 'hex');
 const hexFromBuffer = buffer => buffer.toString('hex');
 const {isBuffer} = Buffer;
 const isHash = n => /^[0-9A-F]{64}$/i.test(n);
-const isNumber = n => !isNaN(n);
+const isNumber = n => !Number.isNaN(n);
 const method = 'exportChannelBackup';
 const type = 'default';
 
@@ -26,9 +26,9 @@ const type = 'default';
     backup: <Channel Backup Hex String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
@@ -55,7 +55,7 @@ module.exports = (args, cbk) => {
           },
         },
         (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrExportingBackupForChannel', {err}]);
           }
 
@@ -63,7 +63,7 @@ module.exports = (args, cbk) => {
             return cbk([503, 'ExpectedResultOfGetChannelBackupRequest']);
           }
 
-          if (!isBuffer(res.chan_backup) || !res.chan_backup.length) {
+          if (!isBuffer(res.chan_backup) || res.chan_backup.length === 0) {
             return cbk([503, 'UnexpectedResponseForChannelBackupRequest']);
           }
 

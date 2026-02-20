@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {rpcRouteFromRoute} = require('./../../lnd_requests');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { rpcRouteFromRoute } from './../../lnd_requests/index.js';
 
 const tests = [
   {
@@ -122,7 +121,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => rpcRouteFromRoute(args), new Error(error), 'Got error');
     } else {
       deepStrictEqual(rpcRouteFromRoute(args), expected, 'RPC route derived');

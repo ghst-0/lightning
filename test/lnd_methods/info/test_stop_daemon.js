@@ -1,8 +1,7 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getInfoResponse} = require('./../fixtures');
-const {stopDaemon} = require('./../../../');
+import 'node:assert';
+import test from 'node:test';
+import { getInfoResponse } from './../fixtures/index.js';
+import { stopDaemon } from './../../../index.js';
 
 const makeLnd = ({attempts}) => {
   const response = getInfoResponse;
@@ -46,7 +45,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => stopDaemon(args), error, 'Got error');
     } else {
       await stopDaemon(args);

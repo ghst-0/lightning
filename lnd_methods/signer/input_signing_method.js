@@ -21,7 +21,7 @@ const v1ScriptSpend = 3;
     method: <Signing Method Number>
   }
 */
-module.exports = ({input, outputs}, cbk) => {
+export default ({input, outputs}, cbk) => {
   // Exit early when lack of previous outputs indicates a v0 spend
   if (!outputs) {
     return {method: v0SpendMethod};

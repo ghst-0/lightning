@@ -1,15 +1,15 @@
-const addAdvertisedFeature = require('./add_advertised_feature');
-const addExternalSocket = require('./add_external_socket');
-const addPeer = require('./add_peer');
-const getPeers = require('./get_peers');
-const removeAdvertisedFeature = require('./remove_advertised_feature');
-const removeExternalSocket = require('./remove_external_socket');
-const removePeer = require('./remove_peer');
-const subscribeToPeers = require('./subscribe_to_peers');
-const updateAlias = require('./update_alias');
-const updateColor = require('./update_color');
+import addAdvertisedFeature from './add_advertised_feature.js';
+import addExternalSocket from './add_external_socket.js';
+import addPeer from './add_peer.js';
+import getPeers from './get_peers.js';
+import removeAdvertisedFeature from './remove_advertised_feature.js';
+import removeExternalSocket from './remove_external_socket.js';
+import removePeer from './remove_peer.js';
+import subscribeToPeers from './subscribe_to_peers.js';
+import updateAlias from './update_alias.js';
+import updateColor from './update_color.js';
 
-module.exports = {
+export {
   addAdvertisedFeature,
   addExternalSocket,
   addPeer,

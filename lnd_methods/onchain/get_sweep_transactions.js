@@ -1,9 +1,9 @@
-const asyncAuto = require('async/auto');
-const {componentsOfTransaction} = require('@alexbosworth/blockchain');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { componentsOfTransaction } from '@alexbosworth/blockchain';
+import { returnResult } from 'asyncjs-util';
 
-const getChainTransactions = require('./get_chain_transactions');
-const {isLnd} = require('./../../lnd_requests');
+import getChainTransactions from './get_chain_transactions.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const {isArray} = Array;
 const method = 'listSweeps';
@@ -46,9 +46,9 @@ const type = 'wallet';
     }]
   }
 */
-module.exports = ({after, lnd}, cbk) => {
+export default ({after, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -61,11 +61,11 @@ module.exports = ({after, lnd}, cbk) => {
       // Get sweep transaction ids
       getSweeps: ['validate', ({}, cbk) => {
         return lnd[type][method]({start_height: after}, (err, res) => {
-          if (!!err && err.details === notSupportedError) {
+          if (err && err.details === notSupportedError) {
             return cbk([501, 'BackingLndDoesNotSupportListingSweeps']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedGetSweepTxError', {err}]);
           }
 

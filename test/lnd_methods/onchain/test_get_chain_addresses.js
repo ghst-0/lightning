@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getChainAddresses} = require('./../../../lnd_methods');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { getChainAddresses } from './../../../lnd_methods/index.js';
 
 const makeLnd = ({err, res}) => {
   return {
@@ -64,7 +63,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => getChainAddresses(args), error, 'Got error');
     } else {
       const res = await getChainAddresses(args);

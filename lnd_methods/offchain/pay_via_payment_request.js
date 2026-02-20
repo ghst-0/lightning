@@ -1,9 +1,9 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const finishedPayment = require('./finished_payment');
-const {isLnd} = require('./../../lnd_requests');
-const subscribeToPayViaRequest = require('./subscribe_to_pay_via_request');
+import finishedPayment from './finished_payment.js';
+import { isLnd } from './../../lnd_requests/index.js';
+import subscribeToPayViaRequest from './subscribe_to_pay_via_request.js';
 
 const method = 'sendPaymentV2';
 const type = 'router';
@@ -74,9 +74,9 @@ const type = 'router';
     tokens: <Total Tokens Paid Rounded Down Number>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
@@ -111,7 +111,7 @@ module.exports = (args, cbk) => {
         });
 
         const finished = (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk(err);
           }
 
@@ -125,8 +125,6 @@ module.exports = (args, cbk) => {
         sub.once('confirmed', confirmed => finished(null, {confirmed}));
         sub.once('error', err => finished(err));
         sub.once('failed', failed => finished(null, {failed}));
-
-        return;
       }],
     },
     returnResult({reject, resolve, of: 'pay'}, cbk));

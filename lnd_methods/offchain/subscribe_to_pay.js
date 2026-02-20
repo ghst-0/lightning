@@ -1,44 +1,32 @@
-const {createHash} = require('crypto');
-const EventEmitter = require('events');
+import EventEmitter from 'node:events';
+import asyncAuto from 'async/auto.js';
+import { chanNumber } from 'bolt07';
+import { parsePaymentRequest } from 'invoices';
 
-const asyncAuto = require('async/auto');
-const {chanFormat} = require('bolt07');
-const {chanNumber} = require('bolt07');
-const {parsePaymentRequest} = require('invoices');
-
-const {confirmedFromPayment} = require('./../../lnd_responses');
-const {confirmedFromPaymentStatus} = require('./../../lnd_responses');
-const emitPayment = require('./emit_payment');
-const {failureFromPayment} = require('./../../lnd_responses');
-const {getHeight} = require('./../generic');
-const {isLnd} = require('./../../lnd_requests');
-const {paymentAmounts} = require('./../../bolt00');
-const {routeHintFromRoute} = require('./../../lnd_requests');
-const {safeTokens} = require('./../../bolt00');
-const {states} = require('./payment_states');
+import emitPayment from './emit_payment.js';
+import { getHeight } from './../generic/index.js';
+import { isLnd, routeHintFromRoute } from './../../lnd_requests/index.js';
+import { paymentAmounts } from './../../bolt00/index.js';
 
 const asTimePreference = n => n === undefined ? n : ((n * 2) - 1e6) / 1e6;
 const cltvBuf = 3;
-const cltvLimit = (limit, height) => !limit ? undefined : limit - height;
+const cltvLimit = (limit, height) => limit ? limit - height : undefined;
 const cltvLimitErr = /cltv limit \d+ should be greater than \d+/;
 const defaultCltvDelta = 43;
 const defaultMaxPaths = 1;
 const defaultTimeoutSeconds = 25;
-const hexToBuf = hex => !hex ? undefined : Buffer.from(hex, 'hex');
+const hexToBuf = hex => hex ? Buffer.from(hex, 'hex') : undefined;
 const {isArray} = Array;
-const isConfidence = n => !isNaN(n) && n >= 0 && n <= 1e6;
+const isConfidence = n => !Number.isNaN(n) && n >= 0 && n <= 1e6;
 const isHex = n => !!n && !(n.length % 2) && /^[0-9A-F]*$/i.test(n);
-const maxTokens = '4294967296';
 const method = 'sendPaymentV2';
 const msPerSec = 1000;
-const mtokensPerToken = BigInt(1e3);
 const {nextTick} = process;
 const numberFromChannel = channel => chanNumber({channel}).number;
 const {round} = Math;
-const sha256 = preimage => createHash('sha256').update(preimage).digest();
+
 const type = 'router';
-const unknownServiceErr = 'unknown service verrpc.Versioner';
-const unsupportedFeatures = [30, 31];
+const unsupportedFeatures = new Set([30, 31]);
 
 /** Initiate and subscribe to the outcome of a payment
 
@@ -212,7 +200,7 @@ const unsupportedFeatures = [30, 31];
     }
   }
 */
-module.exports = args => {
+export default args => {
   if (!!args.cltv_delta && !!args.request) {
     throw new Error('UnexpectedCltvDeltaWhenSubscribingToPayPaymentRequest');
   }
@@ -233,20 +221,20 @@ module.exports = args => {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToPayment');
   }
 
-  if (!!args.messages && !isArray(args.messages)) {
+  if (args.messages && !isArray(args.messages)) {
     throw new Error('ExpectedArrayOfMessagesToSubscribeToPayment');
   }
 
-  if (!!args.messages) {
+  if (args.messages) {
     if (args.messages.length !== args.messages.filter(n => !!n).length) {
       throw new Error('ExpectedMessageEntriesInPaymentMessages');
     }
 
-    if (!!args.messages.find(n => !n.type)) {
+    if (args.messages.some(n => !n.type)) {
       throw new Error('ExpectedMessageTypeNumberInPaymentMessages');
     }
 
-    if (!!args.messages.find(n => !isHex(n.value))) {
+    if (args.messages.some(n => !isHex(n.value))) {
       throw new Error('ExpectedHexEncodedValuesInPaymentMessages');
     }
   }
@@ -255,30 +243,31 @@ module.exports = args => {
     throw new Error('ExpectedTokenAmountToPayWhenPaymentRequestNotSpecified');
   }
 
-  if (!!args.request) {
+  if (args.request) {
     try {
       parsePaymentRequest({request: args.request});
-    } catch (err) {
+    } catch {
       throw new Error('ExpectedValidPaymentRequestToMakePayment');
     }
   }
 
-  if (!!args.routes && !isArray(args.routes)) {
+  if (args.routes && !isArray(args.routes)) {
     throw new Error('UnexpectedFormatForRoutesWhenSubscribingToPayment');
   }
 
-  if (!!args.routes) {
+  if (!args.routes) {
     try {
-      args.routes.forEach(route => routeHintFromRoute({route}));
-    } catch (err) {
+      for (const route of args.routes) {
+        routeHintFromRoute({ route })
+      }
+    } catch {
       throw new Error('ExpectedValidRoutesWhenSubscribingToPayment');
     }
   }
 
-  const channel = !!args.outgoing_channel ? args.outgoing_channel : null;
+  const channel = args.outgoing_channel ? args.outgoing_channel : null;
   const emitter = new EventEmitter();
-  const features = !args.features ? undefined : args.features.map(n => n.bit);
-  const maxFee = args.max_fee !== undefined ? args.max_fee : maxTokens;
+  const features = args.features ? args.features.map(n => n.bit) : undefined;
   const messages = args.messages || [];
   const routes = (args.routes || []);
   const timeoutSecs = round((args.pathfinding_timeout || Number()) / msPerSec);
@@ -288,12 +277,12 @@ module.exports = args => {
       return;
     }
 
-    if (!!isArray(err)) {
+    if (isArray(err)) {
       return emitter.emit('error', err);
     }
 
     // Exit early when there is a CLTV limit related failure
-    if (!!err && !!err.details && cltvLimitErr.test(err.details)) {
+    if (err && !!err.details && cltvLimitErr.test(err.details)) {
       return emitter.emit('failed', {is_route_not_found: true});
     }
 
@@ -304,7 +293,7 @@ module.exports = args => {
     return {hop_hints: routeHintFromRoute({route}).hops};
   });
 
-  const finalCltv = !args.cltv_delta ? defaultCltvDelta : args.cltv_delta;
+  const finalCltv = args.cltv_delta ? args.cltv_delta : defaultCltvDelta;
 
   asyncAuto({
     // Determine what cltv delta and features would be used with the payment
@@ -315,7 +304,7 @@ module.exports = args => {
       }
 
       // Exit early when feature bits are specified directly
-      if (!!features) {
+      if (features) {
         return cbk(null, {features});
       }
 
@@ -358,9 +347,9 @@ module.exports = args => {
 
     // Validate the payment request features
     checkFeatures: ['aspects', ({aspects}, cbk) => {
-      const bit = aspects.features.find(n => unsupportedFeatures.includes(n));
+      const bit = aspects.features.find(n => unsupportedFeatures.has(n));
 
-      if (!!bit) {
+      if (bit) {
         return cbk([501, 'UnsupportedPaymentFeatureInPayRequest', {bit}]);
       }
 
@@ -374,7 +363,7 @@ module.exports = args => {
       }
 
       const currentHeight = getHeight.current_block_height;
-      const lastCltv = !args.request ? finalCltv : aspects.final_cltv;
+      const lastCltv = args.request ? aspects.final_cltv : finalCltv;
 
       const maxDelta = cltvLimit(args.max_timeout_height, currentHeight);
 
@@ -414,31 +403,31 @@ module.exports = args => {
       },
       {});
 
-      const singleOut = !channel ? undefined : chanNumber({channel}).number;
-      const hasOutIds = !!outgoingChannelIds && !!outgoingChannelIds.length;
+      const singleOut = channel ? chanNumber({ channel }).number : undefined;
+      const hasOutIds = outgoingChannelIds && outgoingChannelIds.length > 0;
 
       return cbk(null, {
         allow_self_payment: true,
         amt: amounts.tokens,
         amt_msat: amounts.mtokens,
         cancelable: true,
-        cltv_limit: !!args.max_timeout_height ? maxCltvDelta : undefined,
-        dest: !args.destination ? undefined : hexToBuf(args.destination),
-        dest_custom_records: !messages.length ? undefined : destTlv,
+        cltv_limit: args.max_timeout_height ? maxCltvDelta : undefined,
+        dest: args.destination ? hexToBuf(args.destination) : undefined,
+        dest_custom_records: messages.length === 0 ? undefined : destTlv,
         dest_features: features,
         fee_limit_msat: amounts.max_fee_mtokens,
         fee_limit_sat: amounts.max_fee,
-        final_cltv_delta: !args.request ? finalCltv : undefined,
+        final_cltv_delta: args.request ? undefined : finalCltv,
         last_hop_pubkey: hexToBuf(args.incoming_peer),
         max_parts: args.max_paths || defaultMaxPaths,
         max_shard_size_msat: args.max_path_mtokens || undefined,
         no_inflight_updates: false,
-        outgoing_chan_id: !hasOutIds ? singleOut : undefined,
+        outgoing_chan_id: hasOutIds ? undefined : singleOut,
         outgoing_chan_ids: outgoingChannelIds,
-        payment_addr: !!args.payment ? hexToBuf(args.payment) : undefined,
-        payment_hash: !args.id ? undefined : hexToBuf(args.id),
-        payment_request: !args.request ? undefined : args.request,
-        route_hints: !hints.length ? undefined : hints,
+        payment_addr: args.payment ? hexToBuf(args.payment) : undefined,
+        payment_hash: args.id ? hexToBuf(args.id) : undefined,
+        payment_request: args.request ? args.request : undefined,
+        route_hints: hints.length > 0 ? hints : undefined,
         time_pref: asTimePreference(args.confidence),
         timeout_seconds: timeoutSecs || defaultTimeoutSeconds,
       });
@@ -456,17 +445,13 @@ module.exports = args => {
 
         return cbk(err);
       });
-
-      return;
     }],
   },
   err => {
     return nextTick(() => {
-      if (!!err) {
+      if (err) {
         return emitError(err);
       }
-
-      return;
     });
   });
 

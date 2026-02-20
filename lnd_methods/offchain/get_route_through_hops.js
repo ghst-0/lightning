@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {chanNumber} = require('bolt07');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { chanNumber } from 'bolt07';
+import { returnResult } from 'asyncjs-util';
 
-const {routesFromQueryRoutes} = require('../../lnd_responses');
+import { routesFromQueryRoutes } from '../../lnd_responses/index.js';
 
 const defaultFinalCltvDelta = 144;
 const defaultMtokens = '1000000';
@@ -60,9 +60,9 @@ const unknownServiceMessage = 'unknown service routerrpc.Router';
     }
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!args.lnd || !args.lnd.router) {
@@ -77,7 +77,7 @@ module.exports = (args, cbk) => {
           return cbk([400, 'ExpectedPublicKeysToGetRouteThroughHops']);
         }
 
-        if (!args.public_keys.length) {
+        if (args.public_keys.length === 0) {
           return cbk([400, 'ExpectedPublicKeyToSentToInRouteThroughHops']);
         }
 
@@ -88,27 +88,27 @@ module.exports = (args, cbk) => {
       getRoute: ['validate', ({}, cbk) => {
         const channel = args.outgoing_channel;
 
-        const outgoingId = !channel ? undefined : chanNumber({channel}).number;
+        const outgoingId = channel ? chanNumber({ channel }).number : undefined;
 
-        const mtokenTokens = !args.tokens ? undefined : tokAsMtok(args.tokens);
+        const mtokenTokens = args.tokens ? tokAsMtok(args.tokens) : undefined;
 
         return args.lnd.router.buildRoute({
           amt_msat: mtokenTokens || args.mtokens || defaultMtokens,
           final_cltv_delta: args.cltv_delta || defaultFinalCltvDelta,
           hop_pubkeys: args.public_keys.map(n => Buffer.from(n, 'hex')),
           outgoing_chan_id: outgoingId,
-          payment_addr: !!args.payment ? hexAsBuffer(args.payment) : undefined,
+          payment_addr: args.payment ? hexAsBuffer(args.payment) : undefined,
         },
         (err, res) => {
-          if (!!err && err.details === unknownServiceMessage) {
+          if (err && err.details === unknownServiceMessage) {
             return cbk([501, 'ExpectedRouterRpcWithGetRouteMethod']);
           }
 
-          if (!!err && !!err.details && err.details.startsWith(noChannelMsg)) {
+          if (err && !!err.details && err.details.startsWith(noChannelMsg)) {
             return cbk([503, 'CannotFindOutboundChannel', {err}]);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorGettingRouteForHops', {err}]);
           }
 

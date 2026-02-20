@@ -1,4 +1,4 @@
-const {channelTypes} = require('./constants');
+import { channelTypes } from './constants';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const compressedPublicKeyLength = 33;
@@ -51,7 +51,7 @@ const weightPerVByte = 4;
     [type]: <Channel Commitment Transaction Type String>
   }
 */
-module.exports = data => {
+export default data => {
   if (!data) {
     throw new Error('ExpectedRequestDataForChannelRequest');
   }

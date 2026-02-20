@@ -20,7 +20,7 @@ const {isArray} = Array;
     [ignored]: [<Node Public Key Buffer Object>]
   }
 */
-module.exports = ({ignore}) => {
+export default ({ignore}) => {
   if (!ignore) {
     return {};
   }

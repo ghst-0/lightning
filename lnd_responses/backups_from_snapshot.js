@@ -37,7 +37,7 @@ const {isBuffer} = Buffer;
     }]
   }
 */
-module.exports = args => {
+export default args => {
   if (!args.multi_chan_backup) {
     throw new Error('ExpectedMultiChannelBackupInSnapshot');
   }

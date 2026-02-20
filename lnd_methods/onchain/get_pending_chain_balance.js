@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const method = 'walletBalance';
 const type = 'default';
@@ -21,9 +21,9 @@ const type = 'default';
     pending_chain_balance: <Pending Chain Balance Tokens Number>
   }
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -36,7 +36,7 @@ module.exports = ({lnd}, cbk) => {
       // Determine the balance that is in unconfirmed chain outputs
       getUnconfirmed: ['validate', ({}, cbk) => {
         return lnd[type][method]({}, (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'GetChainBalanceError', {err}]);
           }
 

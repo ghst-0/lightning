@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
 const isHex = n => !!n && !(n.length % 2) && /^[0-9A-F]*$/i.test(n);
@@ -23,9 +23,9 @@ const type = 'default';
     is_valid: <Backup is Valid Bool>
   }
 */
-module.exports = ({backup, lnd}, cbk) => {
+export default ({backup, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isHex(backup)) {
@@ -47,7 +47,7 @@ module.exports = ({backup, lnd}, cbk) => {
           },
         },
         err => {
-          if (!!err) {
+          if (err) {
             return cbk(null, {err, is_valid: false});
           }
 

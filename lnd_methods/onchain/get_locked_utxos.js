@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const asMs = sec => Number(sec) * 1e3;
 const bufferAsHex = buffer => buffer.toString('hex');
@@ -37,9 +37,9 @@ const unsuppportedErr = /unknown/;
     }]
   }
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -53,11 +53,11 @@ module.exports = ({lnd}, cbk) => {
       getLockedUtxos: ['validate', ({}, cbk) => {
         return lnd[type][method]({}, (err, res) => {
           // LND 0.12.1 and below do not support listing leases
-          if (!!err && unsuppportedErr.test(err.details)) {
+          if (err && unsuppportedErr.test(err.details)) {
             return cbk([501, 'BackingLndDoesNotSupportGettingLockedUtxos']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorGettingLockedUtxos', {err}]);
           }
 
@@ -69,7 +69,7 @@ module.exports = ({lnd}, cbk) => {
             return cbk([503, 'ExpectedExpirationDateForLockedUtxo']);
           }
 
-          if (!!res.locked_utxos.filter(n => !isBuffer(n.pk_script)).length) {
+          if (res.locked_utxos.some(n => !isBuffer(n.pk_script))) {
             return cbk([503, 'ExpectedPkScriptForLockedUtxosInResponse']);
           }
 
@@ -84,7 +84,7 @@ module.exports = ({lnd}, cbk) => {
             }));
 
             return cbk(null, {utxos});
-          } catch (err) {
+          } catch {
             return cbk([503, 'UnexpectedErrorParsingLockedUtxosResponse']);
           }
         });

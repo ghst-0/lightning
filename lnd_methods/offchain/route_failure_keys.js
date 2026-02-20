@@ -1,4 +1,4 @@
-const {chanFormat} = require('bolt07');
+import { chanFormat } from 'bolt07';
 
 const notFoundIndex = -1;
 
@@ -23,7 +23,7 @@ const notFoundIndex = -1;
     [keys]: [<Public Key Hex String>]
   }
 */
-module.exports = ({failure, route}) => {
+export default ({failure, route}) => {
   // Exit early when there is no failure to derive failure keys for
   if (!failure) {
     return {};

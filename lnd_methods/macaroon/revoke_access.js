@@ -1,10 +1,9 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const method = 'deleteMacaroonId';
-const minimumId = 1;
 const notSupported = /unknown/;
 const type = 'default';
 
@@ -21,9 +20,9 @@ const type = 'default';
 
   @returns via cbk or Promise
 */
-module.exports = ({id, lnd}, cbk) => {
+export default ({id, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!id) {
@@ -40,11 +39,11 @@ module.exports = ({id, lnd}, cbk) => {
       // Revoke access
       revoke: ['validate', ({}, cbk) => {
         return lnd[type][method]({root_key_id: id}, (err, res) => {
-          if (!!err && notSupported.test(err.details)) {
+          if (err && notSupported.test(err.details)) {
             return cbk([501, 'RevokeAccessMethodNotSupported']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorFromRevokeMacaroon', {err}]);
           }
 

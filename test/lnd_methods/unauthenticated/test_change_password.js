@@ -1,7 +1,6 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {changePassword} = require('./../../../lnd_methods');
+import 'node:assert';
+import test from 'node:test';
+import { changePassword } from './../../../lnd_methods/index.js';
 
 
 const tests = [
@@ -44,7 +43,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(changePassword(args), error, 'Got expected error');
     } else {
       await changePassword(args);

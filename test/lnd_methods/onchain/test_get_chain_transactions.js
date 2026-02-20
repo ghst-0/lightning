@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getChainTransactions} = require('./../../../lnd_methods');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { getChainTransactions } from './../../../lnd_methods/index.js';
 
 const makeExpected = overrides => {
   const transaction = {
@@ -168,7 +167,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => getChainTransactions(args), error, 'Got err');
     } else {
       const {transactions} = await getChainTransactions(args);

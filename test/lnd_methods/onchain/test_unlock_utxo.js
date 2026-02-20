@@ -1,7 +1,6 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {unlockUtxo} = require('./../../../lnd_methods');
+import 'node:assert';
+import test from 'node:test';
+import { unlockUtxo } from './../../../lnd_methods/index.js';
 
 const id = Buffer.alloc(32).toString('hex');
 
@@ -52,7 +51,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(unlockUtxo(args), error, 'Got expected error');
     } else {
       await unlockUtxo(args);

@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getBackup} = require('./../../../');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { getBackup } from './../../../index.js';
 
 const txId = Buffer.alloc(32).toString('hex');
 
@@ -69,7 +68,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(getBackup(args), error, 'Got expected error');
     } else {
       const {backup} = await getBackup(args);

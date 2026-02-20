@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const connectionFailure = '14 UNAVAILABLE: Connect Failed';
 const expectedMnemonicLength = 24;
@@ -24,9 +24,9 @@ const utf8AsBuffer = utf8 => Buffer.from(utf8, 'utf8');
     seed: <Cipher Seed Mnemonic String>
   }
 */
-module.exports = ({lnd, passphrase}, cbk) => {
+export default ({lnd, passphrase}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -38,14 +38,14 @@ module.exports = ({lnd, passphrase}, cbk) => {
 
       // Create seed
       createSeed: ['validate', ({}, cbk) => {
-        const pass = !passphrase ? undefined : utf8AsBuffer(passphrase);
+        const pass = passphrase ? utf8AsBuffer(passphrase) : undefined;
 
         return lnd[type][method]({aezeed_passphrase: pass}, (err, res) => {
-          if (!!err && err.message === connectionFailure) {
+          if (err && err.message === connectionFailure) {
             return cbk([503, 'UnexpectedConnectionFailure']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedCreateSeedError', {err}]);
           }
 

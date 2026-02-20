@@ -1,11 +1,10 @@
-const EventEmitter = require('events');
-const {deepStrictEqual} = require('node:assert').strict;
-const {promisify} = require('util');
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {subscribeToGraph} = require('./../../../');
+import EventEmitter from 'node:events';
+import 'node:assert';
+import { promisify } from 'util';
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { subscribeToGraph } from './../../../index.js';
 
 const nextTick = promisify(process.nextTick);
 
@@ -521,7 +520,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       throws(() => subscribeToGraph(args), new Error(error), 'Got error');
     } else {
       const events = [];

@@ -1,9 +1,8 @@
-const asyncAuto = require('async/auto');
-const asyncEach = require('async/each');
-const asyncEachSeries = require('async/eachSeries');
-const {returnResult} = require('asyncjs-util');
-
-const {isLnd} = require('./../../lnd_requests');
+import asyncAuto from 'async/auto.js';
+import asyncEach from 'async/each.js';
+import asyncEachSeries from 'async/eachSeries.js';
+import { returnResult } from 'asyncjs-util';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const bufferFromHex = hex => Buffer.from(hex, 'hex');
 const {isArray} = Array;
@@ -24,24 +23,24 @@ const type = 'default';
 
   @returns via cbk or Promise
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isArray(args.channels)) {
           return cbk([400, 'ExpectedPendingChannelIdsToFundChannels']);
         }
 
-        if (!args.channels.length) {
+        if (args.channels.length === 0) {
           return cbk([400, 'ExpectedPendingChannelIdsToFund']);
         }
 
-        if (args.channels.filter(n => !n).length) {
+        if (args.channels.some(n => !n)) {
           return cbk([400, 'ExpectedNonEmptyPendingChannelIdsToFund']);
         }
 
-        if (!!args.channels.find(n => !isHash(n))) {
+        if (args.channels.some(n => !isHash(n))) {
           return cbk([400, 'ExpectedPendingChannelIdOfChannelToFund']);
         }
 
@@ -69,7 +68,7 @@ module.exports = (args, cbk) => {
             },
           },
           err => {
-            if (!!err) {
+            if (err) {
               return cbk([503, 'UnexpectedErrorValidatingChanFunding', {err}]);
             }
 
@@ -92,7 +91,7 @@ module.exports = (args, cbk) => {
             },
           },
           err => {
-            if (!!err) {
+            if (err) {
               return cbk([503, 'UnexpectedErrorFinalizingChanFunding', {err}]);
             }
 

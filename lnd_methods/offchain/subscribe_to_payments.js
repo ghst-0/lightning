@@ -1,9 +1,8 @@
-const EventEmitter = require('events');
+import EventEmitter from 'node:events';
 
-const emitPayment = require('./emit_payment');
-const {emitSubscriptionError} = require('./../../grpc');
-const {handleRemoveListener} = require('./../../grpc');
-const {isLnd} = require('./../../lnd_requests');
+import emitPayment from './emit_payment.js';
+import { emitSubscriptionError, handleRemoveListener } from './../../grpc/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const events = ['confirmed', 'failed', 'paying'];
 const method = 'trackPayments';
@@ -101,7 +100,7 @@ const type = 'router';
     tokens: <Total Tokens Pending Rounded Down Number>
   }
 */
-module.exports = ({lnd}) => {
+export default ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToCurrentPayments');
   }

@@ -1,12 +1,12 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {getHeight} = require('./../generic');
-const {isLnd} = require('./../../lnd_requests');
+import { getHeight } from './../generic/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const defaultTargetConfirmations = 1008;
 const isHash = n => /^[0-9A-F]{64}$/i.test(n);
-const isNumber = n => !isNaN(n);
+const isNumber = n => !Number.isNaN(n);
 const messageExternalUtxo = 'the passed output does not belong to the wallet';
 const method = 'bumpFee';
 const positive = number => number > 0 ? number : 1;
@@ -30,9 +30,9 @@ const type = 'wallet';
 
   @returns via cbk or Promise
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
@@ -83,11 +83,11 @@ module.exports = (args, cbk) => {
           target_conf: targetConf,
         },
         (err, res) => {
-          if (!!err && err.details === messageExternalUtxo) {
+          if (err && err.details === messageExternalUtxo) {
             return cbk([404, 'SpecifiedUtxoNotFoundInWalletUtxos']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorRequestingBatchIncrease', {err}]);
           }
 

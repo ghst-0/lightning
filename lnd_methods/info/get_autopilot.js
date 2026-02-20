@@ -1,14 +1,17 @@
-const asyncAuto = require('async/auto');
-const asyncMap = require('async/map');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import asyncMap from 'async/map.js';
+import { returnResult } from 'asyncjs-util';
 
-const {externalType} = require('./constants');
-const {isLnd} = require('./../../lnd_requests');
-const {maxScore} = require('./constants');
-const {prefAttachType} = require('./constants');
-const {weightedType} = require('./constants');
-const {wrongLnd} = require('./constants');
+import constants from './constants';
+import { isLnd } from './../../lnd_requests/index.js';
 
+const {
+  externalType,
+  maxScore,
+  prefAttachType,
+  weightedType,
+  wrongLnd
+} = constants;
 const {isArray} = Array;
 const {keys} = Object;
 const method = 'status';
@@ -41,9 +44,9 @@ const type = 'autopilot';
     }]
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
@@ -65,7 +68,7 @@ module.exports = (args, cbk) => {
             pubkeys: args.node_scores,
           },
           (err, res) => {
-            if (!!err) {
+            if (err) {
               return cbk([503, 'UnexpectedErrorGettingNodeScores', {err}]);
             }
 
@@ -90,11 +93,11 @@ module.exports = (args, cbk) => {
       // Get status
       getStatus: ['validate', ({}, cbk) => {
         return args.lnd.autopilot.status({}, (err, res) => {
-          if (!!err && err.message === wrongLnd) {
+          if (err && err.message === wrongLnd) {
             return cbk([400, 'ExpectedLndBuiltWithAutopilotToGetStatus']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorGettingAutopilotStatus', {err}]);
           }
 
@@ -136,7 +139,7 @@ module.exports = (args, cbk) => {
           cbk);
         },
         (err, nodes) => {
-          if (!!err) {
+          if (err) {
             return cbk(err);
           }
 
@@ -144,14 +147,15 @@ module.exports = (args, cbk) => {
             return cbk();
           }
 
-          const flattenDeep = arr => !isArray(arr) ? [arr] :
-            arr.reduce((a, b) => a.concat(flattenDeep(b)) , []);
+          const flattenDeep = arr => isArray(arr) ? arr.reduce((a, b) => a.concat(flattenDeep(b)), []) : [arr];
 
           const allNodes = flattenDeep(nodes);
 
           const publicKeys = {};
 
-          allNodes.forEach(node => publicKeys[node.public_key] = {});
+          for (const node of allNodes) {
+            publicKeys[node.public_key] = {}
+          }
 
           const nodesWithScores = keys(publicKeys).map(publicKey => {
             const scores = allNodes.filter(n => n.public_key === publicKey);

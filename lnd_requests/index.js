@@ -1,11 +1,11 @@
-const destinationCustomRecords = require('./destination_custom_records');
-const ignoreAsIgnoredNodes = require('./ignore_as_ignored_nodes');
-const ignoreAsIgnoredPairs = require('./ignore_as_ignored_pairs');
-const isLnd = require('./is_lnd');
-const routeHintFromRoute = require('./route_hint_from_route');
-const rpcRouteFromRoute = require('./rpc_route_from_route');
+import destinationCustomRecords from './destination_custom_records.js';
+import ignoreAsIgnoredNodes from './ignore_as_ignored_nodes.js';
+import ignoreAsIgnoredPairs from './ignore_as_ignored_pairs.js';
+import isLnd from './is_lnd.js';
+import routeHintFromRoute from './route_hint_from_route.js';
+import rpcRouteFromRoute from './rpc_route_from_route.js';
 
-module.exports = {
+export {
   destinationCustomRecords,
   ignoreAsIgnoredNodes,
   ignoreAsIgnoredPairs,

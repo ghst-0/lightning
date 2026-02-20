@@ -1,15 +1,13 @@
-const EventEmitter = require('events');
+import EventEmitter from 'node:events';
 
-const {isLnd} = require('./../../lnd_requests');
-const {rpcConfAsConfirmation} = require('./../../lnd_responses');
-const scriptFromChainAddress = require('./script_from_chain_address');
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcConfAsConfirmation } from './../../lnd_responses/index.js';
+import scriptFromChainAddress from './script_from_chain_address.js';
 
-const bufferAsHex = buffer => buffer.toString('hex');
 const defaultMinConfirmations = 1;
 const dummyTxId = Buffer.alloc(32).toString('hex');
 const events = ['confirmation', 'reorg'];
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
-const {isBuffer} = Buffer;
 const method = 'registerConfirmationsNtfn';
 const shutDownMessage = 'chain notifier shutting down';
 const sumOf = arr => arr.reduce((sum, n) => sum + n, Number());
@@ -49,7 +47,7 @@ const type = 'chain';
 
   @event 'reorg'
 */
-module.exports = args => {
+export default args => {
   let outputScript = args.output_script;
 
   if (!isLnd({method, type, lnd: args.lnd})) {
@@ -92,13 +90,11 @@ module.exports = args => {
     const listenerCounts = events.map(n => eventEmitter.listenerCount(n));
 
     // Exit early when there are still listeners
-    if (!!sumOf(listenerCounts)) {
+    if (sumOf(listenerCounts)) {
       return;
     }
 
     sub.cancel();
-
-    return;
   });
 
   sub.on('end', () => eventEmitter.emit('end'));
@@ -114,20 +110,16 @@ module.exports = args => {
     }
 
     eventEmitter.emit('error', err);
-
-    return;
   });
 
   sub.on('data', data => {
     try {
       const event = rpcConfAsConfirmation(data);
 
-      return !event.type ? null : eventEmitter.emit(event.type, event.data);
+      return event.type ? eventEmitter.emit(event.type, event.data) : null;
     } catch (err) {
       return eventEmitter.emit('error', err);
     }
-
-    return;
   });
 
   return eventEmitter;

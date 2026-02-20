@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const base64AsHex = base64 => Buffer.from(base64, 'base64').toString('hex');
 const notSupportedError = 'unknown method SignMessageWithAddr for service walletrpc.WalletKit';
@@ -28,9 +28,9 @@ const type = 'wallet';
     signature: <Hex Encoded Signature String>
   }
 */
-module.exports = ({address, lnd, message}, cbk) => {
+export default ({address, lnd, message}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!address) {
@@ -55,11 +55,11 @@ module.exports = ({address, lnd, message}, cbk) => {
           msg: utf8AsBuffer(message),
         },
         (err, res) => {
-          if (!!err && err.details === notSupportedError) {
+          if (err && err.details === notSupportedError) {
             return cbk([501, 'BackingLndDoesNotSupportSigningChainMessages']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedSignChainAddressMessageError', {err}]);
           }
 

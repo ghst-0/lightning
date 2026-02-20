@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {getPublicKey} = require('./../address');
-const getWalletInfo = require('./get_wallet_info');
+import { getPublicKey } from './../address/index.js';
+import getWalletInfo from './get_wallet_info.js';
 
 const family = 6;
 const index = 0;
@@ -22,9 +22,9 @@ const index = 0;
     public_key: <Node Identity Public Key Hex String>
   }
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!lnd) {
@@ -38,7 +38,7 @@ module.exports = ({lnd}, cbk) => {
       derive: ['validate', ({}, cbk) => {
         return getPublicKey({family, index, lnd}, (err, res) => {
           // Ignore errors getting the public key through derivation
-          if (!!err) {
+          if (err) {
             return cbk(null, {});
           }
 
@@ -49,7 +49,7 @@ module.exports = ({lnd}, cbk) => {
       // Get all node info if necessary
       getInfo: ['derive', ({derive}, cbk) => {
         // Exit early when the public key was already derived
-        if (!!derive.public_key) {
+        if (derive.public_key) {
           return cbk();
         }
 

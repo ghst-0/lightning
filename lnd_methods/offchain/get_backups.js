@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {backupsFromSnapshot} = require('./../../lnd_responses');
-const {isLnd} = require('./../../lnd_requests');
+import { backupsFromSnapshot } from './../../lnd_responses/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const method = 'exportAllChannelBackups';
 const type = 'default';
@@ -25,9 +25,9 @@ const type = 'default';
     }]
   }
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -40,7 +40,7 @@ module.exports = ({lnd}, cbk) => {
       // Get backups snapshot
       getBackupsSnapshot: ['validate', ({}, cbk) => {
         return lnd[type][method]({}, (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorGettingAllChanBackups', {err}]);
           }
 

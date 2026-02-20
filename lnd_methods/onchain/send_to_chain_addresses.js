@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const defaultConfTarget = 6;
 const initialConfirmationCount = 0;
@@ -9,7 +9,7 @@ const {isArray} = Array;
 const method = 'sendMany';
 const OPEN = 1;
 const unconfirmedConfCount = 0;
-const strategy = type => !type ? undefined : `STRATEGY_${type.toUpperCase()}`;
+const strategy = type => type ? `STRATEGY_${ type.toUpperCase() }` : undefined;
 const {stringify} = JSON;
 const type = 'default';
 
@@ -47,20 +47,20 @@ const type = 'default';
     tokens: <Transaction Tokens Number>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
           return cbk([400, 'ExpectedLndToSendToChainAddresses']);
         }
 
-        if (!isArray(args.send_to) || !args.send_to.length) {
+        if (!isArray(args.send_to) || args.send_to.length === 0) {
           return cbk([400, 'ExpectedSendToAddressesAndTokens']);
         }
 
-        if (args.send_to.find(({address, tokens}) => !address || !tokens)) {
+        if (args.send_to.some(({address, tokens}) => !address || !tokens)) {
           return cbk([400, 'ExpectedAddrsAndTokensWhenSendingToAddresses']);
         }
 
@@ -78,7 +78,7 @@ module.exports = (args, cbk) => {
       // Determine what the confirmations to confirm should be
       targetConf: ['validate', ({}, cbk) => {
         // Exit early when there is a chain fee rate specified
-        if (!!args.fee_tokens_per_vbyte) {
+        if (args.fee_tokens_per_vbyte) {
           return cbk();
         }
 
@@ -88,8 +88,9 @@ module.exports = (args, cbk) => {
       send: ['targetConf', ({targetConf}, cbk) => {
         const AddrToAmount = {};
 
-        args.send_to
-          .forEach(({address, tokens}) => AddrToAmount[address] = tokens);
+        for (const { address, tokens } of args.send_to) {
+          AddrToAmount[address] = tokens
+        }
 
         const send = {
           AddrToAmount,
@@ -102,7 +103,7 @@ module.exports = (args, cbk) => {
         };
 
         return args.lnd.default.sendMany(send, (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([500, 'UnexpectedSendManyError', {err}]);
           }
 
@@ -122,21 +123,21 @@ module.exports = (args, cbk) => {
             tokens: args.send_to.reduce((sum, n) => sum + n.tokens, Number()),
           };
 
-          if (!!args.wss) {
-            args.wss.forEach(({clients}) => {
+          if (args.wss) {
+            for (const { clients } of args.wss) {
               // Client is a Set not an array so .filter cannot be used
-              return clients.forEach(client => {
+              for (const client of clients) {
                 if (!client || client.readyState !== OPEN) {
-                  return;
+                  continue
                 }
 
                 try {
-                  return client.send(stringify(row));
+                  client.send(stringify(row))
                 } catch (err) {
-                  return args.log([500, 'BroadcastFailure', {err}]);
+                  args.log([500, 'BroadcastFailure', { err }])
                 }
-              });
-            });
+              }
+            }
           }
 
           return cbk(null, row);

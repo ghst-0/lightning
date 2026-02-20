@@ -1,7 +1,6 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {updateAlias} = require('./../../../');
+import 'node:assert';
+import test from 'node:test';
+import { updateAlias } from './../../../index.js';
 
 const makeLnd = ({err}) => {
   return {peers: {updateNodeAnnouncement: (args, cbk) => cbk(err)}};
@@ -46,7 +45,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => updateAlias(args), error, 'Got error');
     } else {
       await updateAlias(args);

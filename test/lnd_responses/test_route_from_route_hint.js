@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const routeFromHint = require('./../../lnd_responses/route_from_route_hint');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import routeFromHint from './../../lnd_responses/route_from_route_hint.js';
 
 const makeHopHint = overrides => {
   const hint = {
@@ -133,7 +132,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => routeFromHint(args), new Error(error), 'Got error');
     } else {
       deepStrictEqual(routeFromHint(args), expected.route, 'Got route');

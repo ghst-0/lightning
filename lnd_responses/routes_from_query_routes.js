@@ -1,7 +1,6 @@
-const BN = require('bn.js');
-const {chanFormat} = require('bolt07');
-
-const {safeTokens} = require('./../bolt00');
+import BN from 'bn.js';
+import { chanFormat } from 'bolt07';
+import { safeTokens } from './../bolt00/index.js';
 
 const {isArray} = Array;
 const {keys} = Object;
@@ -66,7 +65,7 @@ const successDenominator = 1e6;
     }]
   }
 */
-module.exports = ({response}) => {
+export default ({response}) => {
   if (!response) {
     throw new Error('ExpectedResponse');
   }

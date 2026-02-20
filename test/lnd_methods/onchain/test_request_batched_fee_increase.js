@@ -1,8 +1,7 @@
-const EventEmitter = require('events');
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {requestBatchedFeeIncrease} = require('./../../../lnd_methods');
+import EventEmitter from 'node:events';
+import 'node:assert';
+import test from 'node:test';
+import { requestBatchedFeeIncrease } from './../../../lnd_methods/index.js';
 
 const makeLnd = overrides => {
   const res = {status: 'status'};
@@ -100,7 +99,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(requestBatchedFeeIncrease(args), error, 'Got error');
     } else {
       await requestBatchedFeeIncrease(args);

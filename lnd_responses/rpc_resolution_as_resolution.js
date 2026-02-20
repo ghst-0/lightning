@@ -1,5 +1,5 @@
-const {resolutionOutcomes} = require('./constants');
-const {resolutionTypes} = require('./constants');
+import { resolutionOutcomes } from './constants';
+import { resolutionTypes } from './constants';
 
 const isHash = n => !!n && /^[0-9A-F]{64}$/i.test(n);
 const outpointSeparator = ':';
@@ -44,7 +44,7 @@ const outpointSeparator = ':';
     }
   }
 */
-module.exports = args => {
+export default args => {
   if (!args) {
     throw new Error('ExpectedRpcResolutionMessageToDeriveResolution');
   }

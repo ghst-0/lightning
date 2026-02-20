@@ -1,8 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
-
-const {isLnd} = require('./../../lnd_requests');
-const {rpcUtxoAsUtxo} = require('./../../lnd_responses');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcUtxoAsUtxo } from './../../lnd_responses/index.js';
 
 const {isArray} = Array;
 const maxConfs = 0x7FFFFFFF;
@@ -32,9 +31,9 @@ const type = 'default';
     }]
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
@@ -52,7 +51,7 @@ module.exports = (args, cbk) => {
         },
         (err, res) => {
           // Ignore errors and fail back to legacy method
-          if (!!err) {
+          if (err) {
             return cbk();
           }
 
@@ -62,7 +61,7 @@ module.exports = (args, cbk) => {
 
       // Get UTXOs from the legacy API - LND without the walletrpc build tag
       getLegacyUtxos: ['getWalletUtxos', ({getWalletUtxos}, cbk) => {
-        if (!!getWalletUtxos) {
+        if (getWalletUtxos) {
           return cbk();
         }
 
@@ -71,7 +70,7 @@ module.exports = (args, cbk) => {
           min_confs: args.min_confirmations || Number(),
         },
         (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorGettingUnspentTxOutputs', {err}]);
           }
 

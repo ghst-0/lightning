@@ -1,14 +1,11 @@
-const EventEmitter = require('events');
+import EventEmitter from 'node:events';
+import asyncDoUntil from 'async/doUntil.js';
 
-const asyncDoUntil = require('async/doUntil');
+import { handleRemoveListener } from './../../grpc/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcInvoiceAsInvoice } from './../../lnd_responses/index.js';
 
-const {handleRemoveListener} = require('./../../grpc');
-const {isLnd} = require('./../../lnd_requests');
-const {rpcInvoiceAsInvoice} = require('./../../lnd_responses');
-
-const connectionFailureMessage = 'failed to connect to all addresses';
 const events = ['end', 'error', 'invoice_updated', 'status'];
-const msPerSec = 1e3;
 const restartSubscriptionMs = 1000 * 30;
 const sumOf = arr => arr.reduce((sum, n) => sum + n, Number());
 const updateEvent = 'invoice_updated';
@@ -78,7 +75,7 @@ const updateEvent = 'invoice_updated';
     tokens: <Invoiced Tokens Number>
   }
 */
-module.exports = args => {
+export default args => {
   if (!isLnd({lnd: args.lnd, method: 'subscribeInvoices', type: 'default'})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeInvoices');
   }
@@ -93,8 +90,8 @@ module.exports = args => {
 
     // Start the subscription to invoices
     const subscription = args.lnd.default.subscribeInvoices({
-      add_index: !!addIndex ? addIndex.toString() : undefined,
-      settle_index: !!confirmedAfter ? confirmedAfter.toString() : undefined,
+      add_index: addIndex ? addIndex.toString() : undefined,
+      settle_index: confirmedAfter ? confirmedAfter.toString() : undefined,
     });
 
     // Terminate subscription when all listeners are removed
@@ -102,12 +99,12 @@ module.exports = args => {
 
     // Subscription finished callback
     const finished = err => {
-      if (!!eventEmitter.listenerCount('error')) {
+      if (eventEmitter.listenerCount('error')) {
         eventEmitter.emit('error', err);
       }
 
       // Exit early when this subscription is already over
-      if (!!isFinished) {
+      if (isFinished) {
         return;
       }
 
@@ -130,7 +127,7 @@ module.exports = args => {
     // Finish early when all listeners are removed
     eventEmitter.on('removeListener', () => {
       // Exit early when there are still active listeners
-      if (!!sumOf(events.map(n => eventEmitter.listenerCount(n)))) {
+      if (sumOf(events.map(n => eventEmitter.listenerCount(n)))) {
         return;
       }
 
@@ -147,8 +144,6 @@ module.exports = args => {
         // Update cursors for possible restart of subscription
         addIndex = updated.index;
         confirmedAfter = updated.confirmed_index;
-
-        return;
       } catch (err) {
         return finished([503, err.message]);
       }
@@ -164,8 +159,6 @@ module.exports = args => {
 
     // Relay status messages
     subscription.on('status', n => eventEmitter.emit('status', n));
-
-    return;
   },
   (res, cbk) => {
     // Terminate the subscription when there are no listeners

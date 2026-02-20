@@ -1,14 +1,13 @@
-const asyncAuto = require('async/auto');
-const asyncRetry = require('async/retry');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import asyncRetry from 'async/retry.js';
+import { returnResult } from 'asyncjs-util';
 
-const {htlcAsPayment} = require('./../../lnd_responses');
-const {isLnd} = require('./../../lnd_requests');
-const {rpcInvoiceAsInvoice} = require('./../../lnd_responses');
-const {sortBy} = require('./../../arrays');
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcInvoiceAsInvoice } from './../../lnd_responses/index.js';
+import { sortBy } from './../../arrays/index.js';
 
-const asStart = n => !!n ? Math.floor(new Date(n).getTime() / 1e3) : undefined;
-const asEnd = n => !!n ? Math.ceil(new Date(n).getTime() / 1e3) : undefined;
+const asStart = n => n ? Math.floor(new Date(n).getTime() / 1e3) : undefined;
+const asEnd = n => n ? Math.ceil(new Date(n).getTime() / 1e3) : undefined;
 const createdAtSort = array => sortBy({array, attribute: 'created_at'});
 const defaultLimit = 100;
 const {isArray} = Array;
@@ -93,9 +92,9 @@ const type = 'default';
     [next]: <Next Opaque Paging Token String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Validate arguments
       validate: cbk => {
         if (!!args.limit && !!args.token) {
@@ -117,7 +116,7 @@ module.exports = (args, cbk) => {
         let offset;
 
         // When there is a token, parse it out into an offset and a limit
-        if (!!args.token) {
+        if (args.token) {
           try {
             const pagingToken = parse(args.token);
 
@@ -140,7 +139,7 @@ module.exports = (args, cbk) => {
             reversed: true,
           },
           (err, res) => {
-            if (!!err) {
+            if (err) {
               return cbk([503, 'UnexpectedGetInvoicesError', {err}]);
             }
 
@@ -186,7 +185,7 @@ module.exports = (args, cbk) => {
       sorted: ['listInvoices', 'mapped', ({listInvoices, mapped}, cbk) => {
         return cbk(null, {
           invoices: createdAtSort(mapped).sorted.reverse(),
-          next: !!mapped.length ? listInvoices.token : undefined,
+          next: mapped.length > 0 ? listInvoices.token : undefined,
         });
       }],
     },

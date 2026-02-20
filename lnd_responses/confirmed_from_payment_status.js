@@ -1,9 +1,7 @@
-const {createHash} = require('crypto');
-
-const {chanFormat} = require('bolt07');
-
-const {attemptStates} = require('./constants');
-const {safeTokens} = require('./../bolt00');
+import { createHash } from 'crypto';
+import { chanFormat } from 'bolt07';
+import { attemptStates } from './constants';
+import { safeTokens } from './../bolt00/index.js';
 
 const {confirmed} = attemptStates;
 const hexFromBuffer = buffer => buffer.toString('hex');
@@ -110,7 +108,7 @@ const sum = arr => arr.reduce((sum, n) => sum + BigInt(n), BigInt(Number()));
     tokens: <Total Tokens Paid Rounded Down Number>
   }
 */
-module.exports = ({htlcs, preimage, route}) => {
+export default ({htlcs, preimage, route}) => {
   if (!isArray(htlcs)) {
     throw new Error('ExpectedArrayOfHtlcsToDeriveConfirmedFromPaymentStatus');
   }

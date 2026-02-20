@@ -1,7 +1,6 @@
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const method = require('./../../../lnd_methods/offchain/subscribe_to_pay');
+import test from 'node:test';
+import 'node:assert';
+import method from './../../../lnd_methods/offchain/subscribe_to_pay.js';
 
 const tests = [
   {
@@ -37,7 +36,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => method(args), new Error(error), 'Got err');
 
       return end();

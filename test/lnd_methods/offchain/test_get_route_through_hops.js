@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getRouteThroughHops} = require('./../../../');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { getRouteThroughHops } from './../../../index.js';
 
 const makeExpected = overrides => {
   const route = {
@@ -244,7 +243,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(getRouteThroughHops(args), error, 'Got expected error');
     } else {
       const {route} = await getRouteThroughHops(args);

@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const listPayments = require('./../../../lnd_methods/offchain/list_payments');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import listPayments from './../../../lnd_methods/offchain/list_payments.js';
 
 const makeLnd = args => {
   return {
@@ -34,7 +33,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => listPayments(args), error, 'Got expected error');
     } else {
       const res = await listPayments(args);

@@ -1,6 +1,6 @@
-const {attemptStates} = require('./constants');
-const rpcAttemptHtlcAsAttempt = require('./rpc_attempt_htlc_as_attempt');
-const {safeTokens} = require('./../bolt00');
+import { attemptStates } from './constants';
+import rpcAttemptHtlcAsAttempt from './rpc_attempt_htlc_as_attempt.js';
+import { safeTokens } from './../bolt00/index.js';
 
 const {isArray} = Array;
 const is256Hex = n => !!n && /^[0-9A-F]{64}$/i.test(n);
@@ -93,7 +93,7 @@ const nsAsDate = ns => new Date(Number(BigInt(ns) / BigInt(1e6)));
     tokens: <Total Tokens Pending Rounded Down Number>
   }
 */
-module.exports = payment => {
+export default payment => {
   if (!payment) {
     throw new Error('ExpectedPendingPaymentToDerivePendingDetails');
   }

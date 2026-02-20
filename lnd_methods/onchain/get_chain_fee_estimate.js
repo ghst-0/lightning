@@ -1,14 +1,13 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const defaultConfTarget = 6;
-const hasNumber = n => !!n && n !== '0';
 const {isArray} = Array;
 const method = 'estimateFee';
 const notFound = -1;
-const strategy = type => !type ? undefined : `STRATEGY_${type.toUpperCase()}`;
+const strategy = type => type ? `STRATEGY_${ type.toUpperCase() }` : undefined;
 const type = 'default';
 const unconfirmedConfCount = 0;
 
@@ -39,16 +38,16 @@ const unconfirmedConfCount = 0;
     tokens_per_vbyte: <Fee Tokens Per VByte Number>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
           return cbk([400, 'ExpectedLndToEstimateChainFee']);
         }
 
-        if (!isArray(args.send_to) || !args.send_to.length) {
+        if (!isArray(args.send_to) || args.send_to.length === 0) {
           return cbk([400, 'ExpectedSendToAddressesToEstimateChainFee']);
         }
 
@@ -69,9 +68,9 @@ module.exports = (args, cbk) => {
       getEstimate: ['validate', ({}, cbk) => {
         const AddrToAmount = {};
 
-        args.send_to.forEach(({address, tokens}) => {
-          return AddrToAmount[address] = tokens;
-        });
+        for (const { address, tokens } of args.send_to) {
+          AddrToAmount[address] = tokens
+        }
 
         return args.lnd[type][method]({
           AddrToAmount,
@@ -81,7 +80,7 @@ module.exports = (args, cbk) => {
           spend_unconfirmed: args.utxo_confirmations === unconfirmedConfCount,
         },
         (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrEstimatingFeeForChainSend', {err}]);
           }
 

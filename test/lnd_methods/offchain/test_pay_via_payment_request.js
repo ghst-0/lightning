@@ -1,9 +1,8 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const EventEmitter = require('node:events');
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {payViaPaymentRequest} = require('./../../../');
+import 'node:assert';
+import EventEmitter from 'node:events';
+import 'node:assert';
+import test from 'node:test';
+import { payViaPaymentRequest } from './../../../index.js';
 
 const makePaymentData = overrides => {
   const data = {
@@ -220,7 +219,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => payViaPaymentRequest(args), error, 'Got error');
     } else {
       const payment = await payViaPaymentRequest(args);

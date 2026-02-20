@@ -1,6 +1,5 @@
-const {attemptStates} = require('./constants');
-
-const rpcRouteAsRoute = require('./rpc_route_as_route');
+import { attemptStates } from './constants';
+import rpcRouteAsRoute from './rpc_route_as_route.js';
 
 const nsAsMs = ns => Number(BigInt(ns) / BigInt(1e6));
 
@@ -88,7 +87,7 @@ const nsAsMs = ns => Number(BigInt(ns) / BigInt(1e6));
     }
   }
 */
-module.exports = attempt => {
+export default attempt => {
   if (!attempt) {
     throw new Error('ExpectedRpcAttemptDetailsToDeriveAttempt');
   }

@@ -1,9 +1,8 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const method = require('./../../../lnd_methods/macaroon/uris_for_method');
-const methods = require('./../../../lnd_methods/macaroon/methods');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import method from './../../../lnd_methods/macaroon/uris_for_method.js';
+import methods from './../../../lnd_methods/macaroon/methods';
 
 const tests = [
   {
@@ -30,7 +29,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => method(args), new Error(error), 'Got expected error');
     } else {
       const res = method(args);

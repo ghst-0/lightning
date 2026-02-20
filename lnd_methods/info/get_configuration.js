@@ -1,7 +1,6 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
-
-const {isLnd} = require('./../../lnd_requests');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const asOptions = o => Object.keys(o).map(type => ({type, value: o[type]}));
 const errNotFound = 'unknown method GetDebugInfo for service lnrpc.Lightning';
@@ -32,9 +31,9 @@ const {values} = Object;
     }]
   }
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -47,11 +46,11 @@ module.exports = ({lnd}, cbk) => {
       // Get configuration info
       getInfo: ['validate', ({}, cbk) => {
         return lnd[type][method]({}, (err, res) => {
-          if (!!err && err.details === errNotFound) {
+          if (err && err.details === errNotFound) {
             return cbk([501, 'GetDebugConfigurationInfoNotSupported']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedGetDebugInfoError', {err}]);
           }
 

@@ -1,7 +1,6 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {deleteFailedPayments} = require('./../../../lnd_methods');
+import 'node:assert';
+import test from 'node:test';
+import { deleteFailedPayments } from './../../../lnd_methods/index.js';
 
 const tests = [
   {
@@ -22,7 +21,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(deleteFailedPayments(args), error, 'Got expected err');
     } else {
       await deleteFailedPayments(args);

@@ -1,4 +1,4 @@
-const isNumber = n => !isNaN(n);
+const isNumber = n => !Number.isNaN(n);
 const tokensAsMtokens = tokens => (BigInt(tokens) * BigInt(1e3)).toString();
 
 /** Derive millitokens from tokens and mtokens
@@ -15,7 +15,7 @@ const tokensAsMtokens = tokens => (BigInt(tokens) * BigInt(1e3)).toString();
     [mtokens]: <Millitokens String>
   }
 */
-module.exports = ({mtokens, tokens}) => {
+export default ({mtokens, tokens}) => {
   // Exit early when no tokens are specified
   if (!mtokens && tokens === undefined) {
     return {};

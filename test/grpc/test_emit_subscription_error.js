@@ -1,6 +1,5 @@
-const test = require('node:test');
-
-const {emitSubscriptionError} = require('./../../grpc');
+import test from 'node:test';
+import { emitSubscriptionError } from './../../grpc/index.js';
 
 const tests = [
   {

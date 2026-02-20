@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {getAutopilot} = require('./../info');
-const {isLnd} = require('./../../lnd_requests');
+import { getAutopilot } from './../info/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const externalType = 'externalscore';
 const {floor} = Math;
@@ -31,9 +31,9 @@ const wrongLnd = '12 UNIMPLEMENTED: unknown service autopilotrpc.Autopilot';
 
   @returns via cbk or Promise
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isArray(args.candidate_nodes) && args.is_enabled === undefined) {
@@ -46,15 +46,15 @@ module.exports = (args, cbk) => {
 
         const nodes = args.candidate_nodes || [];
 
-        if (!!nodes.find(n => !n.public_key)) {
+        if (nodes.some(n => !n.public_key)) {
           return cbk([400, 'ExpectedAllCandidateNodesToHavePublicKeys']);
         }
 
-        if (!!nodes.find(({score}) => !floor(score))) {
+        if (nodes.some(({score}) => !floor(score))) {
           return cbk([400, 'ExpectedAllCandidateNodesToHaveScore']);
         }
 
-        if (!!nodes.find(({score}) => score > maxScore)) {
+        if (nodes.some(({score}) => score > maxScore)) {
           return cbk([400, 'ExpectedCandidateNodesToHaveValidScores']);
         }
 
@@ -67,7 +67,7 @@ module.exports = (args, cbk) => {
       // Adjust candidate nodes
       setNodes: ['validate', ({}, cbk) => {
         // Exit early when there are no adjustments to candidate nodes
-        if (!args.candidate_nodes || !args.candidate_nodes.length) {
+        if (!args.candidate_nodes || args.candidate_nodes.length === 0) {
           return cbk();
         }
 
@@ -79,18 +79,20 @@ module.exports = (args, cbk) => {
           score: node.score / maxScore,
         }));
 
-        nodes.forEach(n => scores[n.public_key] = n.score);
+        for (const n of nodes) {
+          scores[n.public_key] = n.score
+        }
 
         return args.lnd.autopilot.setScores({
           heuristic,
           scores,
         },
         (err, res) => {
-          if (!!err && err.message === unknownScore) {
+          if (err && err.message === unknownScore) {
             return cbk([400, 'ExternalScoreHeuristicNotEnabled']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'FailedToSetAutopilotCandidateScores', {err}]);
           }
 
@@ -108,11 +110,11 @@ module.exports = (args, cbk) => {
         }
 
         return args.lnd.autopilot.modifyStatus({enable}, err => {
-          if (!!err && err.message === wrongLnd) {
+          if (err && err.message === wrongLnd) {
             return cbk([400, 'ExpectedAuthenticatedLndToSetAutopilotStatus']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorSettingAutopilotStatus', {err}]);
           }
 

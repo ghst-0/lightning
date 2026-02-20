@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getMethods} = require('./../../../');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { getMethods } from './../../../index.js';
 
 const makeLnd = ({err, res}) => {
   const response = {
@@ -70,7 +69,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => getMethods(args), error, 'Got error');
     } else {
       deepStrictEqual(await getMethods(args), expected, 'Got expected res');

@@ -1,29 +1,16 @@
-const {createHash} = require('crypto');
-const EventEmitter = require('events');
+import EventEmitter from 'node:events';
 
-const asyncAuto = require('async/auto');
-const {chanFormat} = require('bolt07');
-
-const {confirmedFromPayment} = require('./../../lnd_responses');
-const {confirmedFromPaymentStatus} = require('./../../lnd_responses');
-const emitPayment = require('./emit_payment');
-const {failureFromPayment} = require('./../../lnd_responses');
-const {handleRemoveListener} = require('./../../grpc');
-const {isLnd} = require('./../../lnd_requests');
-const {safeTokens} = require('./../../bolt00');
-const {states} = require('./payment_states');
+import emitPayment from './emit_payment.js';
+import { handleRemoveListener } from './../../grpc/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const events = ['confirmed', 'failed', 'paying'];
 const hexToBuffer = hex => Buffer.from(hex, 'hex');
 const {isArray} = Array;
 const isHash = n => /^[0-9A-F]{64}$/i.test(n);
 const method = 'trackPaymentV2';
-const mtokensPerToken = BigInt(1e3);
-const {nextTick} = process;
 const paymentNotInitiatedErr = `payment isn't initiated`;
-const sha256 = preimage => createHash('sha256').update(preimage).digest();
 const type = 'router';
-const unknownServiceErr = 'unknown service verrpc.Versioner';
 
 /** Subscribe to the status of a past payment
 
@@ -115,7 +102,7 @@ const unknownServiceErr = 'unknown service verrpc.Versioner';
     tokens: <Total Tokens Pending Rounded Down Number>
   }
 */
-module.exports = args => {
+export default args => {
   if (!isHash(args.id)) {
     throw new Error('ExpectedIdOfPastPaymentToSubscribeTo');
   }
@@ -132,7 +119,7 @@ module.exports = args => {
       return;
     }
 
-    if (!!isArray(err)) {
+    if (isArray(err)) {
       return emitter.emit('error', err);
     }
 

@@ -1,4 +1,4 @@
-const {policyUpdateFailures} = require('./constants');
+import { policyUpdateFailures } from './constants';
 
 const internalByteOrderTxIdAsTxId = n => n.slice().reverse().toString('hex');
 const {isBuffer} = Buffer;
@@ -27,7 +27,7 @@ const {isBuffer} = Buffer;
     transaction_vout: <Funding Transaction Output Index Number>
   }
 */
-module.exports = args => {
+export default args => {
   if (!args) {
     throw new Error('ExpectedPolicyFailureToDeriveFailureDetails');
   }

@@ -29,7 +29,7 @@ const mtokPerTok = BigInt(1e3);
     [tokens]: <Tokens Number>
   }
 */
-module.exports = args => {
+export default args => {
   const amounts = {};
 
   const hasMaxFeeMtokens = !!args.max_fee_mtokens;

@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const inactiveTowerErr = '2 UNKNOWN: watchtower not active';
 const {isArray} = Array;
@@ -27,9 +27,9 @@ const pubKeyLength = 33;
     }
   }
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method: 'getInfo', type: 'tower_server'})) {
@@ -42,11 +42,11 @@ module.exports = ({lnd}, cbk) => {
       // Get info
       getInfo: ['validate', ({}, cbk) => {
         return lnd.tower_server.getInfo({}, (err, res) => {
-          if (!!err && err.message === inactiveTowerErr) {
+          if (err && err.message === inactiveTowerErr) {
             return cbk(null, {});
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorGettingTowerServerInfo', {err}]);
           }
 
@@ -58,7 +58,7 @@ module.exports = ({lnd}, cbk) => {
             return cbk([503, 'ExpectedArrayOfListenersForTowerServer']);
           }
 
-          if (!!res.listeners.find(n => typeof(n) !== 'string')) {
+          if (res.listeners.some(n => typeof(n) !== 'string')) {
             return cbk([503, 'ExpectedArrayOfListenerStrings']);
           }
 
@@ -70,7 +70,7 @@ module.exports = ({lnd}, cbk) => {
             return cbk([503, 'ExpectedArrayOfUrisForTowerServer']);
           }
 
-          if (!!res.uris.find(n => typeof(n) !== 'string')) {
+          if (res.uris.some(n => typeof(n) !== 'string')) {
             return cbk([503, 'ExpectedArrayOfUriStrings']);
           }
 

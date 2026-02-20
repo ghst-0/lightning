@@ -1,5 +1,5 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
 const defaultRejectMessage = 'RpcRequestRejected';
 
@@ -13,9 +13,9 @@ const defaultRejectMessage = 'RpcRequestRejected';
 
   @returns via cbk or Promise
 */
-module.exports = ({id, message, subscription}, cbk) => {
+export default ({id, message, subscription}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!id) {
@@ -39,7 +39,7 @@ module.exports = ({id, message, subscription}, cbk) => {
           ref_msg_id: id,
         },
         err => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorRejectingRpcRequest', {err}]);
           }
 

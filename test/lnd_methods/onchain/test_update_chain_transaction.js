@@ -1,7 +1,6 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {updateChainTransaction} = require('./../../../lnd_methods');
+import 'node:assert';
+import test from 'node:test';
+import { updateChainTransaction } from './../../../lnd_methods/index.js';
 
 const makeLnd = ({err}) => {
   return {
@@ -70,7 +69,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => updateChainTransaction(args), error, 'Got error');
     } else {
       await updateChainTransaction(args);

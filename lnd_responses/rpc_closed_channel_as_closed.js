@@ -1,6 +1,5 @@
-const {chanFormat} = require('bolt07');
-
-const rpcResolutionAsResolution = require('./rpc_resolution_as_resolution');
+import { chanFormat } from 'bolt07';
+import rpcResolutionAsResolution from './rpc_resolution_as_resolution.js';
 
 const breachClose = 'BREACH_CLOSE';
 const cooperativeClose = 'COOPERATIVE_CLOSE';
@@ -80,7 +79,7 @@ const remoteForceClose = 'REMOTE_FORCE_CLOSE';
     transaction_vout: <Channel Funding Output Index Number>
   }
 */
-module.exports = chan => {
+export default chan => {
   if (!chan) {
     throw new Error('ExpectedChannelCloseDetailsToDeriveClosedChannel');
   }

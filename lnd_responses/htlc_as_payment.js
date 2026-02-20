@@ -1,7 +1,6 @@
-const BN = require('bn.js');
-const {chanFormat} = require('bolt07');
-
-const {htlcStates} = require('./constants');
+import BN from 'bn.js';
+import { chanFormat } from 'bolt07';
+import { htlcStates } from './constants';
 
 const dateFrom = seconds => new Date(1e3 * seconds).toISOString();
 const endian = 'le';
@@ -49,7 +48,7 @@ const mtokensPerToken = BigInt(1e3);
     [total_mtokens]: <Total Millitokens String>
   }
 */
-module.exports = args => {
+export default args => {
   if (!args.accept_height) {
     throw new Error('ExpectedAcceptHeightInResponseHtlc');
   }

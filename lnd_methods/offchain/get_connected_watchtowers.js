@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const {isArray} = Array;
 const method = 'policy';
@@ -48,9 +48,9 @@ const unimplementedError = '12 UNIMPLEMENTED: unknown service wtclientrpc.Watcht
     }]
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
@@ -63,11 +63,11 @@ module.exports = (args, cbk) => {
       // Get stats
       getStats: ['validate', ({}, cbk) => {
         return args.lnd[type].stats({}, (err, res) => {
-          if (!!err && err.message === unimplementedError) {
+          if (err && err.message === unimplementedError) {
             return cbk([503, 'ExpectedWatchtowerClientLndToGetStats']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorGettingWatchtowerStats', {err}]);
           }
 
@@ -111,11 +111,11 @@ module.exports = (args, cbk) => {
           include_sessions: true,
         },
         (err, res) => {
-          if (!!err && err.message === unimplementedError) {
+          if (err && err.message === unimplementedError) {
             return cbk([503, 'ExpectedWatchtowerClientLndToGetTowers']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorGettingWatchtowersList', {err}]);
           }
 
@@ -127,11 +127,11 @@ module.exports = (args, cbk) => {
             return cbk([503, 'ExpectedArrayOfTowersForWatchtowerListing']);
           }
 
-          if (!!res.towers.find(n => !Buffer.isBuffer(n.pubkey))) {
+          if (res.towers.find(n => !Buffer.isBuffer(n.pubkey))) {
             return cbk([503, 'ExpectedPublicKeyForWatchtower']);
           }
 
-          if (!!res.towers.find(n => !isArray(n.addresses))) {
+          if (res.towers.find(n => !isArray(n.addresses))) {
             return cbk([503, 'ExpectedAddressesForWatchtower']);
           }
 
@@ -153,11 +153,11 @@ module.exports = (args, cbk) => {
 
       // Determine the policy type
       policyType: ['validate', ({}, cbk) => {
-        if (!!args.is_anchor) {
+        if (args.is_anchor) {
           return cbk(null, 'ANCHOR');
         }
 
-        if (!!args.is_taproot) {
+        if (args.is_taproot) {
           return cbk(null, 'TAPROOT');
         }
 
@@ -167,11 +167,11 @@ module.exports = (args, cbk) => {
       // Get policy
       getPolicy: ['policyType', ({policyType}, cbk) => {
         return args.lnd[type].policy({policy_type: policyType}, (err, res) => {
-          if (!!err && err.message === unimplementedError) {
+          if (err && err.message === unimplementedError) {
             return cbk([503, 'ExpectedWatchtowerClientLndToGetPolicy']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorGettingWatchtowerPolicy', {err}]);
           }
 

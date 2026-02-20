@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
-const {rpcInvoiceAsInvoice} = require('./../../lnd_responses');
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcInvoiceAsInvoice } from './../../lnd_responses/index.js';
 
 const isHash = n => /^[0-9A-F]{64}$/i.test(n);
 
@@ -68,9 +68,9 @@ const isHash = n => /^[0-9A-F]{64}$/i.test(n);
     tokens: <Tokens Number>
   }
 */
-module.exports = ({id, lnd}, cbk) => {
+export default ({id, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!id || !isHash(id)) {
@@ -90,13 +90,13 @@ module.exports = ({id, lnd}, cbk) => {
           r_hash: Buffer.from(id, 'hex'),
         },
         (err, response) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedLookupInvoiceErr', {err}]);
           }
 
           try {
             return cbk(null, rpcInvoiceAsInvoice(response));
-          } catch (err) {
+          } catch {
             return cbk([503, err.message]);
           }
         });

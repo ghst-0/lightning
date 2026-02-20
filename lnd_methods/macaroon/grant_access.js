@@ -1,9 +1,9 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
-const permissions = require('./permissions');
-const urisForMethod = require('./uris_for_method');
+import { isLnd } from './../../lnd_requests/index.js';
+import permissions from './permissions.json' with { type: 'json' };
+import urisForMethod from './uris_for_method.js';
 
 const accessDenied = 'permission denied';
 const flatten = arr => [].concat(...arr);
@@ -62,12 +62,12 @@ const uriAsPermission = uri => `uri:${uri}`;
     permissions: [<Entity:Action String>]
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
-        if (!keys(args).length) {
+        if (keys(args).length === 0) {
           return cbk([400, 'ExpectedAccessPrivilegeToGrantAccessCredential']);
         }
 
@@ -114,15 +114,15 @@ module.exports = (args, cbk) => {
           root_key_id: args.id || undefined,
         },
         (err, res) => {
-          if (!!err && err.details === notSupported) {
+          if (err && err.details === notSupported) {
             return cbk([501, 'GrantAccessMethodNotSupported']);
           }
 
-          if (!!err && err.details === accessDenied) {
+          if (err && err.details === accessDenied) {
             return cbk([403, 'PermissionDeniedToBakeMacaroon']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorFromBakeMacaroon', {err}]);
           }
 

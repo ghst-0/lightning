@@ -1,9 +1,11 @@
-const acceptRpcRequest = require('./accept_rpc_request');
-const {closeChannelRequest} = require('./../../lnd_messages');
-const {openChannelRequest} = require('./../../lnd_messages');
-const {payViaRouteRequest} = require('./../../lnd_messages');
-const rejectRpcRequest = require('./reject_rpc_request');
-const {rpcRequestUpdateAsEvent} = require('./../../lnd_responses');
+import acceptRpcRequest from './accept_rpc_request.js';
+import {
+  closeChannelRequest,
+  openChannelRequest,
+  payViaRouteRequest
+} from './../../lnd_messages/index.js';
+import rejectRpcRequest from './reject_rpc_request.js';
+import { rpcRequestUpdateAsEvent } from './../../lnd_responses/index.js';
 
 const isChanClose = n => !!n && n === '/lnrpc.Lightning/CloseChannel';
 const isChanOpen = n => !!n && n.startsWith('/lnrpc.Lightning/OpenChannel');
@@ -68,7 +70,7 @@ const isPayViaRoute = n => !!n && n === '/routerrpc.Router/SendToRouteV2';
     event: <Event Name String>
   }
 */
-module.exports = args => {
+export default args => {
   const details = rpcRequestUpdateAsEvent(args.update);
   const isInterceptCloseChans = !!args.is_intercepting_close_channel_requests;
   const isInterceptOpenChans = !!args.is_intercepting_open_channel_requests;

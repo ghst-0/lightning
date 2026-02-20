@@ -1,14 +1,13 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
-
-const addressFormats = require('./address_formats');
-const {isLnd} = require('./../../lnd_requests');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
+import addressFormats from './address_formats.json' with { type: 'json' };
+import { isLnd } from './../../lnd_requests/index.js';
 
 const connectFailMessage = '14 UNAVAILABLE: Connect Failed';
 const defaultAddressFormat = 'p2wpkh';
 const {isArray} = Array;
 const isNeedingDerivationsCheck = format => format === 'p2tr';
-const isTrSupported = n => !!n.find(n => n.address_type === 'TAPROOT_PUBKEY');
+const isTrSupported = n => !!n.some(n => n.address_type === 'TAPROOT_PUBKEY');
 const method = 'newAddress';
 const notSupported = /unknown.*walletrpc.WalletKit/;
 const type = 'default';
@@ -30,9 +29,9 @@ const type = 'default';
     address: <Chain Address String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!!args.format && addressFormats[args.format] === undefined) {
@@ -54,11 +53,11 @@ module.exports = (args, cbk) => {
         }
 
         return args.lnd.wallet.listAccounts({}, (err, res) => {
-          if (!!err && notSupported.test(err.details)) {
+          if (err && notSupported.test(err.details)) {
             return cbk([501, 'CreationOfTaprootAddressesUnsupported']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorCheckingTaprootSupport', {err}]);
           }
 
@@ -92,11 +91,11 @@ module.exports = (args, cbk) => {
       // Get the address
       createAddress: ['checkFormat', 'type', ({type}, cbk) => {
         return args.lnd.default.newAddress({type}, (err, res) => {
-          if (!!err && err.message === connectFailMessage) {
+          if (err && err.message === connectFailMessage) {
             return cbk([503, 'FailedToConnectToDaemonToCreateChainAddress']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorCreatingAddress', {err}]);
           }
 

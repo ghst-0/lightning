@@ -1,5 +1,5 @@
-const {htlcEventTypes} = require('./constants');
-const {htlcTypes} = require('./constants');
+import { htlcEventTypes } from './constants';
+import { htlcTypes } from './constants';
 
 /** Determine the type of event that an HTLC event represents
 
@@ -21,7 +21,7 @@ const {htlcTypes} = require('./constants');
     [event]: <Event Type String>
   }
 */
-module.exports = htlc => {
+export default htlc => {
   if (!htlc) {
     throw new Error('ExpectedHtlcEventDataToDeriveEventType');
   }

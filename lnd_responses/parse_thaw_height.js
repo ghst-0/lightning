@@ -1,4 +1,4 @@
-const {decodeChanId} = require('bolt07');
+import { decodeChanId } from 'bolt07';
 
 const relativeThawHeightMarker = 5e5;
 
@@ -14,7 +14,7 @@ const relativeThawHeightMarker = 5e5;
     [height]: <Prevent Coop Close Until Height Number>
   }
 */
-module.exports = ({id, thaw}) => {
+export default ({id, thaw}) => {
   // Exit early when there is no cooperative close constraint
   if (!thaw) {
     return {height: undefined};

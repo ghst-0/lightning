@@ -1,6 +1,5 @@
-const {chanFormat} = require('bolt07');
-
-const {safeTokens} = require('./../bolt00');
+import { chanFormat } from 'bolt07';
+import { safeTokens } from './../bolt00/index.js';
 
 const discount = fee => (!fee ? 0 : -fee).toString();
 const inverse = rate => !rate ? 0 : -rate;
@@ -31,7 +30,7 @@ const outpointDivider = ':';
     transaction_vout: <Funding Outpoint Output Index Number>
   }
 */
-module.exports = channel => {
+export default channel => {
   if (!channel) {
     throw new Error('ExpectedRpcChannelPolicyToDeriveChannelFees');
   }

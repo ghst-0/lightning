@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const method = 'deleteAllPayments';
 const type = 'default';
@@ -18,9 +18,9 @@ const type = 'default';
 
   @returns via cbk or Promise
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -33,7 +33,7 @@ module.exports = ({lnd}, cbk) => {
       // Delete failed payments
       deletePayments: ['validate', ({}, cbk) => {
         return lnd[type][method]({failed_payments_only: true}, err => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorDeletingFailedPayments', {err}]);
           }
 

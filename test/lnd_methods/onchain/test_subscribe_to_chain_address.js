@@ -1,9 +1,8 @@
-const EventEmitter = require('node:events');
-const {strictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {subscribeToChainAddress} = require('./../../../lnd_methods');
+import EventEmitter from 'node:events';
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { subscribeToChainAddress } from './../../../lnd_methods/index.js';
 
 const emptyTx = '01000000000000000000';
 
@@ -57,7 +56,7 @@ const tests = [
 
 tests.forEach(({args, description, emitter, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => subscribeToChainAddress(args), new Error(error), 'Got err');
 
       return end();

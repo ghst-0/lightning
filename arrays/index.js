@@ -1,3 +1,3 @@
-const sortBy = require('./sort_by');
+import sortBy from './sort_by.js';
 
-module.exports = {sortBy};
+export { sortBy };

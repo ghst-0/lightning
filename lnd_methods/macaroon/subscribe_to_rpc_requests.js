@@ -1,13 +1,11 @@
-const EventEmitter = require('events');
-const {randomBytes} = require('crypto');
+import EventEmitter from 'node:events';
+import { randomBytes } from 'node:crypto';
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
-
-const {emitSubscriptionError} = require('./../../grpc');
-const {handleRemoveListener} = require('./../../grpc');
-const handleRpcRequestUpdate = require('./handle_rpc_request_update');
-const {isLnd} = require('./../../lnd_requests');
+import { emitSubscriptionError, handleRemoveListener } from './../../grpc/index.js';
+import handleRpcRequestUpdate from './handle_rpc_request_update.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const makeId = () => randomBytes(32).toString('hex');
 const method = 'RegisterRPCMiddleware';
@@ -131,9 +129,9 @@ const type = 'default';
     [uri]: <RPC URI String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!!args.id && args.id.length < minIdLength) {
@@ -197,7 +195,7 @@ module.exports = (args, cbk) => {
             }
 
             // Accept traffic by default
-            return accept({}, err => !!err ? errored(err) : undefined);
+            return accept({}, err => err ? errored(err) : undefined);
           } catch (err) {
             return errored([503, err.message]);
           }
@@ -215,7 +213,7 @@ module.exports = (args, cbk) => {
           },
         },
         err => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrInterceptingRpcRequests', {err}]);
           }
 

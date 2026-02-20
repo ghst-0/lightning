@@ -1,7 +1,6 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {addAdvertisedFeature} = require('./../../../');
+import 'node:assert';
+import test from 'node:test';
+import { addAdvertisedFeature } from './../../../index.js';
 
 const makeLnd = ({err}) => {
   return {peers: {updateNodeAnnouncement: (args, cbk) => cbk(err)}};
@@ -46,7 +45,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => addAdvertisedFeature(args), error, 'Got error');
     } else {
       await addAdvertisedFeature(args);

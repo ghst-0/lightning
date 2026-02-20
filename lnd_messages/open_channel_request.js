@@ -41,7 +41,7 @@ const minConfs = (isZero, confs) => isZero ? Number() : (confs || undefined);
     [partner_csv_delay]: <Peer Output CSV Delay Number>
   }
 */
-module.exports = args => {
+export default args => {
   const chainFeeRate = Number(args.sat_per_vbyte) || Number(args.sat_per_byte);
   const hasMinHtlc = args.min_htlc_msat !== Number().toString();
   const normalFunded = !args.fund_max;
@@ -49,11 +49,11 @@ module.exports = args => {
   const utxoConfs = minConfs(args.spend_unconfirmed, args.min_confirmations);
 
   return {
-    base_fee_mtokens: !!args.use_fee_rate ? args.base_fee : undefined,
+    base_fee_mtokens: args.use_fee_rate ? args.base_fee : undefined,
     chain_fee_tokens_per_vbyte: chainFeeRate || undefined,
     cooperative_close_address: args.close_address || undefined,
     description: args.memo || undefined,
-    fee_rate: !!args.use_fee_rate ? Number(args.fee_rate) : undefined,
+    fee_rate: args.use_fee_rate ? Number(args.fee_rate) : undefined,
     give_tokens: Number(args.push_sat) || undefined,
     is_max_funding: !!args.fund_max || undefined,
     is_private: args.private || undefined,

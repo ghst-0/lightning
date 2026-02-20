@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const bufferFromHex = hex => Buffer.from(hex, 'hex');
 const expectedSecretLen = 64;
@@ -22,9 +22,9 @@ const isHex = n => !(n.length % 2) && /^[0-9A-F]*$/i.test(n);
 
   @returns via cbk or Promise
 */
-module.exports = ({lnd, secret}, cbk) => {
+export default ({lnd, secret}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method: 'settleInvoice', type: 'invoices'})) {
@@ -44,15 +44,15 @@ module.exports = ({lnd, secret}, cbk) => {
           preimage: bufferFromHex(secret),
         },
         err => {
-          if (!!err && err.details === htlcNotYetAcceptedError) {
+          if (err && err.details === htlcNotYetAcceptedError) {
             return cbk([402, 'CannotSettleHtlcBeforeHtlcReceived']);
           }
 
-          if (!!err && err.details === invalidSecretError) {
+          if (err && err.details === invalidSecretError) {
             return cbk([404, 'SecretDoesNotMatchAnyExistingHodlInvoice']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorWhenSettlingHodlInvoice', {err}]);
           }
 

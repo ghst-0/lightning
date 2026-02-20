@@ -1,6 +1,5 @@
-const {chanFormat} = require('bolt07');
-
-const policyFromChannelUpdate = require('./policy_from_channel_update');
+import { chanFormat } from 'bolt07';
+import policyFromChannelUpdate from './policy_from_channel_update.js';
 
 /** Derive payment failure from raw API failure
 
@@ -60,7 +59,7 @@ const policyFromChannelUpdate = require('./policy_from_channel_update');
     message: <Error Message String>
   }
 */
-module.exports = ({channel, failure, index, key, keys}) => {
+export default ({channel, failure, index, key, keys}) => {
   if (!failure) {
     return {code: 500, message: 'ExpectedFailureToDerivePaymentFailure'};
   }

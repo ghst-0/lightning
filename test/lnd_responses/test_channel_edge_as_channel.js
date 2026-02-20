@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {channelEdgeAsChannel} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { channelEdgeAsChannel } from './../../lnd_responses/index.js';
 
 const makeKey = n => Buffer.alloc(33, n).toString('hex');
 
@@ -142,7 +141,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => channelEdgeAsChannel(args), new Error(error), 'Got error');
     } else {
       const channel = channelEdgeAsChannel(args);

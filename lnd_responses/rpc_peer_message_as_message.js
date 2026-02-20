@@ -19,7 +19,7 @@ const {isBuffer} = Buffer;
     type: <Message Type Number>
   }
 */
-module.exports = args => {
+export default args => {
   if (!args) {
     throw new Error('ExpectedRpcMessageToDerivePeerMessage');
   }

@@ -1,7 +1,7 @@
-const EventEmitter = require('events');
+import EventEmitter from 'node:events';
 
-const {isLnd} = require('./../../lnd_requests');
-const scriptFromChainAddress = require('./script_from_chain_address');
+import { isLnd } from './../../lnd_requests/index.js';
+import scriptFromChainAddress from './script_from_chain_address.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const dummyTxId = Buffer.alloc(32).toString('hex');
@@ -52,7 +52,7 @@ const type = 'chain';
 
   @event 'reorg'
 */
-module.exports = args => {
+export default args => {
   if (!isLnd({method, type, lnd: args.lnd})) {
     throw new Error('ExpectedLndGrpcApiToSubscribeToSpendConfirmations');
   }
@@ -87,13 +87,11 @@ module.exports = args => {
     const listenerCounts = events.map(n => eventEmitter.listenerCount(n));
 
     // Exit early when there are still listeners
-    if (!!sumOf(listenerCounts)) {
+    if (sumOf(listenerCounts)) {
       return;
     }
 
     subscription.cancel();
-
-    return;
   });
 
   subscription.on('end', () => eventEmitter.emit('end'));
@@ -109,8 +107,6 @@ module.exports = args => {
     }
 
     eventEmitter.emit('error', err);
-
-    return;
   });
 
   subscription.on('data', data => {
@@ -151,8 +147,6 @@ module.exports = args => {
       });
       break;
     }
-
-    return;
   });
 
   return eventEmitter;

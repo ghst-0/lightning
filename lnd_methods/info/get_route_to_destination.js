@@ -1,41 +1,30 @@
-const asyncAuto = require('async/auto');
-const asyncRetry = require('async/retry');
-const BN = require('bn.js');
-const {chanNumber} = require('bolt07');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import asyncRetry from 'async/retry.js';
+import { chanNumber } from 'bolt07';
+import { returnResult } from 'asyncjs-util';
 
-const {blocksBuffer} = require('./constants');
-const {defaultCltv} = require('./constants');
-const {defaultTokens} = require('./constants');
-const {destinationCustomRecords} = require('./../../lnd_requests');
-const {getHeight} = require('./../generic');
-const {ignoreAsIgnoredNodes} = require('./../../lnd_requests');
-const {ignoreAsIgnoredPairs} = require('./../../lnd_requests');
-const {isLnd} = require('./../../lnd_requests');
-const {mtokensAmount} = require('./../../bolt00');
-const {pathNotFoundErrors} = require('./constants');
-const {routeHintFromRoute} = require('./../../lnd_requests');
-const {routesFromQueryRoutes} = require('./../../lnd_responses');
+import constants from './constants.json' with { type: 'json'};
+import { destinationCustomRecords, ignoreAsIgnoredNodes, ignoreAsIgnoredPairs, isLnd, routeHintFromRoute } from './../../lnd_requests/index.js';
+import { getHeight } from './../generic/index.js';
+import { mtokensAmount } from './../../bolt00/index.js';
+import { routesFromQueryRoutes } from './../../lnd_responses/index.js';
 
+const { blocksBuffer, defaultCltv, defaultTokens } = constants;
 const asTimePreference = n => n === undefined ? n : ((n * 2) - 1e6) / 1e6;
-const bufFromHex = hex => !hex ? null : Buffer.from(hex, 'hex');
-const {concat} = Buffer;
-const defaultRetryInterval = retryCount => 50 * Math.pow(2, retryCount);
+const bufFromHex = hex => hex ? Buffer.from(hex, 'hex') : null;
+const defaultRetryInterval = retryCount => 50 * 2 ** retryCount;
 const defaultMaxFee = Number.MAX_SAFE_INTEGER;
 const errorFilter = err => Array.isArray(err) && err.slice().shift() === 429;
 const internalServerError = /internal.server.error/i;
 const {isArray} = Array;
-const isConfidence = n => !isNaN(n) && n >= 0 && n <= 1e6;
+const isConfidence = n => !Number.isNaN(n) && n >= 0 && n <= 1e6;
 const isHex = n => !(n.length % 2) && /^[0-9A-F]*$/i.test(n);
-const mtokensByteLength = 8;
 const networkBusyError = /device.or.resource.busy/;
 const noRouteErrorDetails = 'unable to find a path to destination';
-const paymentFromMppRecord = n => n.value.slice(0, 64);
 const paymentTooLargeError = /is.too.large/;
 const targetNotFoundError = 'target not found';
 const defaultRetryTimes = 9;
 const tokensAsMtokens = n => (BigInt(n) * BigInt(1e3)).toString();
-const trimByte = 0;
 
 /** Get a route to a destination.
 
@@ -112,9 +101,9 @@ const trimByte = 0;
     }
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (args.confidence !== undefined && !isConfidence(args.confidence)) {
@@ -129,10 +118,10 @@ module.exports = (args, cbk) => {
           return cbk([400, 'ExpectedLndApiObjectToGetRouteToDestination']);
         }
 
-        if (!!args.outgoing_channel) {
+        if (args.outgoing_channel) {
           try {
             chanNumber({channel: args.outgoing_channel});
-          } catch (err) {
+          } catch {
             return cbk([400, 'ExpectedStandardFormatChannelIdForOutChannel']);
           }
         }
@@ -216,7 +205,7 @@ module.exports = (args, cbk) => {
       // Derive hop hints in RPC format
       routeHints: ['validate', ({}, cbk) => {
         // Exit early when there are no route hints
-        if (!args.routes || !args.routes.length) {
+        if (!args.routes || args.routes.length === 0) {
           return cbk();
         }
 
@@ -283,27 +272,27 @@ module.exports = (args, cbk) => {
           },
           (err, response) => {
             // Exit early when an error indicates that no routes are possible
-            if (!!err && err.details === noRouteErrorDetails) {
+            if (err && err.details === noRouteErrorDetails) {
               return cbk(null, {response: {routes: []}});
             }
 
-            if (!!err && err.details === targetNotFoundError) {
+            if (err && err.details === targetNotFoundError) {
               return cbk([503, 'TargetNotFoundError']);
             }
 
-            if (!!err && paymentTooLargeError.test(err.details)) {
+            if (err && paymentTooLargeError.test(err.details)) {
               return cbk([400, 'PaymentTooLargeToFindRoute', {err}]);
             }
 
-            if (!!err && networkBusyError.test(err.details)) {
+            if (err && networkBusyError.test(err.details)) {
               return cbk([429, 'TooManyRequestsToGetRouteToDestination']);
             }
 
-            if (!!err && internalServerError.test(err.details)) {
+            if (err && internalServerError.test(err.details)) {
               return cbk([429, 'InternalServerErrorExecutingQueryRoutes']);
             }
 
-            if (!!err) {
+            if (err) {
               return cbk([503, 'UnexpectedErrInGetRouteToDestination', {err}]);
             }
 
@@ -324,7 +313,7 @@ module.exports = (args, cbk) => {
       // Derived routes from query routes response
       routes: ['query', ({query}, cbk) => {
         // Exit early when there are no routes
-        if (!query.response.routes.length) {
+        if (query.response.routes.length === 0) {
           return cbk(null, query.response.routes);
         }
 

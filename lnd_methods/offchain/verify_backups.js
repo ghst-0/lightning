@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
 const {isArray} = Array;
@@ -25,9 +25,9 @@ const type = 'default';
     is_valid: <Backup is Valid Bool>
   }
 */
-module.exports = ({backup, channels, lnd}, cbk) => {
+export default ({backup, channels, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isHex(backup)) {
@@ -46,7 +46,7 @@ module.exports = ({backup, channels, lnd}, cbk) => {
           return !chan.transaction_id || chan.transaction_vout === undefined;
         });
 
-        if (!!invalidChannel) {
+        if (invalidChannel) {
           return cbk([400, 'ExpectedChannelOutpointsToVerifyBackups']);
         }
 
@@ -65,7 +65,7 @@ module.exports = ({backup, channels, lnd}, cbk) => {
           },
         },
         err => {
-          if (!!err) {
+          if (err) {
             return cbk(null, {is_valid: false});
           }
 

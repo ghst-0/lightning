@@ -1,10 +1,9 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const EventEmitter = require('node:events');
-const {promisify} = require('node:util');
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {subscribeToBackups} = require('./../../../');
+import 'node:assert';
+import EventEmitter from 'node:events';
+import { promisify } from 'node:util';
+import test from 'node:test';
+import 'node:assert';
+import { subscribeToBackups } from './../../../index.js';
 
 const nextTick = promisify(process.nextTick);
 
@@ -89,7 +88,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       throws(() => subscribeToBackups(args), new Error(error), 'Got error');
     } else {
       const events = [];

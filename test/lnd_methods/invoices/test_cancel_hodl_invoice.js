@@ -1,7 +1,6 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {cancelHodlInvoice} = require('./../../../');
+import 'node:assert';
+import test from 'node:test';
+import { cancelHodlInvoice } from './../../../index.js';
 
 const makeLnd = ({err}) => {
   return {invoices: {cancelInvoice: ({}, cbk) => cbk(err)}};
@@ -36,7 +35,7 @@ const tests = [
 
 tests.forEach(({args, description, error}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => cancelHodlInvoice(args), error, 'Got error');
     } else {
       await cancelHodlInvoice(args);

@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getChannels} = require('./../../../');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { getChannels } from './../../../index.js';
 
 const makeExpected = overrides => {
   const expectedChannel = {
@@ -291,7 +290,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(() => getChannels(args), error, 'Got expected error');
     } else {
       const {channels} = await getChannels(args);

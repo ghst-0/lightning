@@ -1,7 +1,6 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
-
-const {getAutopilot} = require('./../../../');
+import 'node:assert';
+import test from 'node:test';
+import { getAutopilot } from './../../../index.js';
 
 const tests = [
   {
@@ -243,7 +242,7 @@ tests.forEach(({args, description, expected}) => {
         equal(errMessage, expected.error_message, 'Got expected err message');
       }
 
-      if (!!err) {
+      if (err) {
         return end();
       }
 

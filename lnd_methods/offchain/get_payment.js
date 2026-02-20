@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
-const subscribeToPastPayment = require('./subscribe_to_past_payment');
+import { isLnd } from './../../lnd_requests/index.js';
+import subscribeToPastPayment from './subscribe_to_past_payment.js';
 
 const isHash = n => !!n && /^[0-9A-F]{64}$/i.test(n);
 const method = 'trackPaymentV2';
@@ -93,9 +93,9 @@ const type = 'router';
     }
   }
 */
-module.exports = ({id, lnd}, cbk) => {
+export default ({id, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isHash(id)) {
@@ -116,7 +116,7 @@ module.exports = ({id, lnd}, cbk) => {
         const finished = (err, res) => {
           sub.removeAllListeners();
 
-          if (!!err) {
+          if (err) {
             return cbk(err);
           }
 
@@ -135,8 +135,6 @@ module.exports = ({id, lnd}, cbk) => {
         sub.once('error', err => finished(err));
         sub.once('failed', failed => finished(null, {failed}));
         sub.once('paying', pending => finished(null, {pending}));
-
-        return;
       }],
     },
     returnResult({reject, resolve, of: 'getStatus'}, cbk));

@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {verifyBytesSignature} = require('./../../../');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { verifyBytesSignature } from './../../../index.js';
 
 const makeLnd = (err, res) => {
   return {signer: {verifyMessage: ({}, cbk) => cbk(err, res)}};
@@ -77,7 +76,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(verifyBytesSignature(args), error, 'Got expected error');
     } else {
       const validity = await verifyBytesSignature(args);

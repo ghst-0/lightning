@@ -1,10 +1,10 @@
-const asyncAuto = require('async/auto');
-const asyncReflect = require('async/reflect');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import asyncReflect from 'async/reflect.js';
+import { returnResult } from 'asyncjs-util';
 
-const getPublicKey = require('./../address/get_public_key');
-const {isLnd} = require('./../../lnd_requests');
-const {rpcGroupSessionAsSession} = require('./../../lnd_responses');
+import getPublicKey from './../address/get_public_key.js';
+import { isLnd } from './../../lnd_requests/index.js';
+import { rpcGroupSessionAsSession } from './../../lnd_responses/index.js';
 
 const defaultVersion = 'MUSIG2_VERSION_V100RC2';
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
@@ -45,9 +45,9 @@ const xOnlyPublicKey = hexKey => hexKey.slice(2);
     nonce: <Session Compound Nonces Hex String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
@@ -66,7 +66,7 @@ module.exports = (args, cbk) => {
           return cbk([400, 'ExpectedArrayOfPublicKeysForMuSig2SessionStart']);
         }
 
-        if (!args.public_keys.length) {
+        if (args.public_keys.length === 0) {
           return cbk([400, 'ExpectedOtherPublicKeysForMuSig2SessionStart']);
         }
 
@@ -90,12 +90,12 @@ module.exports = (args, cbk) => {
       // Put together the Taproot tweak flags for top level signing
       taprootTweak: ['validate', ({}, cbk) => {
         // Spend should include a top level Taproot script commitment proof
-        if (!!args.root_hash) {
+        if (args.root_hash) {
           return cbk(null, {script_root: hexAsBuffer(args.root_hash)});
         }
 
         // Spend is absent a Taproot script, but is a top-level Taproot key
-        if (!!args.is_key_spend) {
+        if (args.is_key_spend) {
           return cbk(null, {key_spend_only: true});
         }
 
@@ -117,19 +117,19 @@ module.exports = (args, cbk) => {
           version: defaultVersion,
         },
         (err, res) => {
-          if (!!err && err.details === messageErrorLegacyKeys) {
+          if (err && err.details === messageErrorLegacyKeys) {
             return cbk(messageErrorLegacyVersion);
           }
 
-          if (!!err && err.details === messageErrorLegacyVersion) {
+          if (err && err.details === messageErrorLegacyVersion) {
             return cbk(messageErrorLegacyVersion);
           }
 
-          if (!!err && err.details === unsupportedMessage) {
+          if (err && err.details === unsupportedMessage) {
             return cbk([501, 'MuSig2BeginSigningSessionNotSupported']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorCreatingMuSig2Session', {err}]);
           }
 
@@ -174,11 +174,11 @@ module.exports = (args, cbk) => {
           version: versionLegacy,
         },
         (err, res) => {
-          if (!!err && err.details === unsupportedMessage) {
+          if (err && err.details === unsupportedMessage) {
             return cbk([501, 'MuSig2BeginSigningSessionNotSupported']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorCreatingMuSig2Session', {err}]);
           }
 

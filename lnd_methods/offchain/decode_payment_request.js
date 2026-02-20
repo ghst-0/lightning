@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
-const {paymentRequestDetails} = require('./../../lnd_responses');
+import { isLnd } from './../../lnd_requests/index.js';
+import { paymentRequestDetails } from './../../lnd_responses/index.js';
 
 const method = 'decodePayReq';
 const type = 'default';
@@ -46,9 +46,9 @@ const type = 'default';
     tokens: <Requested Tokens Rounded Down Number>
   }
 */
-module.exports = ({lnd, request}, cbk) => {
+export default ({lnd, request}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -65,7 +65,7 @@ module.exports = ({lnd, request}, cbk) => {
       // Decode payment request
       decode: ['validate', ({}, cbk) => {
         return lnd[type][method]({pay_req: request}, (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedDecodePaymentRequestError', {err}]);
           }
 

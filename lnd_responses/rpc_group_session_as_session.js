@@ -21,7 +21,7 @@ const {isBuffer} = Buffer;
     nonce: <Session Compound Nonces Hex String>
   }
 */
-module.exports = args => {
+export default args => {
   if (!args) {
     throw new Error('ExpectedResponseForMuSig2SessionRequest');
   }

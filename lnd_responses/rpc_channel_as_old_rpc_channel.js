@@ -1,6 +1,6 @@
-const {adjustedChannelTypes} = require('./constants');
-const {defaultChannelType} = require('./constants');
-const {oldChannelVersions} = require('./constants');
+import { adjustedChannelTypes } from './constants';
+import { defaultChannelType } from './constants';
+import { oldChannelVersions } from './constants';
 
 const {assign} = Object;
 
@@ -16,7 +16,7 @@ const {assign} = Object;
   @returns
   <Updated Channel Object>
 */
-module.exports = ({channel, version}) => {
+export default ({channel, version}) => {
   if (!oldChannelVersions.includes(version)) {
     return channel;
   }

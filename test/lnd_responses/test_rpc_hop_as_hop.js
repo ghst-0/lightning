@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {rpcHopAsHop} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { rpcHopAsHop } from './../../lnd_responses/index.js';
 
 const makeArgs = overrides => {
   const args = {
@@ -108,7 +107,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => rpcHopAsHop(args), new Error(error), 'Got err');
     } else {
       deepStrictEqual(rpcHopAsHop(args), expected, 'Got expected result');

@@ -1,7 +1,6 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {fundPendingChannels} = require('./../../../lnd_methods');
+import 'node:assert';
+import test from 'node:test';
+import { fundPendingChannels } from './../../../lnd_methods/index.js';
 
 const id = Buffer.alloc(32).toString('hex');
 const id2 = Buffer.alloc(32, 1).toString('hex');
@@ -110,7 +109,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(fundPendingChannels(args), error, 'Got error');
     } else {
       await fundPendingChannels(args);

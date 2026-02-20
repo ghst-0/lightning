@@ -1,11 +1,10 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const EventEmitter = require('node:events');
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {getInfoResponse} = require('./../fixtures');
-const {queryRoutesResponse} = require('./../fixtures');
-const {subscribeToProbeForRoute} = require('./../../../');
+import 'node:assert';
+import EventEmitter from 'node:events';
+import test from 'node:test';
+import 'node:assert';
+import { getInfoResponse } from './../fixtures/index.js';
+import { queryRoutesResponse } from './../fixtures/index.js';
+import { subscribeToProbeForRoute } from './../../../index.js';
 
 const deletePayment = ({}, cbk) => cbk();
 
@@ -270,7 +269,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => subscribeToProbeForRoute(args), new Error(error), 'Error');
 
       return end();

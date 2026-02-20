@@ -1,7 +1,6 @@
-const BN = require('bn.js');
-const {chanFormat} = require('bolt07');
-
-const {safeTokens} = require('./../bolt00');
+import BN from 'bn.js';
+import { chanFormat } from 'bolt07';
+import { safeTokens } from './../bolt00/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const {isBuffer} = Buffer;
@@ -50,7 +49,7 @@ const numberAsChannelId = number => chanFormat({number}).channel;
     tokens: <Tokens to Forward to Next Peer Rounded Down Number>
   }
 */
-module.exports = forward => {
+export default forward => {
   if (!forward) {
     throw new Error('ExpectedRpcForwardRequestToMapToForwardRequest');
   }

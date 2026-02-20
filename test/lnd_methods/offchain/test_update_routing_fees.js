@@ -1,13 +1,12 @@
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {updateRoutingFees} = require('./../../../');
+import 'node:assert';
+import test from 'node:test';
+import { updateRoutingFees } from './../../../index.js';
 
 const makeLnd = ({err, policy}) => {
   return {
     default: {
       updateChannelPolicy: (args, cbk) => {
-        if (!!err) {
+        if (err) {
           return cbk(err);
         }
 
@@ -183,7 +182,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(updateRoutingFees(args), error, 'Got expected error');
     } else {
       await updateRoutingFees(args);

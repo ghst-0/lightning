@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const payViaPaymentRequest = require('./pay_via_payment_request');
-const payViaRoutes = require('./pay_via_routes');
+import payViaPaymentRequest from './pay_via_payment_request.js';
+import payViaRoutes from './pay_via_routes.js';
 
 /** Make a payment.
 
@@ -100,9 +100,9 @@ const payViaRoutes = require('./pay_via_routes');
     tokens: <Total Tokens Sent Number>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!args.lnd) {

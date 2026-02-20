@@ -1,7 +1,7 @@
-const {chanNumber} = require('bolt07');
+import { chanNumber } from 'bolt07';
 
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
-const isNumber = n => !isNaN(n);
+const isNumber = n => !Number.isNaN(n);
 const millitokensAsTokens = n => Number(BigInt(n) / BigInt(1e3));
 
 /** Get a hop formatted as a RPC hop
@@ -38,7 +38,7 @@ const millitokensAsTokens = n => Number(BigInt(n) / BigInt(1e3));
     [tlv_payload]: <Has Extra TLV Data Bool>
   }
 */
-module.exports = args => {
+export default args => {
   if (!isNumber(args.channel_capacity)) {
     throw new Error('ExpectedNumericChannelCapacityToMapRpcHopFromHop');
   }

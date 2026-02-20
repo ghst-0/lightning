@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const subscribeToPayViaDetails = require('./subscribe_to_pay_via_details');
+import subscribeToPayViaDetails from './subscribe_to_pay_via_details.js';
 
 const defaultMillitokens = '1000';
 const defaultTokens = 1;
@@ -39,9 +39,9 @@ const defaultTokens = 1;
     is_payable: <Payment Is Successfully Tested Within Constraints Bool>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!args.destination) {
@@ -77,7 +77,7 @@ module.exports = (args, cbk) => {
         const finished = (err, res) => {
           sub.removeAllListeners();
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorCheckingPayability', {err}]);
           }
 
@@ -86,8 +86,6 @@ module.exports = (args, cbk) => {
 
         sub.once('error', err => finished(err));
         sub.once('failed', failed => finished(null, failed));
-
-        return;
       }],
     },
     returnResult({reject, resolve, of: 'probe'}, cbk));

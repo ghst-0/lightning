@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
-const listPayments = require('./list_payments');
+import { isLnd } from './../../lnd_requests/index.js';
+import listPayments from './list_payments.js';
 
 const method = 'listPayments';
 const type = 'default';
@@ -100,9 +100,9 @@ const type = 'default';
     [next]: <Next Opaque Paging Token String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!!args.limit && !!args.token) {

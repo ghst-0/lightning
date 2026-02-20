@@ -1,6 +1,6 @@
-const EventEmitter = require('events');
+import EventEmitter from 'node:events';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const blockHashByteLen = 32;
 const event = 'block';
@@ -32,7 +32,7 @@ const type = 'chain';
     id: <Block Hash Hex String>
   }
 */
-module.exports = ({lnd}) => {
+export default ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedLndToSubscribeToBlocks');
   }
@@ -43,14 +43,12 @@ module.exports = ({lnd}) => {
   // Cancel the subscription when all listeners are removed
   eventEmitter.on('removeListener', () => {
     // Exit early when there are still listeners on the subscription
-    if (!!eventEmitter.listenerCount(event)) {
+    if (eventEmitter.listenerCount(event)) {
       return;
     }
 
     // There are no more listeners to this subscription, so stop listening
     sub.cancel();
-
-    return;
   });
 
   const emitError = err => {
@@ -65,8 +63,6 @@ module.exports = ({lnd}) => {
     }
 
     eventEmitter.emit('error', err);
-
-    return;
   };
 
   sub.on('error', err => {

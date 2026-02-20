@@ -1,10 +1,10 @@
-const getAccessIds = require('./get_access_ids');
-const grantAccess = require('./grant_access');
-const revokeAccess = require('./revoke_access');
-const subscribeToRpcRequests = require('./subscribe_to_rpc_requests');
-const verifyAccess = require('./verify_access');
+import getAccessIds from './get_access_ids.js';
+import grantAccess from './grant_access.js';
+import revokeAccess from './revoke_access.js';
+import subscribeToRpcRequests from './subscribe_to_rpc_requests.js';
+import verifyAccess from './verify_access.js';
 
-module.exports = {
+export {
   getAccessIds,
   grantAccess,
   revokeAccess,

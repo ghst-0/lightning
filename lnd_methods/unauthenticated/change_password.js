@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const method = 'changePassword';
 const type = 'unlocker';
@@ -19,9 +19,9 @@ const utf8AsBuffer = utf8 => Buffer.from(utf8, 'utf8');
 
   @returns via cbk or Promise
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!args.current_password) {
@@ -46,7 +46,7 @@ module.exports = (args, cbk) => {
           new_password: utf8AsBuffer(args.new_password),
         },
         err => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'FailedToChangeLndPassword', {err}]);
           }
 

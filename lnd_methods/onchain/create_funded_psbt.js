@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {createPsbt} = require('psbt');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { createPsbt } from 'psbt';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const defaultChangeType = () => 'CHANGE_ADDRESS_TYPE_P2TR';
@@ -13,7 +13,7 @@ const indexNotFound = -1;
 const {isBuffer} = Buffer;
 const isKnownChangeFormat = format => !format || format === 'p2tr';
 const method = 'fundPsbt';
-const strategy = type => !type ? undefined : `STRATEGY_${type.toUpperCase()}`;
+const strategy = type => type ? `STRATEGY_${ type.toUpperCase() }` : undefined;
 const type = 'wallet';
 const unconfirmedConfirmationsCount = 0;
 
@@ -57,9 +57,9 @@ const unconfirmedConfirmationsCount = 0;
     psbt: <Unsigned PSBT Hex String>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isKnownChangeFormat(args.change_format)) {
@@ -89,12 +89,12 @@ module.exports = (args, cbk) => {
       // Determine the fee setting for the funded PSBT
       fee: ['validate', ({}, cbk) => {
         // Exit early when the fee is directly specified
-        if (!!args.fee_tokens_per_vbyte) {
+        if (args.fee_tokens_per_vbyte) {
           return cbk(null, {fee_tokens_per_vbyte: args.fee_tokens_per_vbyte});
         }
 
         // Exit early when the confirmation target is directly specified
-        if (!!args.target_confirmations) {
+        if (args.target_confirmations) {
           return cbk(null, {target_confirmations: args.target_confirmations});
         }
 
@@ -151,11 +151,11 @@ module.exports = (args, cbk) => {
           target_conf: fee.target_confirmations,
         },
         (err, res) => {
-          if (!!err && err.details === errorUnsupported) {
+          if (err && err.details === errorUnsupported) {
             return cbk([501, 'CreateFundedPsbtMethodNotSupported']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorCreatingFundedPsbt', {err}]);
           }
 

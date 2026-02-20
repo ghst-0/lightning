@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {rpcWalletStateAsState} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { rpcWalletStateAsState } from './../../lnd_responses/index.js';
 
 const makeExpected = overrides => {
   const expected = {};
@@ -61,7 +60,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => rpcWalletStateAsState(args), new Error(error), 'Got error');
     } else {
       deepStrictEqual(rpcWalletStateAsState(args), expected, 'Got expected');

@@ -1,4 +1,4 @@
-const createChainAddress = require('./create_chain_address');
-const getPublicKey = require('./get_public_key');
+import createChainAddress from './create_chain_address.js';
+import getPublicKey from './get_public_key.js';
 
-module.exports = {createChainAddress, getPublicKey};
+export { createChainAddress, getPublicKey };

@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const {rejects} = require('node:assert').strict;
-const test = require('node:test');
-
-const {signPsbt} = require('./../../../lnd_methods');
+import 'node:assert';
+import 'node:assert';
+import test from 'node:test';
+import { signPsbt } from './../../../lnd_methods/index.js';
 
 const unsupported = {details: 'unknown method for service walletrpc.WalletKit'};
 
@@ -83,7 +82,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(signPsbt(args), error, 'Got error');
     } else {
       const got = await signPsbt(args);

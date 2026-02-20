@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {infoAsWalletInfo} = require('./../../lnd_responses');
-const {isLnd} = require('./../../lnd_requests');
+import { infoAsWalletInfo } from './../../lnd_responses/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const cannotConnectMessage = 'failed to connect to all addresses';
 const connectFailMessage = '14 UNAVAILABLE: channel is in state TRANSIENT_FAILURE';
@@ -42,9 +42,9 @@ const noConnectionMessage = 'No connection established';
     version: <LND Version String>
   }
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method: 'getInfo', type: 'default'})) {
@@ -57,27 +57,27 @@ module.exports = ({lnd}, cbk) => {
       // Get wallet info
       getWalletInfo: ['validate', ({}, cbk) => {
         return lnd.default.getInfo({}, (err, res) => {
-          if (!!err && err.details === lockedLndErrorMessage) {
+          if (err && err.details === lockedLndErrorMessage) {
             return cbk([503, 'LndLocked']);
           }
 
-          if (!!err && err.details === cannotConnectMessage) {
+          if (err && err.details === cannotConnectMessage) {
             return cbk([503, 'FailedToConnectToDaemon']);
           }
 
-          if (!!err && err.details === connectionFailureLndErrorMessage) {
+          if (err && err.details === connectionFailureLndErrorMessage) {
             return cbk([503, 'FailedToConnectToDaemon']);
           }
 
-          if (!!err && err.message === connectFailMessage) {
+          if (err && err.message === connectFailMessage) {
             return cbk([503, 'FailedToConnectToDaemon']);
           }
 
-          if (!!err && err.details === noConnectionMessage) {
+          if (err && err.details === noConnectionMessage) {
             return cbk([503, 'FailedToConnectToDaemon']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'GetWalletInfoErr', {err}]);
           }
 

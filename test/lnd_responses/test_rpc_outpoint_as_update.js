@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {rpcOutpointAsUpdate} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { rpcOutpointAsUpdate } from './../../lnd_responses/index.js';
 
 const makeInfo = overrides => {
   const details = {funding_txid_bytes: Buffer.alloc(32), output_index: 0};
@@ -47,7 +46,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => rpcOutpointAsUpdate(args), new Error(error), 'Got error');
     } else {
       deepStrictEqual(rpcOutpointAsUpdate(args), expected, 'Info mapped');

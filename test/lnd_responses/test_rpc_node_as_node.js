@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const {rpcNodeAsNode} = require('./../../lnd_responses');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import { rpcNodeAsNode } from './../../lnd_responses/index.js';
 
 const makeInfo = overrides => {
   const details = {
@@ -114,7 +113,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => rpcNodeAsNode(args), new Error(error), 'Got error');
     } else {
       deepStrictEqual(rpcNodeAsNode(args), expected, 'Node info mapped');

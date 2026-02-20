@@ -1,7 +1,6 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
-
-const {isLnd} = require('./../../lnd_requests');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const defaultConfirmationTarget = 6;
 const method = 'estimateFee';
@@ -25,9 +24,9 @@ const weightPerVByte = 4;
     tokens_per_vbyte: <Tokens Per Virtual Byte Number>
   }
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
@@ -42,7 +41,7 @@ module.exports = (args, cbk) => {
         const conf = args.confirmation_target || defaultConfirmationTarget;
 
         return args.lnd[type][method]({conf_target: conf}, (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorGettingFeeFromLnd', {err}]);
           }
 

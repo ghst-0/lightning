@@ -1,4 +1,4 @@
-const {chanFormat} = require('bolt07');
+import { chanFormat } from 'bolt07';
 
 const asSeconds = (ns, s) => ns === '0' ? s : Number(BigInt(ns) / BigInt(1e9));
 const msPerSec = 1e3;
@@ -32,7 +32,7 @@ const msPerSec = 1e3;
     tokens: <Forwarded Tokens Number>
   }
 */
-module.exports = forward => {
+export default forward => {
   if (!forward) {
     throw new Error('ExpectedRpcForwardToDeriveForward');
   }

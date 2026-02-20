@@ -1,8 +1,7 @@
-const {deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {throws} = require('node:assert').strict;
-
-const rpcHtlcAsPayment = require('./../../lnd_responses/rpc_htlc_as_payment');
+import 'node:assert';
+import test from 'node:test';
+import 'node:assert';
+import rpcHtlcAsPayment from './../../lnd_responses/rpc_htlc_as_payment.js';
 
 const makeInput = overrides => {
   const response = {
@@ -111,7 +110,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, (t, end) => {
-    if (!!error) {
+    if (error) {
       throws(() => rpcHtlcAsPayment(args), new Error(error), 'Got err');
     } else {
       deepStrictEqual(rpcHtlcAsPayment(args), expected, 'Mapped to payment');

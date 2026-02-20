@@ -1,8 +1,8 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {rpcWalletStateAsState} = require('./../../lnd_responses');
-const {isLnd} = require('./../../lnd_requests');
+import { rpcWalletStateAsState } from './../../lnd_responses/index.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const method = 'getState';
 const type = 'status';
@@ -30,9 +30,9 @@ const unsupportedMessage = 'unknown service lnrpc.State';
     [is_waiting]: <Wallet Is Waiting To Start Bool>
   }
 */
-module.exports = ({lnd}, cbk) => {
+export default ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({lnd, method, type})) {
@@ -45,15 +45,15 @@ module.exports = ({lnd}, cbk) => {
       // Get wallet status
       getState: ['validate', ({}, cbk) => {
         return lnd[type][method]({}, (err, res) => {
-          if (!!err && err.details === noConnectionMessage) {
+          if (err && err.details === noConnectionMessage) {
             return cbk([503, 'FailedToConnectToDaemonToGetWalletStatus']);
           }
 
-          if (!!err && err.details === unsupportedMessage) {
+          if (err && err.details === unsupportedMessage) {
             return cbk([501, 'GetWalletStatusMethodUnsupported']);
           }
 
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedGetWalletStatusError', {err}]);
           }
 

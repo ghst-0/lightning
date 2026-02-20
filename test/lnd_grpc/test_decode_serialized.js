@@ -1,7 +1,6 @@
-const {equal} = require('node:assert').strict;
-const test = require('node:test');
-
-const decodeSerialized = require('./../../lnd_grpc/decode_serialized');
+import 'node:assert';
+import test from 'node:test';
+import decodeSerialized from './../../lnd_grpc/decode_serialized.js';
 
 const tests = [
   {

@@ -1,7 +1,7 @@
-const asyncAuto = require('async/auto');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import { returnResult } from 'asyncjs-util';
 
-const {isLnd} = require('./../../lnd_requests');
+import { isLnd } from './../../lnd_requests/index.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
@@ -33,9 +33,9 @@ const type = 'signer';
     signature: <Partial Signature Hex String>
   }
 */
-module.exports = ({hash, id, lnd, nonces}, cbk) => {
+export default ({hash, id, lnd, nonces}, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isHash(hash)) {
@@ -64,7 +64,7 @@ module.exports = ({hash, id, lnd, nonces}, cbk) => {
           session_id: hexAsBuffer(id),
         },
         (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorUpdatingMuSig2Session', {err}]);
           }
 
@@ -87,7 +87,7 @@ module.exports = ({hash, id, lnd, nonces}, cbk) => {
           session_id: hexAsBuffer(id),
         },
         (err, res) => {
-          if (!!err) {
+          if (err) {
             return cbk([503, 'UnexpectedErrorSigningMuSig2Session', {err}]);
           }
 

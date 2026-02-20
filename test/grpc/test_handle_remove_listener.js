@@ -1,6 +1,5 @@
-const test = require('node:test');
-
-const {handleRemoveListener} = require('./../../grpc');
+import test from 'node:test';
+import { handleRemoveListener } from './../../grpc/index.js';
 
 const tests = [
   {

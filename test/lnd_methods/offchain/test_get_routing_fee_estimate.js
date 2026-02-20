@@ -1,6 +1,6 @@
-const {rejects, deepStrictEqual} = require('node:assert').strict;
-const test = require('node:test');
-const {getRoutingFeeEstimate} = require('../../../');
+import 'node:assert';
+import test from 'node:test';
+import { getRoutingFeeEstimate } from '../../../index.js';
 
 const makeLnd = ({err, res}) => {
   const r = {
@@ -71,7 +71,7 @@ const tests = [
 
 tests.forEach(({args, description, error, expected}) => {
   return test(description, async () => {
-    if (!!error) {
+    if (error) {
       await rejects(getRoutingFeeEstimate(args), error, 'Got expected error');
     } else {
       deepStrictEqual(await getRoutingFeeEstimate(args), expected, 'Got res');

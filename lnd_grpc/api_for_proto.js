@@ -1,7 +1,6 @@
-const grpc = require('@grpc/grpc-js');
-const {loadSync} = require('@grpc/proto-loader');
-
-const grpcOptions = require('./grpc_options');
+import grpc from '@grpc/grpc-js';
+import { loadSync } from '@grpc/proto-loader';
+import grpcOptions from './grpc_options.js';
 
 /** Get an api for a proto file
 
@@ -14,7 +13,7 @@ const grpcOptions = require('./grpc_options');
   @returns
   <API Object>
 */
-module.exports = ({credentials, params, path, service, socket, type}) => {
+export default ({credentials, params, path, service, socket, type}) => {
   const rpc = grpc.loadPackageDefinition(loadSync(path, grpcOptions));
 
   return new rpc[type][service](socket, credentials, params);

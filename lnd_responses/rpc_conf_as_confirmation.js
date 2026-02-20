@@ -24,7 +24,7 @@ const typeReorg = 'reorg';
     [type]: <Event Type String>
   }
 */
-module.exports = args => {
+export default args => {
   if (!args) {
     throw new Error('ExpectedDataForConfEvent');
   }

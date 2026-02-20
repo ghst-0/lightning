@@ -1,12 +1,12 @@
-const asyncAuto = require('async/auto');
-const asyncRetry = require('async/retry');
-const {returnResult} = require('asyncjs-util');
+import asyncAuto from 'async/auto.js';
+import asyncRetry from 'async/retry.js';
+import { returnResult } from 'asyncjs-util';
 
-const getPeers = require('./get_peers');
-const {isLnd} = require('./../../lnd_requests');
+import getPeers from './get_peers.js';
+import { isLnd } from './../../lnd_requests/index.js';
 
 const connectedErrMsg = /already.connected.to/;
-const defaultInterval = retryCount => 50 * Math.pow(2, retryCount);
+const defaultInterval = retryCount => 50 * 2 ** retryCount;
 const defaultRetries = 10;
 const isPublicKey = n => !!n && /^[0-9A-F]{66}$/i.test(n);
 const method = 'connectPeer';
@@ -33,9 +33,9 @@ const type = 'default';
 
   @returns via cbk or Promise
 */
-module.exports = (args, cbk) => {
+export default (args, cbk) => {
   return new Promise((resolve, reject) => {
-    return asyncAuto({
+    asyncAuto({
       // Check arguments
       validate: cbk => {
         if (!isLnd({method, type, lnd: args.lnd})) {
@@ -59,35 +59,35 @@ module.exports = (args, cbk) => {
         const pubkey = args.public_key;
         const retryCount = args.retry_count;
 
-        const times = retryCount !== undefined ? retryCount : defaultRetries;
+        const times = retryCount === undefined ? defaultRetries : retryCount;
 
         return asyncRetry({interval, times}, cbk => {
           return args.lnd[type][method]({
             addr: {pubkey, host: args.socket},
             perm: !args.is_temporary,
-            timeout: !!args.timeout ? msAsSeconds(args.timeout) : null,
+            timeout: args.timeout ? msAsSeconds(args.timeout) : null,
           },
           err => {
             // Exit early when the peer is already added
-            if (!!err && connectedErrMsg.test(err.message)) {
+            if (err && connectedErrMsg.test(err.message)) {
               return cbk();
             }
 
             // Exit early when the peer is the self-peer
-            if (!!err && selfKeyErrMsg.test(err.message)) {
+            if (err && selfKeyErrMsg.test(err.message)) {
               return cbk();
             }
 
-            if (!!err && err.details === notSyncedError) {
+            if (err && err.details === notSyncedError) {
               return cbk([503, 'FailedToAddPeerBecausePeerStillSyncing']);
             }
 
-            if (!!err) {
+            if (err) {
               return cbk([503, 'UnexpectedErrorAddingPeer', {err}]);
             }
 
             return getPeers({lnd: args.lnd}, (err, res) => {
-              if (!!err) {
+              if (err) {
                 return cbk(err);
               }
 

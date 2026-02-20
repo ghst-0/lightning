@@ -1,12 +1,11 @@
-const {featureFlagDetails} = require('bolt09');
-
-const {syncTypes} = require('./constants');
+import { featureFlagDetails } from 'bolt09';
+import { syncTypes } from './constants';
 
 const {ceil} = Math;
 const date = n => new Date(Number(BigInt(n) / BigInt(1e6))).toISOString();
 const isActiveSync = n => [syncTypes.active, syncTypes.pinned].includes(n);
 const isBool = n => n === false || n === true;
-const isNumber = n => !isNaN(n);
+const isNumber = n => !Number.isNaN(n);
 const isString = n => typeof n === 'string';
 const isZero = n => n === '0';
 const {keys} = Object;
@@ -59,7 +58,7 @@ const minTime = n => n < 1 ? 0 : n;
     tokens_sent: <Amount Sent Tokens Number>
   }
 */
-module.exports = peer => {
+export default peer => {
   if (!peer) {
     throw new Error('ExpectedRpcPeerToDerivePeerDetails');
   }
