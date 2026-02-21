@@ -25,9 +25,6 @@
   },
   "type": "module",
   "description": "Lightning Network client library",
-  "devDependencies": {
-    "typescript": "5.9.3"
-  },
   "engines": {
     "node": ">=20"
   },
