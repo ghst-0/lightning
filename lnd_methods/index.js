@@ -31,8 +31,6 @@ import { fundPendingChannels } from './onchain/index.js';
 import { fundPsbt } from './onchain/index.js';
 import { getAccessIds } from './macaroon/index.js';
 import { getAutopilot } from './info/index.js';
-import { getBackup } from './offchain/index.js';
-import { getBackups } from './offchain/index.js';
 import { getBlock } from './onchain/index.js';
 import { getBlockHeader } from './onchain/index.js';
 import { getChainAddresses } from './onchain/index.js';
@@ -98,8 +96,6 @@ import { payViaRoutes } from './offchain/index.js';
 import { prepareForChannelProposal } from './onchain/index.js';
 import { probeForRoute } from './offchain/index.js';
 import { proposeChannel } from './onchain/index.js';
-import { recoverFundsFromChannel } from './offchain/index.js';
-import { recoverFundsFromChannels } from './offchain/index.js';
 import { removeAdvertisedFeature } from './peers/index.js';
 import { removeExternalSocket } from './peers/index.js';
 import { removePeer } from './peers/index.js';
@@ -118,7 +114,6 @@ import { signMessage } from './message/index.js';
 import { signPsbt } from './onchain/index.js';
 import { signTransaction } from './signer/index.js';
 import { stopDaemon } from './info/index.js';
-import { subscribeToBackups } from './offchain/index.js';
 import { subscribeToBlocks } from './onchain/index.js';
 import { subscribeToChainAddress } from './onchain/index.js';
 import { subscribeToChainSpend } from './onchain/index.js';
@@ -151,8 +146,6 @@ import { updateGroupSigningSession } from './signer/index.js';
 import { updatePathfindingSettings } from './offchain/index.js';
 import { updateRoutingFees } from './offchain/index.js';
 import { verifyAccess } from './macaroon/index.js';
-import { verifyBackup } from './offchain/index.js';
-import { verifyBackups } from './offchain/index.js';
 import { verifyBytesSignature } from './signer/index.js';
 import { verifyChainAddressMessage } from './onchain/index.js';
 import { verifyMessage } from './message/index.js';
@@ -191,8 +184,6 @@ export {
   fundPsbt,
   getAccessIds,
   getAutopilot,
-  getBackup,
-  getBackups,
   getBlock,
   getBlockHeader,
   getChainAddresses,
@@ -258,8 +249,6 @@ export {
   prepareForChannelProposal,
   probeForRoute,
   proposeChannel,
-  recoverFundsFromChannel,
-  recoverFundsFromChannels,
   removeAdvertisedFeature,
   removeExternalSocket,
   removePeer,
@@ -278,7 +267,6 @@ export {
   signPsbt,
   signTransaction,
   stopDaemon,
-  subscribeToBackups,
   subscribeToBlocks,
   subscribeToChainAddress,
   subscribeToChainSpend,
@@ -311,8 +299,6 @@ export {
   updatePathfindingSettings,
   updateRoutingFees,
   verifyAccess,
-  verifyBackup,
-  verifyBackups,
   verifyBytesSignature,
   verifyChainAddressMessage,
   verifyMessage,

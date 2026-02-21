@@ -1,4 +1,3 @@
-import backupsFromSnapshot from './backups_from_snapshot.js';
 import channelAcceptAsOpenRequest from './channel_accept_as_open_request.js';
 import channelEdgeAsChannel from './channel_edge_as_channel.js';
 import confirmedFromPayment from './confirmed_from_payment.js';
@@ -44,7 +43,6 @@ import rpcUtxoAsUtxo from './rpc_utxo_as_utxo.js';
 import rpcWalletStateAsState from './rpc_wallet_state_as_state.js';
 
 export {
-  backupsFromSnapshot,
   channelAcceptAsOpenRequest,
   channelEdgeAsChannel,
   confirmedFromPayment,

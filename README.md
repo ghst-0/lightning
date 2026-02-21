@@ -144,10 +144,6 @@ variables set:
     granted permission to access the node.
 - [getAutopilot](https://github.com/alexbosworth/ln-service#getautopilot): Retrieve channel open
     autopilot configuration.
-- [getBackup](https://github.com/alexbosworth/ln-service#getbackup): Get recovery details for a
-    specific channel.
-- [getBackups](https://github.com/alexbosworth/ln-service#getbackups): Get recovery details for
-    all channels.
 - [getBlock](https://github.com/alexbosworth/ln-service#getblock): Get a block
 - [getBlockHeader](https://github.com/alexbosworth/ln-service#getblockheader):
     Get a block header
@@ -275,10 +271,6 @@ variables set:
     route to pay to a destination.
 - [proposeChannel](https://github.com/alexbosworth/ln-service#proposechannel): Propose a new
     channel to a peer who has prepared for the channel proposal.
-- [recoverFundsFromChannel](https://github.com/alexbosworth/ln-service#recoverfundsfromchannel):
-    Attempt to recover channel funds from a specific channel backup.
-- [recoverFundsFromChannels](https://github.com/alexbosworth/ln-service#recoverfundsfromchannels):
-    Attempt to recover funds from multiple channels using a multiple channel backup.
 - [removeAdvertisedFeature](https://github.com/alexbosworth/ln-service#removeadvertisedfeature):
     Remove a supported feature from the graph node announcement
 - [removeExternalSocket](https://github.com/alexbosworth/ln-service#removeexternalsocket):
@@ -315,8 +307,6 @@ variables set:
     signatures required for inputs on a transaction.
 - [stopDaemon](https://github.com/alexbosworth/ln-service#stopdaemon): Send a shutdown
     request to cleanly kill the daemon.
-- [subscribeToBackups](https://github.com/alexbosworth/ln-service#subscribetobackups): Get
-    notified on channel funds recovery backup file updates.
 - [subscribeToBlocks](https://github.com/alexbosworth/ln-service#subscribetoblocks): Get notified
     when the Blockchain is updated.
 - [subscribeToChainAddress](https://github.com/alexbosworth/ln-service#subscribetochainaddress):
@@ -383,10 +373,6 @@ variables set:
     forwarding fees or other routing policies for a channel or all channels.
 - [verifyAccess](https://github.com/alexbosworth/ln-service#verifyaccess): Confirm a macaroon
     has permission to access a given resource.
-- [verifyBackup](https://github.com/alexbosworth/ln-service#verifybackup): Check if a channel fund
-    recovery backup file is valid.
-- [verifyBackups](https://github.com/alexbosworth/ln-service#verifybackups): Check if multiple
-    channel fund recovery backups are valid.
 - [verifyBytesSignature](https://github.com/alexbosworth/ln-service#verifybytessignature): Check
     that a signature over arbitrary bytes is valid.
 - [verifyChainAddressMessage](https://github.com/alexbosworth/ln-service#verifychainaddressmessage):

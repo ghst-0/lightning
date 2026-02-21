@@ -32,8 +32,6 @@ import { fundPendingChannels } from './lnd_methods/index.js';
 import { fundPsbt } from './lnd_methods/index.js';
 import { getAccessIds } from './lnd_methods/index.js';
 import { getAutopilot } from './lnd_methods/index.js';
-import { getBackup } from './lnd_methods/index.js';
-import { getBackups } from './lnd_methods/index.js';
 import { getBlock } from './lnd_methods/index.js';
 import { getBlockHeader } from './lnd_methods/index.js';
 import { getChainAddresses } from './lnd_methods/index.js';
@@ -99,8 +97,6 @@ import { payViaRoutes } from './lnd_methods/index.js';
 import { prepareForChannelProposal } from './lnd_methods/index.js';
 import { probeForRoute } from './lnd_methods/index.js';
 import { proposeChannel } from './lnd_methods/index.js';
-import { recoverFundsFromChannel } from './lnd_methods/index.js';
-import { recoverFundsFromChannels } from './lnd_methods/index.js';
 import { removeAdvertisedFeature } from './lnd_methods/index.js';
 import { removeExternalSocket } from './lnd_methods/index.js';
 import { removePeer } from './lnd_methods/index.js';
@@ -119,7 +115,6 @@ import { signMessage } from './lnd_methods/index.js';
 import { signPsbt } from './lnd_methods/index.js';
 import { signTransaction } from './lnd_methods/index.js';
 import { stopDaemon } from './lnd_methods/index.js';
-import { subscribeToBackups } from './lnd_methods/index.js';
 import { subscribeToBlocks } from './lnd_methods/index.js';
 import { subscribeToChainAddress } from './lnd_methods/index.js';
 import { subscribeToChainSpend } from './lnd_methods/index.js';
@@ -153,8 +148,6 @@ import { updateGroupSigningSession } from './lnd_methods/index.js';
 import { updatePathfindingSettings } from './lnd_methods/index.js';
 import { updateRoutingFees } from './lnd_methods/index.js';
 import { verifyAccess } from './lnd_methods/index.js';
-import { verifyBackup } from './lnd_methods/index.js';
-import { verifyBackups } from './lnd_methods/index.js';
 import { verifyBytesSignature } from './lnd_methods/index.js';
 import { verifyChainAddressMessage } from './lnd_methods/index.js';
 import { verifyMessage } from './lnd_methods/index.js';
@@ -194,8 +187,6 @@ export {
   fundPsbt,
   getAccessIds,
   getAutopilot,
-  getBackup,
-  getBackups,
   getBlock,
   getBlockHeader,
   getChainAddresses,
@@ -261,8 +252,6 @@ export {
   prepareForChannelProposal,
   probeForRoute,
   proposeChannel,
-  recoverFundsFromChannel,
-  recoverFundsFromChannels,
   removeAdvertisedFeature,
   removeExternalSocket,
   removePeer,
@@ -281,7 +270,6 @@ export {
   signPsbt,
   signTransaction,
   stopDaemon,
-  subscribeToBackups,
   subscribeToBlocks,
   subscribeToChainAddress,
   subscribeToChainSpend,
@@ -315,8 +303,6 @@ export {
   updatePathfindingSettings,
   updateRoutingFees,
   verifyAccess,
-  verifyBackup,
-  verifyBackups,
   verifyBytesSignature,
   verifyChainAddressMessage,
   verifyMessage,

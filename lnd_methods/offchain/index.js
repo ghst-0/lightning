@@ -9,8 +9,6 @@ import deletePendingChannel from './delete_pending_channel.js';
 import disableChannel from './disable_channel.js';
 import disconnectWatchtower from './disconnect_watchtower.js';
 import enableChannel from './enable_channel.js';
-import getBackup from './get_backup.js';
-import getBackups from './get_backups.js';
 import getChannelBalance from './get_channel_balance.js';
 import getChannels from './get_channels.js';
 import getClosedChannels from './get_closed_channels.js';
@@ -35,10 +33,7 @@ import payViaPaymentDetails from './pay_via_payment_details.js';
 import payViaPaymentRequest from './pay_via_payment_request.js';
 import payViaRoutes from './pay_via_routes.js';
 import probeForRoute from './probe_for_route.js';
-import recoverFundsFromChannel from './recover_funds_from_channel.js';
-import recoverFundsFromChannels from './recover_funds_from_channels.js';
 import sendMessageToPeer from './send_message_to_peer.js';
-import subscribeToBackups from './subscribe_to_backups.js';
 import subscribeToChannels from './subscribe_to_channels.js';
 import subscribeToForwardRequests from './subscribe_to_forward_requests.js';
 import subscribeToForwards from './subscribe_to_forwards.js';
@@ -54,8 +49,6 @@ import subscribeToProbeForRoute from './subscribe_to_probe_for_route.js';
 import updateConnectedWatchtower from './update_connected_watchtower.js';
 import updatePathfindingSettings from './update_pathfinding_settings.js';
 import updateRoutingFees from './update_routing_fees.js';
-import verifyBackup from './verify_backup.js';
-import verifyBackups from './verify_backups.js';
 
 export {
   connectWatchtower,
@@ -69,8 +62,6 @@ export {
   disableChannel,
   disconnectWatchtower,
   enableChannel,
-  getBackup,
-  getBackups,
   getChannelBalance,
   getChannels,
   getClosedChannels,
@@ -95,10 +86,7 @@ export {
   payViaPaymentRequest,
   payViaRoutes,
   probeForRoute,
-  recoverFundsFromChannel,
-  recoverFundsFromChannels,
   sendMessageToPeer,
-  subscribeToBackups,
   subscribeToChannels,
   subscribeToForwardRequests,
   subscribeToForwards,
@@ -113,7 +101,5 @@ export {
   subscribeToProbeForRoute,
   updateConnectedWatchtower,
   updatePathfindingSettings,
-  updateRoutingFees,
-  verifyBackup,
-  verifyBackups,
+  updateRoutingFees
 };

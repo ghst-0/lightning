@@ -125,14 +125,6 @@
     "methods": ["QueryScores", "Status"],
     "type": "autopilot"
   },
-  "getBackup": {
-    "method": "ExportChannelBackup",
-    "type": "default"
-  },
-  "getBackups": {
-    "method": "ExportAllChannelBackups",
-    "type": "default"
-  },
   "getBlock": {
     "methods": ["GetBestBlock", "GetBlock", "GetBlockHash"],
     "type": "blocks"
@@ -388,14 +380,6 @@
     "method": "OpenChannel",
     "type": "default"
   },
-  "recoverFundsFromChannel": {
-    "method": "RestoreChannelBackups",
-    "type": "default"
-  },
-  "recoverFundsFromChannels": {
-    "method": "restoreChannelBackups",
-    "type": "default"
-  },
   "removeAdvertisedFeature": {
     "method": "updateNodeAnnouncement",
     "type": "peers"
@@ -468,10 +452,6 @@
   },
   "stopDaemon": {
     "method": "StopDaemon",
-    "type": "default"
-  },
-  "subscribeToBackups": {
-    "method": "SubscribeChannelBackups",
     "type": "default"
   },
   "subscribeToBlocks": {
@@ -599,14 +579,6 @@
   },
   "verifyAccess": {
     "method": "CheckMacaroonPermissions",
-    "type": "default"
-  },
-  "verifyBackup": {
-    "method": "VerifyChanBackup",
-    "type": "default"
-  },
-  "verifyBackups": {
-    "method": "VerifyChanBackup",
     "type": "default"
   },
   "verifyBytesSignature": {
