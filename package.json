@@ -20,7 +20,7 @@
     "type-fest": "5.4.4"
   },
   "devDependencies": {
-    "oxlint": "^1.49.0"
+    "oxlint": "^1.50.0"
   },
   "type": "module",
   "description": "Lightning Network client library",
