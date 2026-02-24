@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { unlockUtxo } from '../../../lnd_methods/index.js';
+import { unlockUtxo } from '../../../lnd_methods/onchain/unlock_utxo.js';
 
 const id = Buffer.alloc(32).toString('hex');
 

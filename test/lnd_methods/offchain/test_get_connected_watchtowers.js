@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getConnectedWatchtowers } from '../../../lnd_methods/index.js';
+import { getConnectedWatchtowers } from '../../../lnd_methods/offchain/get_connected_watchtowers.js';
 
 const makeStats = overrides => {
   const stats = {

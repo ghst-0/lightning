@@ -1,7 +1,7 @@
 import EventEmitter from 'node:events';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import scriptFromChainAddress from './script_from_chain_address.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { scriptFromChainAddress } from './script_from_chain_address.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const dummyTxId = Buffer.alloc(32).toString('hex');
@@ -52,7 +52,7 @@ const type = 'chain';
 
   @event 'reorg'
 */
-export default args => {
+const subscribeToChainSpend = args => {
   if (!isLnd({method, type, lnd: args.lnd})) {
     throw new Error('ExpectedLndGrpcApiToSubscribeToSpendConfirmations');
   }
@@ -151,3 +151,5 @@ export default args => {
 
   return eventEmitter;
 };
+
+export { subscribeToChainSpend }

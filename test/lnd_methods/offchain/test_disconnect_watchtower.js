@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { disconnectWatchtower } from '../../../lnd_methods/index.js';
+import { disconnectWatchtower } from '../../../lnd_methods/offchain/disconnect_watchtower.js';
 
 const makeLnd = err => {
   return {tower_client: {removeTower: ({}, cbk) => cbk(err)}};

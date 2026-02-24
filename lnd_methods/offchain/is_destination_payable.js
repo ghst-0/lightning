@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import subscribeToPayViaDetails from './subscribe_to_pay_via_details.js';
+import { subscribeToPayViaDetails } from './subscribe_to_pay_via_details.js';
 
 const defaultMillitokens = '1000';
 const defaultTokens = 1;
@@ -39,7 +39,7 @@ const defaultTokens = 1;
     is_payable: <Payment Is Successfully Tested Within Constraints Bool>
   }
 */
-export default (args, cbk) => {
+const isDestinationPayable = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -91,3 +91,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'probe'}, cbk));
   });
 };
+
+export { isDestinationPayable }

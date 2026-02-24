@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { failureFromPayment } from '../../lnd_responses/index.js';
+import { failureFromPayment } from '../../lnd_responses/failure_from_payment.js';
 
 const id = Buffer.alloc(32).toString('hex')
 

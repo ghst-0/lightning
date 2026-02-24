@@ -1,6 +1,7 @@
 import { equal, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { paymentAmounts } from '../../bolt00/index.js';
+
+import { paymentAmounts } from '../../bolt00/payment_amounts.js';
 
 const tests = [
   {

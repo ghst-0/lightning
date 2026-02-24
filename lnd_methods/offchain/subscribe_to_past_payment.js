@@ -1,8 +1,8 @@
 import EventEmitter from 'node:events';
 
-import emitPayment from './emit_payment.js';
-import { handleRemoveListener } from '../../grpc/index.js';
-import { isLnd } from '../../lnd_requests/index.js';
+import { emitPayment } from './emit_payment.js';
+import { handleRemoveListener } from '../../grpc/handle_remove_listener.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const events = ['confirmed', 'failed', 'paying'];
 const hexToBuffer = hex => Buffer.from(hex, 'hex');
@@ -102,7 +102,7 @@ const type = 'router';
     tokens: <Total Tokens Pending Rounded Down Number>
   }
 */
-export default args => {
+const subscribeToPastPayment = args => {
   if (!isHash(args.id)) {
     throw new Error('ExpectedIdOfPastPaymentToSubscribeTo');
   }
@@ -141,3 +141,5 @@ export default args => {
 
   return emitter;
 };
+
+export { subscribeToPastPayment }

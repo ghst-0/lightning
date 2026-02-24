@@ -1,16 +1,17 @@
 import { join } from 'node:path';
 
-import apiForProto from './api_for_proto.js';
-import {
+import { apiForProto } from './api_for_proto.js';
+import { grpcCredentials } from './grpc_credentials.js';
+import grpc_services from '../grpc/grpc_services.json' with { type: 'json' };
+
+const {
   defaultSocket,
   grpcSslCipherSuites,
   packageTypes,
   protoFiles,
   protosDir,
   serviceTypes
-} from '../grpc/index.js';
-import grpcCredentials from './grpc_credentials.js';
-
+} = grpc_services;
 const {GRPC_SSL_CIPHER_SUITES} = process.env;
 const {keys} = Object;
 const pathForProto = proto => join(import.meta.dirname, protosDir, proto);
@@ -46,7 +47,7 @@ const pathForProto = proto => join(import.meta.dirname, protosDir, proto);
     }
   }
 */
-export default ({cert, macaroon, path, socket}) => {
+const authenticatedLndGrpc = ({cert, macaroon, path, socket}) => {
   const {credentials} = grpcCredentials({cert, macaroon});
   const lndSocket = socket || defaultSocket;
 
@@ -80,3 +81,5 @@ export default ({cert, macaroon, path, socket}) => {
     {}),
   };
 };
+
+export { authenticatedLndGrpc }

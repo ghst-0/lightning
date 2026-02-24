@@ -41,7 +41,7 @@ const streamAuth = 'stream_auth';
     [uri]: <RPC URI String>
   }
 */
-export default args => {
+const rpcRequestUpdateAsEvent = args => {
   if (!args) {
     throw new Error('ExpectedRpcRequestUpdateDetailsToDeriveUpdateEvent');
   }
@@ -129,3 +129,5 @@ export default args => {
     return {call, id, macaroon: bufferAsBase64(args.raw_macaroon)};
   }
 };
+
+export { rpcRequestUpdateAsEvent }

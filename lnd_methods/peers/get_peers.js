@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcPeerAsPeer } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcPeerAsPeer } from '../../lnd_responses/rpc_peer_as_peer.js';
 
 const {isArray} = Array;
 const method = 'listPeers';
@@ -41,7 +41,7 @@ const type = 'default';
     }]
   }
 */
-export default ({lnd}, cbk) => {
+const getPeers = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -87,3 +87,5 @@ export default ({lnd}, cbk) => {
     returnResult({reject, resolve, of: 'finalPeers'}, cbk));
   });
 };
+
+export { getPeers }

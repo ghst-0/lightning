@@ -1,8 +1,10 @@
 import EventEmitter from 'node:events';
 import { featureFlagDetails } from 'bolt09';
-import getNode from './get_node.js';
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcChannelClosedAsClosed, rpcChannelUpdateAsUpdate } from '../../lnd_responses/index.js';
+
+import { getNode } from './get_node.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcChannelClosedAsClosed } from '../../lnd_responses/rpc_channel_closed_as_closed.js';
+import { rpcChannelUpdateAsUpdate } from '../../lnd_responses/rpc_channel_update_as_update.js';
 
 const events = ['channel_closed', 'channel_updated', 'node_updated'];
 const {isArray} = Array;
@@ -74,7 +76,7 @@ const type = 'default';
     updated_at: <Update Received At ISO 8601 Date String>
   }
 */
-export default ({lnd}) => {
+const subscribeToGraph = ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToChannelGraph');
   }
@@ -196,3 +198,5 @@ export default ({lnd}) => {
 
   return eventEmitter;
 };
+
+export { subscribeToGraph }

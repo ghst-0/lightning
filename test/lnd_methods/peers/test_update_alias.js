@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { updateAlias } from '../../../index.js';
+import { updateAlias } from '../../../lnd_methods/peers/update_alias.js';
 
 const makeLnd = ({err}) => {
   return {peers: {updateNodeAnnouncement: (args, cbk) => cbk(err)}};

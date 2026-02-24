@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { createSeed } from '../../../lnd_methods/index.js';
+import { createSeed } from '../../../lnd_methods/unauthenticated/create_seed.js';
 
 const message = '14 UNAVAILABLE: Connect Failed';
 

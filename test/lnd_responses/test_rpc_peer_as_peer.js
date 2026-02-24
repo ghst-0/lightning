@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcPeerAsPeer } from '../../lnd_responses/index.js';
+import { rpcPeerAsPeer } from '../../lnd_responses/rpc_peer_as_peer.js';
 
 const makePeer = overrides => {
   const response = {

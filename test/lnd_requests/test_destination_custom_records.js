@@ -1,6 +1,6 @@
 import { deepStrictEqual } from 'node:assert/strict';
 import test from 'node:test';
-import { destinationCustomRecords } from '../../lnd_requests/index.js';
+import { destinationCustomRecords } from '../../lnd_requests/destination_custom_records.js';
 
 const tests = [
   {

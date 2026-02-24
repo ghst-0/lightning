@@ -1,6 +1,6 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const {isArray} = Array;
 const {keys} = Object;
@@ -26,7 +26,7 @@ const type = 'default';
     }]
   }
 */
-export default ({id, lnd}, cbk) => {
+const getMethods = ({id, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -88,3 +88,5 @@ export default ({id, lnd}, cbk) => {
     returnResult({reject, resolve, of: 'getMethods'}, cbk));
   });
 };
+
+export { getMethods }

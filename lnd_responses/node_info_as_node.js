@@ -1,5 +1,5 @@
-import channelEdgeAsChannel from './channel_edge_as_channel.js';
-import rpcNodeAsNode from './rpc_node_as_node.js';
+import { channelEdgeAsChannel } from './channel_edge_as_channel.js';
+import { rpcNodeAsNode } from './rpc_node_as_node.js';
 
 /** Derive node details from RPC node info
 
@@ -89,7 +89,7 @@ import rpcNodeAsNode from './rpc_node_as_node.js';
     [updated_at]: <Last Known Update ISO 8601 Date String>
   }
 */
-export default args => {
+const nodeInfoAsNode = args => {
   if (!args) {
     throw new Error('ExpectedNodeDetailsToDeriveNodeInfo');
   }
@@ -119,3 +119,5 @@ export default args => {
     updated_at: node.updated_at,
   };
 };
+
+export { nodeInfoAsNode }

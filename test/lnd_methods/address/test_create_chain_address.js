@@ -1,6 +1,6 @@
 import { equal, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { createChainAddress } from '../../../index.js';
+import { createChainAddress } from '../../../lnd_methods/address/create_chain_address.js';
 
 const tests = [
   {

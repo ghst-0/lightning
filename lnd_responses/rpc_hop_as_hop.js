@@ -40,7 +40,7 @@ const millitokensPerToken = BigInt(1e3);
     [timeout]: <Timeout Block Height Number>
   }
 */
-export default hop => {
+const rpcHopAsHop = hop => {
   if (!hop) {
     throw new Error('ExpectedRpcHopToDeriveHop');
   }
@@ -88,3 +88,5 @@ export default hop => {
     timeout: hop.expiry || undefined,
   };
 };
+
+export { rpcHopAsHop }

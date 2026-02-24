@@ -1,7 +1,7 @@
 import { chanFormat } from 'bolt07';
 
 import constants from './constants.json' with { type: 'json'};
-import { safeTokens } from '../bolt00/index.js';
+import { safeTokens } from '../bolt00/safe_tokens.js';
 
 const { htlcTypes } = constants;
 const bufferAsHex = buffer => buffer.toString('hex');
@@ -66,7 +66,7 @@ const nsPerMs = BigInt(1e6);
     [tokens]: <Sending Tokens Number>
   }
 */
-export default htlc => {
+const forwardFromHtlcEvent = htlc => {
   if (!htlc.event_type) {
     throw new Error('ExpectedHtlcEventTypeToDeriveForwardFromHtlcEvent');
   }
@@ -217,3 +217,5 @@ export default htlc => {
     tokens: isReceive ? undefined : tokens,
   };
 };
+
+export { forwardFromHtlcEvent }

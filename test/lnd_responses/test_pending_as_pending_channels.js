@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { pendingAsPendingChannels } from '../../lnd_responses/index.js';
+import { pendingAsPendingChannels } from '../../lnd_responses/pending_as_pending_channels.js';
 
 const makeChannel = overrides => {
   const res = {

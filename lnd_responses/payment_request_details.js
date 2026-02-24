@@ -1,7 +1,7 @@
 import { featureFlagDetails } from 'bolt09';
 
-import routeFromRouteHint from './route_from_route_hint.js';
-import { safeTokens } from '../bolt00/index.js';
+import { routeFromRouteHint } from './route_from_route_hint.js';
+import { safeTokens } from '../bolt00/safe_tokens.js';
 
 const bufToHex = n => n.length === 0 ? undefined : n.toString('hex');
 const defaultExpireMs = 1000 * 60 * 60;
@@ -76,7 +76,7 @@ const {now} = Date;
     tokens: <Requested Tokens Rounded Down Number>
   }
 */
-export default args => {
+const paymentRequestDetails = args => {
   if (!args.destination) {
     throw new Error('ExpectedDestinationInDecodedPaymentRequest');
   }
@@ -136,3 +136,5 @@ export default args => {
     tokens: Number(args.num_satoshis),
   };
 };
+
+export { paymentRequestDetails }

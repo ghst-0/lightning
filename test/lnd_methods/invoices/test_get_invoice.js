@@ -1,7 +1,8 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getInvoice } from '../../../index.js';
-import { lookupInvoiceResponse } from '../fixtures/index.js';
+
+import { getInvoice } from '../../../lnd_methods/invoices/get_invoice.js';
+import { lookupInvoiceResponse } from '../fixtures/lookup_invoice_response.js';
 
 const id = Buffer.alloc(32).toString('hex');
 

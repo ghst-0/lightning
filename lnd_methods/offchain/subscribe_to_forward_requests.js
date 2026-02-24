@@ -1,7 +1,8 @@
 import EventEmitter from 'node:events';
+
 import payment_states from './payment_states.json' with { type: 'json' };
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcForwardAsForwardRequest } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcForwardAsForwardRequest } from '../../lnd_responses/rpc_forward_as_forward_request.js';
 
 const { forwardPaymentActions } = payment_states;
 const bufferFromHex = hex => Buffer.from(hex, 'hex');
@@ -50,7 +51,7 @@ const type = 'router';
     tokens: <Tokens to Forward to Next Peer Rounded Down Number>
   }
 */
-export default ({lnd}) => {
+const subscribeToForwardRequests = ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToForwardRequests');
   }
@@ -116,3 +117,5 @@ export default ({lnd}) => {
 
   return emitter;
 };
+
+export { subscribeToForwardRequests }

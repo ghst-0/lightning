@@ -1,6 +1,6 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const invalidPasswordError = 'invalid passphrase for master public key';
 const method = 'unlockWallet';
@@ -16,7 +16,7 @@ const utf8AsBuffer = utf8 => Buffer.from(utf8, 'utf8');
 
   @returns via cbk or Promise
 */
-export default ({lnd, password}, cbk) => {
+const unlockWallet = ({lnd, password}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -53,3 +53,5 @@ export default ({lnd, password}, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { unlockWallet }

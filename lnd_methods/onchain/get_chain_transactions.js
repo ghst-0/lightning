@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcTxAsTransaction } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcTxAsTransaction } from '../../lnd_responses/rpc_tx_as_transaction.js';
 
 const {isArray} = Array;
 const method = 'getTransactions';
@@ -44,7 +44,7 @@ const type = 'default';
     }]
   }
 */
-export default ({after, before, lnd}, cbk) => {
+const getChainTransactions = ({after, before, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -88,3 +88,5 @@ export default ({after, before, lnd}, cbk) => {
     returnResult({reject, resolve, of: 'getTransactions'}, cbk));
   });
 };
+
+export { getChainTransactions }

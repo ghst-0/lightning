@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getWalletVersion } from '../../../index.js';
+import { getWalletVersion } from '../../../lnd_methods/info/get_wallet_version.js';
 
 const makeResponse = overrides => {
   const response = {

@@ -29,7 +29,7 @@ const {isBuffer} = Buffer;
     updated_at: <Update Received At ISO 8601 Date String>
   }
 */
-export default update => {
+const rpcChannelClosedAsClosed = update => {
   if (!update) {
     throw new Error('ExpectedChannelClosedUpdateDetails');
   }
@@ -77,3 +77,5 @@ export default update => {
     updated_at: new Date().toISOString(),
   };
 };
+
+export { rpcChannelClosedAsClosed }

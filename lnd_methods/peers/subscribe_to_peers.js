@@ -1,6 +1,6 @@
 import EventEmitter from 'node:events';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const cancelError = 'Cancelled on client';
 const events = ['connected', 'disconnected', 'error'];
@@ -32,7 +32,7 @@ const type = 'default';
     public_key: <Disconnected Peer Public Key Hex String>
   }
 */
-export default ({lnd}) => {
+const subscribeToPeers = ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToPeers');
   }
@@ -89,3 +89,5 @@ export default ({lnd}) => {
 
   return emitter;
 };
+
+export { subscribeToPeers }

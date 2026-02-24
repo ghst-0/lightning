@@ -41,7 +41,7 @@ const minConfs = (isZero, confs) => isZero ? Number() : (confs || undefined);
     [partner_csv_delay]: <Peer Output CSV Delay Number>
   }
 */
-export default args => {
+const openChannelRequest = args => {
   const chainFeeRate = Number(args.sat_per_vbyte) || Number(args.sat_per_byte);
   const hasMinHtlc = args.min_htlc_msat !== Number().toString();
   const normalFunded = !args.fund_max;
@@ -64,3 +64,5 @@ export default args => {
     partner_csv_delay: args.remote_csv_delay || undefined,
   };
 };
+
+export { openChannelRequest }

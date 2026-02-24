@@ -1,5 +1,5 @@
 import test from 'node:test';
-import { handleRemoveListener } from '../../grpc/index.js';
+import { handleRemoveListener } from '../../grpc/handle_remove_listener.js';
 
 const tests = [
   {

@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getMasterPublicKeys } from '../../../lnd_methods/index.js';
+import { getMasterPublicKeys } from '../../../lnd_methods/onchain/get_master_public_keys.js';
 
 const makeExpected = overrides => {
   const res = {

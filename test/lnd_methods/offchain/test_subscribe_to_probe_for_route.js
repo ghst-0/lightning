@@ -1,7 +1,9 @@
 import { throws, deepEqual } from 'node:assert/strict';
 import test from 'node:test';
-import { getInfoResponse, queryRoutesResponse } from '../fixtures/index.js';
-import { subscribeToProbeForRoute } from '../../../index.js';
+
+import { subscribeToProbeForRoute } from '../../../lnd_methods/offchain/subscribe_to_probe_for_route.js';
+import getInfoResponse from '../fixtures/get_info_response.json' with { type: 'json' };
+import queryRoutesResponse from '../fixtures/query_routes_response.json' with { type: 'json' };
 
 const deletePayment = ({}, cbk) => cbk();
 

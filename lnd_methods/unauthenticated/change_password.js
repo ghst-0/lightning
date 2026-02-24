@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const method = 'changePassword';
 const type = 'unlocker';
@@ -19,7 +19,7 @@ const utf8AsBuffer = utf8 => Buffer.from(utf8, 'utf8');
 
   @returns via cbk or Promise
 */
-export default (args, cbk) => {
+const changePassword = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -57,3 +57,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { changePassword }

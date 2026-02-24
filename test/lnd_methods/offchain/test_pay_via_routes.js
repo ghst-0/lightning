@@ -1,6 +1,6 @@
 import { deepStrictEqual, strictEqual } from 'node:assert/strict';
 import test from 'node:test';
-import { payViaRoutes } from '../../../index.js';
+import { payViaRoutes } from '../../../lnd_methods/offchain/pay_via_routes.js';
 
 const preimage = Buffer.alloc(32);
 

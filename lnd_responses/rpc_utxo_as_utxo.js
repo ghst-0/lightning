@@ -31,7 +31,7 @@ const {keys} = Object;
     transaction_vout: <Transaction Output Index Number>
   }
 */
-export default utxo => {
+const rpcUtxoAsUtxo = utxo => {
   if (!utxo) {
     throw new Error('ExpectedRpcUtxoToDeriveUtxoDetails');
   }
@@ -84,3 +84,5 @@ export default utxo => {
     transaction_vout: utxo.outpoint.output_index,
   };
 };
+
+export { rpcUtxoAsUtxo }

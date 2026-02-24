@@ -1,6 +1,6 @@
 import EventEmitter from 'node:events';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const blockHashByteLen = 32;
 const event = 'block';
@@ -32,7 +32,7 @@ const type = 'chain';
     id: <Block Hash Hex String>
   }
 */
-export default ({lnd}) => {
+const subscribeToBlocks = ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedLndToSubscribeToBlocks');
   }
@@ -90,3 +90,5 @@ export default ({lnd}) => {
 
   return eventEmitter;
 };
+
+export { subscribeToBlocks }

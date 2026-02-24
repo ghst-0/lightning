@@ -23,7 +23,7 @@ const is256Hex = n => !!n && /^[0-9A-F]{64}$/i.test(n);
     is_route_not_found: <Failure Due to No Route To Destination Found Bool>
   }
 */
-export default payment => {
+const failureFromPayment = payment => {
   const state = payment.failure_reason;
 
   if (!is256Hex(payment.payment_hash)) {
@@ -39,3 +39,5 @@ export default payment => {
     is_route_not_found: state === failureReason.pathfinding_routes_failed,
   };
 };
+
+export { failureFromPayment }

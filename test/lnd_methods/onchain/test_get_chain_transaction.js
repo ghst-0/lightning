@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getChainTransaction } from '../../../lnd_methods/index.js';
+import { getChainTransaction } from '../../../lnd_methods/onchain/get_chain_transaction.js';
 
 const makeExpected = overrides => {
   const transaction = {

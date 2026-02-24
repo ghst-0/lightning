@@ -2,7 +2,7 @@ import asyncAuto from 'async/auto.js';
 import { chanNumber } from 'bolt07';
 
 import { returnResult } from 'asyncjs-util';
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const errorNotFound = 'htlc unknown';
 const errorUninitiated = 'cannot lookup with flag --store-final-htlc-resolutions=false';
@@ -31,7 +31,7 @@ const type = 'default';
     is_settled: <Payment Is Settled Into Non-HTLC Balance Bool>
   }
 */
-export default ({channel, lnd, payment}, cbk) => {
+const getSettlementStatus = ({channel, lnd, payment}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -96,3 +96,5 @@ export default ({channel, lnd, payment}, cbk) => {
     returnResult({reject, resolve, of: 'getStatus'}, cbk));
   });
 };
+
+export { getSettlementStatus }

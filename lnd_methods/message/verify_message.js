@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const method = 'verifyMessage';
 const type = 'default';
@@ -22,7 +22,7 @@ const utf8StringAsBuffer = str => Buffer.from(str, 'utf8');
     signed_by: <Public Key Hex String>
   }
 */
-export default ({lnd, message, signature}, cbk) => {
+const verifyMessage = ({lnd, message, signature}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -66,3 +66,5 @@ export default ({lnd, message, signature}, cbk) => {
     returnResult({reject, resolve, of: 'verify'}, cbk));
   });
 };
+
+export { verifyMessage }

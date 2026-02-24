@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import { paymentRequestDetails } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { paymentRequestDetails } from '../../lnd_responses/payment_request_details.js';
 
 const method = 'decodePayReq';
 const type = 'default';
@@ -46,7 +46,7 @@ const type = 'default';
     tokens: <Requested Tokens Rounded Down Number>
   }
 */
-export default ({lnd, request}, cbk) => {
+const decodePaymentRequest = ({lnd, request}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -84,3 +84,5 @@ export default ({lnd, request}, cbk) => {
     returnResult({reject, resolve, of: 'decode'}, cbk));
   });
 };
+
+export { decodePaymentRequest }

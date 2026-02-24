@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import chanPolicyAsPolicy from '../../lnd_responses/channel_policy_as_policy.js';
+import { channelPolicyAsPolicy } from '../../lnd_responses/channel_policy_as_policy.js';
 
 const makeExpected = overrides => {
   const expected = {
@@ -141,9 +141,9 @@ const tests = [
 for (const { args, description, error, expected } of tests) {
   test(description, (t, end) => {
     if (error) {
-      throws(() => chanPolicyAsPolicy(args), new Error(error), 'Got error');
+      throws(() => channelPolicyAsPolicy(args), new Error(error), 'Got error');
     } else {
-      const policy = chanPolicyAsPolicy(args);
+      const policy = channelPolicyAsPolicy(args);
 
       deepStrictEqual(policy, expected, 'Raw policy cast as policy');
     }

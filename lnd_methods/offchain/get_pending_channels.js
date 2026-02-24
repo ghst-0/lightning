@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import { pendingAsPendingChannels } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { pendingAsPendingChannels } from '../../lnd_responses/pending_as_pending_channels.js';
 
 const method = 'pendingChannels';
 const type = 'default';
@@ -72,7 +72,7 @@ const type = 'default';
     }]
   }
 */
-export default ({lnd}, cbk) => {
+const getPendingChannels = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -104,3 +104,5 @@ export default ({lnd}, cbk) => {
     returnResult({reject, resolve, of: 'getPending'}, cbk));
   });
 };
+
+export { getPendingChannels }

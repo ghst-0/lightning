@@ -1,6 +1,6 @@
 import { strictEqual } from 'node:assert/strict';
 import test from 'node:test';
-import { setAutopilot } from '../../../lnd_methods/index.js';
+import { setAutopilot } from '../../../lnd_methods/onchain/set_autopilot.js';
 
 const makeLnd = args => {
   return {

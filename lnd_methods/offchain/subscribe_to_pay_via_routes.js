@@ -6,9 +6,10 @@ import { chanNumber } from 'bolt07';
 import nextTick from 'async/nextTick.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd, rpcRouteFromRoute } from '../../lnd_requests/index.js';
-import { paymentFailure } from '../../lnd_responses/index.js';
-import routeFailureKeys from '../offchain/route_failure_keys.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcRouteFromRoute } from '../../lnd_requests/rpc_route_from_route.js';
+import { paymentFailure } from '../../lnd_responses/payment_failure.js';
+import { routeFailureKeys } from '../offchain/route_failure_keys.js';
 
 const msAsISO = ms => new Date(ms).toISOString();
 const {isArray} = Array;
@@ -199,7 +200,7 @@ const unknownWireError = 'unknown wire error';
     tokens: <Total Tokens Sent Number>
   }
 */
-export default args => {
+const subscribeToPayViaRoutes = args => {
   if (!!args.id && !isHash(args.id)) {
     throw new Error('ExpectedPaymentHashToPayViaRoutes');
   }
@@ -428,3 +429,5 @@ export default args => {
 
   return emitter;
 };
+
+export { subscribeToPayViaRoutes }

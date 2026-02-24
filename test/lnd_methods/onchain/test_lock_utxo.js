@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { lockUtxo } from '../../../lnd_methods/index.js';
+import { lockUtxo } from '../../../lnd_methods/onchain/lock_utxo.js';
 
 const id = Buffer.alloc(32).toString('hex');
 

@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcChannelClosedAsClosed } from '../../lnd_responses/index.js';
+import { rpcChannelClosedAsClosed } from '../../lnd_responses/rpc_channel_closed_as_closed.js';
 
 const makeArgs = overrides => {
   const args = {

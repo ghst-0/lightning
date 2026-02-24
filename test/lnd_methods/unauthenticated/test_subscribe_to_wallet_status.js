@@ -1,7 +1,7 @@
 import EventEmitter from 'node:events';
 import { deepStrictEqual } from 'node:assert/strict';
 import test from 'node:test';
-import { subscribeToWalletStatus } from '../../../lnd_methods/index.js';
+import { subscribeToWalletStatus } from '../../../lnd_methods/unauthenticated/subscribe_to_wallet_status.js';
 
 const makeLnd = overrides => {
   const data = {state: 'LOCKED'};

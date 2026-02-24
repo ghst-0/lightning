@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { routingFailureFromHtlc } from '../../lnd_responses/index.js';
+import { routingFailureFromHtlc } from '../../lnd_responses/routing_failure_from_htlc.js';
 
 const makeHtlc = overrides => {
   const htlc = {

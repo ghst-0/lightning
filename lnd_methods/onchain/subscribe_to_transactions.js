@@ -1,7 +1,7 @@
 import EventEmitter from 'node:events';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcTxAsTransaction } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcTxAsTransaction } from '../../lnd_responses/rpc_tx_as_transaction.js';
 
 const cancelError = 'Cancelled on client';
 const {isArray} = Array;
@@ -44,7 +44,7 @@ const type = 'default';
     [transaction]: <Raw Transaction Hex String>
   }
 */
-export default ({lnd}) => {
+const subscribeToTransactions = ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToTransactions');
   }
@@ -93,3 +93,5 @@ export default ({lnd}) => {
 
   return eventEmitter;
 };
+
+export { subscribeToTransactions }

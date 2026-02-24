@@ -1,6 +1,6 @@
 import { featureFlagDetails } from 'bolt09';
 
-import { chainId } from '../bolt02/index.js';
+import { chainId } from '../bolt02/chain_id.js';
 
 const dateFromEpoch = epoch => new Date(epoch * 1e3);
 const {isArray} = Array;
@@ -30,7 +30,7 @@ const {keys} = Object;
     version: <Node Version String>
   }
 */
-export default args => {
+const infoAsWalletInfo = args => {
   if (!args) {
     throw new Error('ExpectedWalletResponse');
   }
@@ -116,3 +116,5 @@ export default args => {
     version: args.version,
   };
 };
+
+export { infoAsWalletInfo }

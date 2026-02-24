@@ -21,7 +21,7 @@ const stateWaiting = 'WAITING_TO_START';
     [is_waiting]: <Wallet Is Waiting To Start Bool>
   }
 */
-export default args => {
+const rpcWalletStateAsState = args => {
   if (!args) {
     throw new Error('ExpectedStateResponse');
   }
@@ -53,3 +53,5 @@ export default args => {
     return {};
   }
 };
+
+export { rpcWalletStateAsState }

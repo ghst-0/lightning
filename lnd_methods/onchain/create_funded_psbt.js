@@ -2,7 +2,7 @@ import asyncAuto from 'async/auto.js';
 import { createPsbt } from 'psbt';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const defaultChangeType = () => 'CHANGE_ADDRESS_TYPE_P2TR';
@@ -57,7 +57,7 @@ const unconfirmedConfirmationsCount = 0;
     psbt: <Unsigned PSBT Hex String>
   }
 */
-export default (args, cbk) => {
+const createFundedPsbt = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -174,3 +174,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'fund'}, cbk));
   });
 };
+
+export { createFundedPsbt }

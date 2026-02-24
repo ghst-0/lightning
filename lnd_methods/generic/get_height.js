@@ -1,7 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
-import getWalletInfo from '../info/get_wallet_info.js';
-import subscribeToBlocks from '../onchain/subscribe_to_blocks.js';
+
+import { getWalletInfo } from '../info/get_wallet_info.js';
+import { subscribeToBlocks } from '../onchain/subscribe_to_blocks.js';
 
 /** Lookup the current best block height
 
@@ -19,7 +20,7 @@ import subscribeToBlocks from '../onchain/subscribe_to_blocks.js';
     current_block_height: <Best Chain Height Number>
   }
 */
-export default ({lnd}, cbk) => {
+const getHeight = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -70,3 +71,5 @@ export default ({lnd}, cbk) => {
     returnResult({reject, resolve, of: 'height'}, cbk));
   });
 };
+
+export { getHeight }

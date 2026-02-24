@@ -13,7 +13,7 @@ const defaultRejectMessage = 'RpcRequestRejected';
 
   @returns via cbk or Promise
 */
-export default ({id, message, subscription}, cbk) => {
+const rejectRpcRequest = ({id, message, subscription}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -50,3 +50,5 @@ export default ({id, message, subscription}, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { rejectRpcRequest }

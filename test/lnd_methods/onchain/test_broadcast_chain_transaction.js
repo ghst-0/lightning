@@ -1,6 +1,6 @@
 import { strictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { broadcastChainTransaction } from '../../../lnd_methods/index.js';
+import { broadcastChainTransaction } from '../../../lnd_methods/onchain/broadcast_chain_transaction.js';
 
 const emptyTx = '01000000000000000000';
 

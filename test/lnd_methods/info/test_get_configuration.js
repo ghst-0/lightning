@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getConfiguration } from '../../../index.js';
+import { getConfiguration } from '../../../lnd_methods/info/get_configuration.js';
 
 const makeLnd = ({custom, err, res}) => {
   const response = {config: {type: 'value'}, log: ['log']};

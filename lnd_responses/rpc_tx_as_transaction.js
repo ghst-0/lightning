@@ -51,7 +51,7 @@ const outpointAsComponents = n => n.split(':');
     [transaction]: <Raw Transaction Hex String>
   }
 */
-export default tx => {
+const rpcTxAsTransaction = tx => {
   if (!tx) {
     throw new Error('ExpectedRpcTransactionToDeriveTransactionDetails');
   }
@@ -143,3 +143,5 @@ export default tx => {
     transaction: tx.raw_tx_hex || undefined,
   };
 };
+
+export { rpcTxAsTransaction }

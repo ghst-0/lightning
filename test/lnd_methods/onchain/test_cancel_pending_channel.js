@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { cancelPendingChannel } from '../../../lnd_methods/index.js';
+import { cancelPendingChannel } from '../../../lnd_methods/onchain/cancel_pending_channel.js';
 
 const id = Buffer.alloc(32).toString('hex');
 

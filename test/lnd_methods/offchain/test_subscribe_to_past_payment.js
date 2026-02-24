@@ -1,6 +1,6 @@
 import test from 'node:test';
 import { throws } from 'node:assert/strict';
-import { subscribeToPastPayment } from '../../../index.js';
+import { subscribeToPastPayment } from '../../../lnd_methods/offchain/subscribe_to_past_payment.js';
 
 const tests = [
   {

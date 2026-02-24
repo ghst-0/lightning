@@ -26,7 +26,7 @@ const isBoolean = n => n === false || n === true;
     }]
   }
 */
-export default ({accounts}) => {
+const rpcAddressesAsAddresses = ({accounts}) => {
   if (!isArray(accounts)) {
     throw new Error('ExpectedArrayOfAccountsWithAddresses');
   }
@@ -60,3 +60,5 @@ export default ({accounts}) => {
 
   return {addresses};
 };
+
+export { rpcAddressesAsAddresses }

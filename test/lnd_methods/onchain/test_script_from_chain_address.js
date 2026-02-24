@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import scriptFromChainAddress from '../../../lnd_methods/onchain/script_from_chain_address.js';
+import { scriptFromChainAddress } from '../../../lnd_methods/onchain/script_from_chain_address.js';
 
 const tests = [
   {

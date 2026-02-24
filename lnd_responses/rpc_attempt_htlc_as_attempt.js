@@ -1,5 +1,5 @@
 import constants from './constants.json' with { type: 'json'};
-import rpcRouteAsRoute from './rpc_route_as_route.js';
+import { rpcRouteAsRoute } from './rpc_route_as_route.js';
 
 const { attemptStates } = constants;
 const nsAsMs = ns => Number(BigInt(ns) / BigInt(1e6));
@@ -88,7 +88,7 @@ const nsAsMs = ns => Number(BigInt(ns) / BigInt(1e6));
     }
   }
 */
-export default attempt => {
+const rpcAttemptHtlcAsAttempt = attempt => {
   if (!attempt) {
     throw new Error('ExpectedRpcAttemptDetailsToDeriveAttempt');
   }
@@ -145,3 +145,5 @@ export default attempt => {
     is_pending: attempt.status === attemptStates.pending,
   };
 };
+
+export { rpcAttemptHtlcAsAttempt }

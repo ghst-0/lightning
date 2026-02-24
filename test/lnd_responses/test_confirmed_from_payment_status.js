@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { confirmedFromPaymentStatus } from '../../lnd_responses/index.js';
+import { confirmedFromPaymentStatus } from '../../lnd_responses/confirmed_from_payment_status.js';
 
 const makeHtlc = overrides => {
   const htlc = {

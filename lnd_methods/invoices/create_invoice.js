@@ -2,10 +2,11 @@ import asyncAuto from 'async/auto.js';
 import { parsePaymentRequest } from 'invoices';
 import { returnResult } from 'asyncjs-util';
 
-import { createChainAddress } from '../address/index.js';
-import getInvoice from './get_invoice.js';
-import { isLnd, routeHintFromRoute } from '../../lnd_requests/index.js';
-import { mtokensAmount } from '../../bolt00/index.js';
+import { createChainAddress } from '../address/create_chain_address.js';
+import { getInvoice } from './get_invoice.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { routeHintFromRoute } from '../../lnd_requests/route_hint_from_route.js';
+import { mtokensAmount } from '../../bolt00/mtokens_amount.js';
 
 const defaultExpirySec = 60 * 60 * 3;
 const hexAsBuffer = hex => hex ? Buffer.from(hex, 'hex') : undefined;
@@ -59,7 +60,7 @@ const type = 'default';
     [tokens]: <Tokens Number>
   }
 */
-export default (args, cbk) => {
+const createInvoice = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Payment secret for the invoice
@@ -233,3 +234,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'invoice'}, cbk));
   });
 };
+
+export { createInvoice }

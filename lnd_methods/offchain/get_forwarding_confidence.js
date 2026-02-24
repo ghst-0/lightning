@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const {ceil} = Math;
 const confidenceDenominator = 1e6;
@@ -26,7 +26,7 @@ const unimplementedError = 'unknown service routerrpc.Router';
     confidence: <Success Confidence Score Out Of One Million Number>
   }
 */
-export default ({from, lnd, mtokens, to}, cbk) => {
+const getForwardingConfidence = ({from, lnd, mtokens, to}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -87,3 +87,5 @@ export default ({from, lnd, mtokens, to}, cbk) => {
     returnResult({reject, resolve, of: 'getConfidence'}, cbk));
   });
 };
+
+export { getForwardingConfidence }

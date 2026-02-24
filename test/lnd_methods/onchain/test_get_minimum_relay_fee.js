@@ -1,6 +1,6 @@
 import { strictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getMinimumRelayFee } from '../../../lnd_methods/index.js';
+import { getMinimumRelayFee } from '../../../lnd_methods/onchain/get_minimum_relay_fee.js';
 
 const tests = [
   {

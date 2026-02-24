@@ -36,7 +36,7 @@ const isNumber = n => !isNaN(n);
     type: <Outpoint Constraint Script Type String>
   }
 */
-export default args => {
+const rpcSweepAsSweep = args => {
   if (!args) {
     throw new Error('ExpectedSweepDetailsToDerivePendingSweep');
   }
@@ -94,3 +94,5 @@ export default args => {
     type: args.witness_type.toLowerCase(),
   };
 };
+
+export { rpcSweepAsSweep }

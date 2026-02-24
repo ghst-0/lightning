@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { deleteForwardingReputations } from '../../../index.js';
+import { deleteForwardingReputations } from '../../../lnd_methods/offchain/delete_forwarding_reputations.js';
 
 const tests = [
   {

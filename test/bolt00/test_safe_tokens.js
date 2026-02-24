@@ -1,6 +1,7 @@
 import { deepEqual } from 'node:assert/strict';
 import test from 'node:test';
-import { safeTokens } from '../../bolt00/index.js';
+
+import { safeTokens } from '../../bolt00/safe_tokens.js';
 
 const tests = [
   {

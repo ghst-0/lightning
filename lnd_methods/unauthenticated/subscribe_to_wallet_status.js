@@ -1,6 +1,6 @@
 import EventEmitter from 'node:events';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const cancelError = 'Cancelled on client';
 const events = ['active', 'locked', 'error', 'starting'];
@@ -52,7 +52,7 @@ const type = 'status';
   // The wallet is waiting for leader election
   @event 'waiting'
 */
-export default ({lnd}) => {
+const subscribeToWalletStatus = ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToWalletStatus');
   }
@@ -118,3 +118,5 @@ export default ({lnd}) => {
 
   return emitter;
 };
+
+export { subscribeToWalletStatus }

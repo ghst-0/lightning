@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { removeAdvertisedFeature } from '../../../index.js';
+import { removeAdvertisedFeature } from '../../../lnd_methods/peers/remove_advertised_feature.js';
 
 const makeLnd = ({err}) => {
   return {peers: {updateNodeAnnouncement: (args, cbk) => cbk(err)}};

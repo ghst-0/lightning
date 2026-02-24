@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { sendMessageToPeer } from '../../../lnd_methods/index.js';
+import { sendMessageToPeer } from '../../../lnd_methods/offchain/send_message_to_peer.js';
 
 const makeLnd = ({err}) => {
   return {default: {sendCustomMessage: ({}, cbk) => cbk(err)}};

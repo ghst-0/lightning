@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getNetworkInfo } from '../../../index.js';
+import { getNetworkInfo } from '../../../lnd_methods/info/get_network_info.js';
 
 const tests = [
   {

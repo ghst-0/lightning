@@ -1,6 +1,6 @@
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
-import subscribeToPay from './subscribe_to_pay.js';
+import { subscribeToPay } from './subscribe_to_pay.js';
 
 const method = 'sendPaymentV2';
 const type = 'router';
@@ -165,7 +165,7 @@ const type = 'router';
     }
   }
 */
-export default args => {
+const subscribeToPayViaRequest = args => {
   if (!args.request) {
     throw new Error('ExpectedPaymentRequestToPayWhenSubscribingToPayment');
   }
@@ -192,3 +192,5 @@ export default args => {
     tokens: args.tokens,
   });
 };
+
+export { subscribeToPayViaRequest }

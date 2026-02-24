@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const asRate = n => Math.floor(n * 1e6);
 const method = 'getMissionControlConfig';
@@ -27,7 +27,7 @@ const type = 'router';
     penalty_half_life_ms: <Millisecs to Reduce Fail Penalty By Half Number>
   }
 */
-export default ({lnd}, cbk) => {
+const getPathfindingSettings = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -86,3 +86,5 @@ export default ({lnd}, cbk) => {
     returnResult({reject, resolve, of: 'getSettings'}, cbk));
   });
 };
+
+export { getPathfindingSettings }

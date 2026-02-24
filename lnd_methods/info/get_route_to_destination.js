@@ -4,10 +4,14 @@ import { chanNumber } from 'bolt07';
 import { returnResult } from 'asyncjs-util';
 
 import constants from './constants.json' with { type: 'json'};
-import { destinationCustomRecords, ignoreAsIgnoredNodes, ignoreAsIgnoredPairs, isLnd, routeHintFromRoute } from '../../lnd_requests/index.js';
-import { getHeight } from '../generic/index.js';
-import { mtokensAmount } from '../../bolt00/index.js';
-import { routesFromQueryRoutes } from '../../lnd_responses/index.js';
+import { destinationCustomRecords } from '../../lnd_requests/destination_custom_records.js';
+import { ignoreAsIgnoredNodes } from '../../lnd_requests/ignore_as_ignored_nodes.js';
+import { ignoreAsIgnoredPairs } from '../../lnd_requests/ignore_as_ignored_pairs.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { routeHintFromRoute } from '../../lnd_requests/route_hint_from_route.js';
+import { getHeight } from '../generic/get_height.js';
+import { mtokensAmount } from '../../bolt00/mtokens_amount.js';
+import { routesFromQueryRoutes } from '../../lnd_responses/routes_from_query_routes.js';
 
 const { blocksBuffer, defaultCltv, defaultTokens } = constants;
 const asTimePreference = n => n === undefined ? n : ((n * 2) - 1e6) / 1e6;
@@ -101,7 +105,7 @@ const tokensAsMtokens = n => (BigInt(n) * BigInt(1e3)).toString();
     }
   }
 */
-export default (args, cbk) => {
+const getRouteToDestination = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -344,3 +348,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'route'}, cbk));
   });
 };
+
+export { getRouteToDestination }

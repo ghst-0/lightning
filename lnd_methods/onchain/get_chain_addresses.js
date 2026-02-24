@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcAddressesAsAddresses } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcAddressesAsAddresses } from '../../lnd_responses/rpc_addresses_as_addresses.js';
 
 const err404 = 'unknown method ListAddresses for service walletrpc.WalletKit';
 const {isArray} = Array;
@@ -28,7 +28,7 @@ const type = 'wallet';
     }]
   }
 */
-export default ({lnd}, cbk) => {
+const getChainAddresses = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -80,3 +80,5 @@ export default ({lnd}, cbk) => {
     returnResult({reject, resolve, of: 'addresses'}, cbk));
   });
 };
+
+export { getChainAddresses }

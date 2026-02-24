@@ -1,9 +1,9 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcForwardAsForward } from '../../lnd_responses/index.js';
-import { sortBy } from '../../arrays/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcForwardAsForward } from '../../lnd_responses/rpc_forward_as_forward.js';
+import { sortBy } from '../../arrays/sort_by.js';
 
 const asEpoch = date => Math.round(new Date(date).getTime() / 1e3);
 const defaultLimit = 100;
@@ -43,7 +43,7 @@ const type = 'default';
     [next]: <Contine With Opaque Paging Token String>
   }
 */
-export default ({after, before, limit, lnd, token}, cbk) => {
+const getForwards = ({after, before, limit, lnd, token}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Validate arguments
@@ -133,3 +133,5 @@ export default ({after, before, limit, lnd, token}, cbk) => {
     returnResult({reject, resolve, of: 'sortedForwards'}, cbk));
   });
 };
+
+export { getForwards }

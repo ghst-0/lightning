@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { changePassword } from '../../../lnd_methods/index.js';
+import { changePassword } from '../../../lnd_methods/unauthenticated/change_password.js';
 
 
 const tests = [

@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcOutpointAsUpdate } from '../../lnd_responses/index.js';
+import { rpcOutpointAsUpdate } from '../../lnd_responses/rpc_outpoint_as_update.js';
 
 const makeInfo = overrides => {
   const details = {funding_txid_bytes: Buffer.alloc(32), output_index: 0};

@@ -50,7 +50,7 @@ const now = () => new Date().toISOString();
     updated_at: <Update Received At ISO 8601 Date String>
   }
 */
-export default update => {
+const rpcChannelUpdateAsUpdate = update => {
   if (!update) {
     throw new Error('ExpectedChannelUpdateDetails');
   }
@@ -141,3 +141,5 @@ export default update => {
     updated_at: now(),
   };
 };
+
+export { rpcChannelUpdateAsUpdate }

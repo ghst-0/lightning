@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { signMessage } from '../../../index.js';
+import { signMessage } from '../../../lnd_methods/message/sign_message.js';
 
 const tests = [
   {

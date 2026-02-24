@@ -2,7 +2,7 @@ import asyncAuto from 'async/auto.js';
 import { idForTransaction } from '@alexbosworth/blockchain';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const bufFromHex = hex => Buffer.from(hex, 'hex');
 const method = 'publishTransaction';
@@ -26,7 +26,7 @@ const type = 'wallet';
     id: <Transaction Id Hex String>
   }
 */
-export default ({description, lnd, transaction}, cbk) => {
+const broadcastChainTransaction = ({description, lnd, transaction}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -83,3 +83,5 @@ export default ({description, lnd, transaction}, cbk) => {
     returnResult({reject, resolve, of: 'broadcast'}, cbk));
   });
 };
+
+export { broadcastChainTransaction }

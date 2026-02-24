@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcWalletStateAsState } from '../../lnd_responses/index.js';
+import { rpcWalletStateAsState } from '../../lnd_responses/rpc_wallet_state_as_state.js';
 
 const makeExpected = overrides => {
   const expected = {};

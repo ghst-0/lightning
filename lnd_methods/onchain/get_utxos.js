@@ -1,7 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcUtxoAsUtxo } from '../../lnd_responses/index.js';
+
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcUtxoAsUtxo } from '../../lnd_responses/rpc_utxo_as_utxo.js';
 
 const {isArray} = Array;
 const maxConfs = 0x7FFFFFFF;
@@ -31,7 +32,7 @@ const type = 'default';
     }]
   }
 */
-export default (args, cbk) => {
+const getUtxos = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -106,3 +107,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'utxos'}, cbk));
   });
 };
+
+export { getUtxos }

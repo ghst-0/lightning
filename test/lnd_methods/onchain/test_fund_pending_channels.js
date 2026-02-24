@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { fundPendingChannels } from '../../../lnd_methods/index.js';
+import { fundPendingChannels } from '../../../lnd_methods/onchain/fund_pending_channels.js';
 
 const id = Buffer.alloc(32).toString('hex');
 const id2 = Buffer.alloc(32, 1).toString('hex');

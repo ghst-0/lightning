@@ -20,7 +20,7 @@ const {isArray} = Array;
     [ignored]: [<Node Public Key Buffer Object>]
   }
 */
-export default ({ignore}) => {
+const ignoreAsIgnoredNodes = ({ignore}) => {
   if (!ignore) {
     return {};
   }
@@ -41,3 +41,5 @@ export default ({ignore}) => {
 
   return {ignored: uniq(nodes).map(n => Buffer.from(n, 'hex'))};
 };
+
+export { ignoreAsIgnoredNodes }

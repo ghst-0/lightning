@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { connectWatchtower } from '../../../index.js';
+import { connectWatchtower } from '../../../lnd_methods/offchain/connect_watchtower.js';
 
 const makeLnd = err => {
   return {tower_client: {addTower: ({}, cbk) => cbk(err)}};

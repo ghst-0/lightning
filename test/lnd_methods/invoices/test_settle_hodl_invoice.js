@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { settleHodlInvoice } from '../../../index.js';
+import { settleHodlInvoice } from '../../../lnd_methods/invoices/settle_hodl_invoice.js';
 
 const secret = Buffer.alloc(32).toString('hex');
 

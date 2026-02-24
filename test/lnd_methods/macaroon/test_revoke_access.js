@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { revokeAccess } from '../../../index.js';
+import { revokeAccess } from '../../../lnd_methods/macaroon/revoke_access.js';
 
 const id = '1';
 

@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { pendingFromPayment } from '../../lnd_responses/index.js';
+import { pendingFromPayment } from '../../lnd_responses/pending_from_payment.js';
 
 const makeArgs = overrides => {
   const args = {

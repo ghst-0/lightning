@@ -43,7 +43,7 @@ const isHash = n => !!n && /^[0-9A-F]{64}$/i.test(n);
     }
   }
 */
-export default args => {
+const rpcResolutionAsResolution = args => {
   if (!args) {
     throw new Error('ExpectedRpcResolutionMessageToDeriveResolution');
   }
@@ -119,3 +119,5 @@ export default args => {
     return {};
   }
 };
+
+export { rpcResolutionAsResolution }

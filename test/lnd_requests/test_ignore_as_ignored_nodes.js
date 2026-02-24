@@ -1,6 +1,6 @@
 import { deepStrictEqual, strictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { ignoreAsIgnoredNodes } from '../../lnd_requests/index.js';
+import { ignoreAsIgnoredNodes } from '../../lnd_requests/ignore_as_ignored_nodes.js';
 
 const tests = [
   {

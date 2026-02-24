@@ -1,6 +1,6 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const methodNextKey = 'deriveNextKey';
 const methodIndexLookup = 'deriveKey';
@@ -26,7 +26,7 @@ const type = 'wallet';
     public_key: <Public Key Hex String>
   }
 */
-export default ({family, index, lnd}, cbk) => {
+const getPublicKey = ({family, index, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -81,3 +81,5 @@ export default ({family, index, lnd}, cbk) => {
     returnResult({reject, resolve, of: 'getPublicKey'}, cbk));
   });
 };
+
+export { getPublicKey }

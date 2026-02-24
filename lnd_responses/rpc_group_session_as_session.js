@@ -21,7 +21,7 @@ const {isBuffer} = Buffer;
     nonce: <Session Compound Nonces Hex String>
   }
 */
-export default args => {
+const rpcGroupSessionAsSession = args => {
   if (!args) {
     throw new Error('ExpectedResponseForMuSig2SessionRequest');
   }
@@ -49,3 +49,5 @@ export default args => {
     nonce: bufferAsHex(args.local_public_nonces),
   };
 };
+
+export { rpcGroupSessionAsSession }

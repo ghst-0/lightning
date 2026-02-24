@@ -1,6 +1,6 @@
 import { strictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { grantAccess } from '../../../index.js';
+import { grantAccess } from '../../../lnd_methods/macaroon/grant_access.js';
 
 const tests = [
   {

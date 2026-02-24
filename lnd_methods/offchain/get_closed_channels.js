@@ -3,8 +3,8 @@ import asyncMapSeries from 'async/mapSeries.js';
 import { chanFormat } from 'bolt07';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcResolutionAsResolution } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcResolutionAsResolution } from '../../lnd_responses/rpc_resolution_as_resolution.js';
 
 const emptyTxId = Buffer.alloc(32).toString('hex');
 const {isArray} = Array;
@@ -67,7 +67,7 @@ const outpointSeparator = ':';
     }]
   }
 */
-export default (args, cbk) => {
+const getClosedChannels = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -234,3 +234,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'closedChannels'}, cbk));
   });
 };
+
+export { getClosedChannels }

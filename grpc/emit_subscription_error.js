@@ -10,7 +10,7 @@ const cancelError = 'Cancelled on client';
   @returns
   <Error Emission Function>
 */
-export default ({emitter, subscription}) => {
+const emitSubscriptionError = ({emitter, subscription}) => {
   return err => {
     subscription.cancel();
 
@@ -26,3 +26,5 @@ export default ({emitter, subscription}) => {
     return emitter.emit('error', err);
   };
 };
+
+export { emitSubscriptionError }

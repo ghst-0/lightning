@@ -1,6 +1,7 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { payViaRouteRequest } from '../../lnd_messages/index.js';
+
+import { payViaRouteRequest } from '../../lnd_messages/pay_via_route_request.js';
 
 const makeArgs = overrides => {
   const args = {

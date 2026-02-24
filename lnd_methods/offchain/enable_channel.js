@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const enableAuto = 'AUTO';
 const enableForce = 'ENABLE';
@@ -29,7 +29,7 @@ const type = 'router';
 
   @returns via cbk or Promise
 */
-export default (args, cbk) => {
+const enableChannel = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -97,3 +97,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { enableChannel }

@@ -2,9 +2,9 @@ import asyncAuto from 'async/auto.js';
 import asyncRetry from 'async/retry.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcInvoiceAsInvoice } from '../../lnd_responses/index.js';
-import { sortBy } from '../../arrays/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcInvoiceAsInvoice } from '../../lnd_responses/rpc_invoice_as_invoice.js';
+import { sortBy } from '../../arrays/sort_by.js';
 
 const asStart = n => n ? Math.floor(new Date(n).getTime() / 1e3) : undefined;
 const asEnd = n => n ? Math.ceil(new Date(n).getTime() / 1e3) : undefined;
@@ -92,7 +92,7 @@ const type = 'default';
     [next]: <Next Opaque Paging Token String>
   }
 */
-export default (args, cbk) => {
+const getInvoices = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Validate arguments
@@ -192,3 +192,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'sorted'}, cbk));
   });
 };
+
+export { getInvoices }

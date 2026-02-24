@@ -1,7 +1,7 @@
 import EventEmitter from 'node:events';
 import { strictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { openChannels } from '../../../lnd_methods/index.js';
+import { openChannels } from '../../../lnd_methods/onchain/open_channels.js';
 
 const nodeKey1 = Buffer.alloc(33).toString('hex');
 const nodeKey2 = Buffer.alloc(33, 2).toString('hex');

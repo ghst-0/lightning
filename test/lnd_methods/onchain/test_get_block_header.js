@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getBlockHeader } from '../../../lnd_methods/index.js';
+import { getBlockHeader } from '../../../lnd_methods/onchain/get_block_header.js';
 
 const tests = [
   {

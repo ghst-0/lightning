@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import rpcHopFromHop from '../../lnd_requests/rpc_hop_from_hop.js';
+import { rpcHopFromHop } from '../../lnd_requests/rpc_hop_from_hop.js';
 
 const tests = [
   {

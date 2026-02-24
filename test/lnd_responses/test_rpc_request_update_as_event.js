@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import method from '../../lnd_responses/rpc_request_update_as_event.js';
+import { rpcRequestUpdateAsEvent } from '../../lnd_responses/rpc_request_update_as_event.js';
 
 const makeArgs = overrides => {
   const args = {
@@ -128,9 +128,9 @@ const tests = [
 for (const { args, description, error, expected } of tests) {
   test(description, (t, end) => {
     if (error) {
-      throws(() => method(args), new Error(error), 'Error');
+      throws(() => rpcRequestUpdateAsEvent(args), new Error(error), 'Error');
     } else {
-      const res = method(args);
+      const res = rpcRequestUpdateAsEvent(args);
 
       deepStrictEqual(res, expected, 'RPC request update as event');
     }

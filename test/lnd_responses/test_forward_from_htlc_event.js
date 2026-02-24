@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { forwardFromHtlcEvent } from '../../lnd_responses/index.js';
+import { forwardFromHtlcEvent } from '../../lnd_responses/forward_from_htlc_event.js';
 
 const makeInfo = overrides => {
   const info = {

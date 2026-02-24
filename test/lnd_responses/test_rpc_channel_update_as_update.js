@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcChannelUpdateAsUpdate } from '../../lnd_responses/index.js';
+import { rpcChannelUpdateAsUpdate } from '../../lnd_responses/rpc_channel_update_as_update.js';
 
 const makeRoutingPolicy = overrides => {
   const policy = {

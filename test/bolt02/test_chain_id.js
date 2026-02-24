@@ -1,6 +1,7 @@
 import { equal } from 'node:assert/strict';
 import test from 'node:test';
-import { chainId } from '../../bolt02/index.js';
+
+import { chainId } from '../../bolt02/chain_id.js';
 
 const tests = [
   {

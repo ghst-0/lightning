@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { addPeer } from '../../../index.js';
+import { addPeer } from '../../../lnd_methods/peers/add_peer.js';
 
 const makeLnd = args => {
   const peersRes = {

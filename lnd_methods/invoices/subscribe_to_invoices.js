@@ -1,9 +1,9 @@
 import EventEmitter from 'node:events';
 import asyncDoUntil from 'async/doUntil.js';
 
-import { handleRemoveListener } from '../../grpc/index.js';
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcInvoiceAsInvoice } from '../../lnd_responses/index.js';
+import { handleRemoveListener } from '../../grpc/handle_remove_listener.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcInvoiceAsInvoice } from '../../lnd_responses/rpc_invoice_as_invoice.js';
 
 const events = ['end', 'error', 'invoice_updated', 'status'];
 const restartSubscriptionMs = 1000 * 30;
@@ -75,7 +75,7 @@ const updateEvent = 'invoice_updated';
     tokens: <Invoiced Tokens Number>
   }
 */
-export default args => {
+const subscribeToInvoices = args => {
   if (!isLnd({lnd: args.lnd, method: 'subscribeInvoices', type: 'default'})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeInvoices');
   }
@@ -168,3 +168,5 @@ export default args => {
 
   return eventEmitter;
 };
+
+export { subscribeToInvoices }

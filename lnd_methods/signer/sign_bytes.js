@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
@@ -35,7 +35,7 @@ const unimplementedError = '12 UNIMPLEMENTED: unknown service signrpc.Signer';
     signature: <Signature Hex String>
   }
 */
-export default (args, cbk) => {
+const signBytes = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -102,3 +102,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'signBytes'}, cbk));
   });
 };
+
+export { signBytes }

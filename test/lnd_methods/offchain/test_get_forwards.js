@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getForwards } from '../../../index.js';
+import { getForwards } from '../../../lnd_methods/offchain/get_forwards.js';
 
 const makeLnd = ({empty, err, overrides}) => {
   if (empty) {

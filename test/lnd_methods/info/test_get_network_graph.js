@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getNetworkGraph } from '../../../index.js';
+import { getNetworkGraph } from '../../../lnd_methods/info/get_network_graph.js';
 
 const makeLnd = ({edges, nodes}) => {
   return {

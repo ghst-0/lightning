@@ -1,10 +1,11 @@
 import asyncAuto from 'async/auto.js';
 import asyncMapLimit from 'async/mapLimit.js';
 import { returnResult } from 'asyncjs-util';
-import { nodeInfoAsNode } from '../../lnd_responses/index.js';
-import getChannel from './get_channel.js';
-import { isLnd } from '../../lnd_requests/index.js';
-import getWalletVersion from './get_wallet_version.js';
+
+import { nodeInfoAsNode } from '../../lnd_responses/node_info_as_node.js';
+import { getChannel } from './get_channel.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { getWalletVersion } from './get_wallet_version.js';
 
 const badVers = new Set(['0.11.0-beta', '0.11.1-beta', '0.12.0-beta', '0.12.1-beta']);
 const getChannelLimit = 20;
@@ -63,7 +64,7 @@ const type = 'default';
     [updated_at]: <Last Known Update ISO 8601 Date String>
   }
 */
-export default (args, cbk) => {
+const getNode = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -147,3 +148,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'node'}, cbk));
   });
 };
+
+export { getNode }

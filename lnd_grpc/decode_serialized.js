@@ -12,7 +12,7 @@ const isHex = n => !(n.length % 2) && /^[0-9A-F]*$/i.test(n);
     [decoded]: <Deserialized Data Buffer>
   }
 */
-export default ({serialized}) => {
+const decodeSerialized = ({serialized}) => {
   if (!!serialized && !isHex(serialized)) {
     return {decoded: from(serialized, 'base64')};
   }
@@ -23,3 +23,5 @@ export default ({serialized}) => {
 
   return {};
 };
+
+export { decodeSerialized }

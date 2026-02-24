@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const errorMessageNotFound = 'tower not found';
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
@@ -22,7 +22,7 @@ const unimplementedError = '12 UNIMPLEMENTED: unknown service wtclientrpc.Watcht
 
   @returns via cbk or Promise
 */
-export default (args, cbk) => {
+const disconnectWatchtower = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -64,3 +64,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { disconnectWatchtower }

@@ -1,6 +1,6 @@
 import { strictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getChainBalance } from '../../../lnd_methods/index.js';
+import { getChainBalance } from '../../../lnd_methods/onchain/get_chain_balance.js';
 
 const tests = [
   {

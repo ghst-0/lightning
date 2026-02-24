@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getPendingChannels } from '../../../index.js';
+import { getPendingChannels } from '../../../lnd_methods/offchain/get_pending_channels.js';
 
 const makeLnd = ({err, res}) => {
   return {

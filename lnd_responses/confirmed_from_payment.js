@@ -1,6 +1,6 @@
 import constants from './constants.json' with { type: 'json'};
-import rpcAttemptHtlcAsAttempt from './rpc_attempt_htlc_as_attempt.js';
-import { safeTokens } from '../bolt00/index.js';
+import { rpcAttemptHtlcAsAttempt } from './rpc_attempt_htlc_as_attempt.js';
+import { safeTokens } from '../bolt00/safe_tokens.js';
 
 const { attemptStates } = constants;
 const {isArray} = Array;
@@ -110,7 +110,7 @@ const nsAsDate = ns => new Date(Number(BigInt(ns) / BigInt(1e6)));
     tokens: <Total Tokens Paid Rounded Down Number>
   }
 */
-export default payment => {
+const confirmedFromPayment = payment => {
   if (!payment) {
     throw new Error('ExpectedConfirmedPaymentToDeriveConfirmationDetails');
   }
@@ -172,3 +172,5 @@ export default payment => {
     tokens: safeTokens({mtokens: mtokens.toString()}).tokens,
   };
 };
+
+export { confirmedFromPayment }

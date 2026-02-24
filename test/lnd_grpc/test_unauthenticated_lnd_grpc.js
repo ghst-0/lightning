@@ -1,7 +1,7 @@
 import { equal, deepStrictEqual } from 'node:assert/strict';
 import { join } from 'node:path';
 import test from 'node:test';
-import { unauthenticatedLndGrpc } from '../../index.js';
+import { unauthenticatedLndGrpc } from '../../lnd_grpc/unauthenticated_lnd_grpc.js';
 
 const expectedServices = ['status', 'unlocker'];
 

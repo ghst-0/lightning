@@ -1,7 +1,7 @@
 import { throws, deepStrictEqual } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import test from 'node:test';
-import { subscribeToForwards } from '../../../index.js';
+import { subscribeToForwards } from '../../../lnd_methods/offchain/subscribe_to_forwards.js';
 
 const emitter = new EventEmitter();
 

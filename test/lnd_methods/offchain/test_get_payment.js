@@ -1,7 +1,7 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import test from 'node:test';
-import { getPayment } from '../../../index.js';
+import { getPayment } from '../../../lnd_methods/offchain/get_payment.js';
 
 const makeLnd = args => {
   return {

@@ -1,17 +1,19 @@
 import { join } from 'node:path';
 import grpc from '@grpc/grpc-js';
 import { loadSync } from '@grpc/proto-loader';
-import {
+
+import { grpcOptions } from './grpc_options.js';
+import { grpcSsl } from './grpc_ssl.js';
+import grpc_services from '../grpc/grpc_services.json' with { type: 'json' };
+
+const {
   defaultSocket,
   grpcSslCipherSuites,
   packageTypes,
   protoFiles,
   protosDir,
   unauthenticatedServiceTypes
-} from '../grpc/index.js';
-import grpcOptions from './grpc_options.js';
-import grpcSsl from './grpc_ssl.js';
-
+} = grpc_services;
 const {GRPC_SSL_CIPHER_SUITES} = process.env;
 const {keys} = Object;
 const pathToProto = file => join(import.meta.dirname, protosDir, file);
@@ -37,7 +39,7 @@ const pathToProto = file => join(import.meta.dirname, protosDir, file);
     }
   }
 */
-export default ({cert, path, socket}) => {
+const unauthenticatedLndGrpc = ({cert, path, socket}) => {
   const credentials = grpcSsl({cert}).ssl;
   const lndSocket = socket || defaultSocket;
 
@@ -66,3 +68,5 @@ export default ({cert, path, socket}) => {
     {}),
   };
 };
+
+export { unauthenticatedLndGrpc }

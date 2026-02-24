@@ -1,9 +1,9 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { urisForMethod } from './uris_for_method.js';
 import permissions from './permissions.json' with { type: 'json' };
-import urisForMethod from './uris_for_method.js';
 
 const accessDenied = 'permission denied';
 const flatten = arr => [].concat(...arr);
@@ -62,7 +62,7 @@ const uriAsPermission = uri => `uri:${uri}`;
     permissions: [<Entity:Action String>]
   }
 */
-export default (args, cbk) => {
+const grantAccess = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -144,3 +144,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'createMacaroon'}, cbk));
   });
 };
+
+export { grantAccess }

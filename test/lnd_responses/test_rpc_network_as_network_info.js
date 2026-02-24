@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcNetworkAsNetworkInfo } from '../../lnd_responses/index.js';
+import { rpcNetworkAsNetworkInfo } from '../../lnd_responses/rpc_network_as_network_info.js';
 
 const makeInfo = overrides => {
   const details = {

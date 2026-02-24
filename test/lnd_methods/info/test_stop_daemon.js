@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { stopDaemon } from '../../../index.js';
+import { stopDaemon } from '../../../lnd_methods/info/stop_daemon.js';
 
 const makeLnd = ({attempts}) => {
 

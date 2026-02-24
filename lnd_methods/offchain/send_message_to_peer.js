@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const bufferFromHex = hex => Buffer.from(hex, 'hex');
 const defaultMessageType = 32768;
@@ -29,7 +29,7 @@ const type = 'default';
 
   @returns via cbk or Promise
 */
-export default (args, cbk) => {
+const sendMessageToPeer = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -68,3 +68,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { sendMessageToPeer }

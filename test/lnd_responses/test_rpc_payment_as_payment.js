@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcPaymentAsPayment } from '../../lnd_responses/index.js';
+import { rpcPaymentAsPayment } from '../../lnd_responses/rpc_payment_as_payment.js';
 
 const makeArgs = overrides => {
   const args = {

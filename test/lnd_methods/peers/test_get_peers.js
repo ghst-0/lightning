@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getPeers } from '../../../index.js';
+import { getPeers } from '../../../lnd_methods/peers/get_peers.js';
 
 const tests = [
   {

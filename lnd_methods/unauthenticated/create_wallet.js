@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const bufferAsBase64 = buffer => buffer.toString('base64');
 const {isBuffer} = Buffer;
@@ -25,7 +25,7 @@ const utf8AsBuf = utf8 => Buffer.from(utf8, 'utf8');
     macaroon: <Base64 Encoded Admin Macaroon String>
   }
 */
-export default ({lnd, passphrase, password, seed}, cbk) => {
+const createWallet = ({lnd, passphrase, password, seed}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -72,3 +72,5 @@ export default ({lnd, passphrase, password, seed}, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { createWallet }

@@ -14,7 +14,7 @@ const relativeThawHeightMarker = 5e5;
     [height]: <Prevent Coop Close Until Height Number>
   }
 */
-export default ({id, thaw}) => {
+const parseThawHeight = ({id, thaw}) => {
   // Exit early when there is no cooperative close constraint
   if (!thaw) {
     return {height: undefined};
@@ -30,3 +30,5 @@ export default ({id, thaw}) => {
   // The cooperative close constraint is relative to the funding conf height
   return {height: funding.block_height + thaw};
 };
+
+export { parseThawHeight }

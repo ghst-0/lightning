@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { updatePathfindingSettings } from '../../../lnd_methods/index.js';
+import { updatePathfindingSettings } from '../../../lnd_methods/offchain/update_pathfinding_settings.js';
 
 const makeLnd = ({config, empty, err, overrides, setErr}) => {
   if (empty) {

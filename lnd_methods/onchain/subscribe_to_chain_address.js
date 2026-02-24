@@ -1,8 +1,8 @@
 import EventEmitter from 'node:events';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcConfAsConfirmation } from '../../lnd_responses/index.js';
-import scriptFromChainAddress from './script_from_chain_address.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcConfAsConfirmation } from '../../lnd_responses/rpc_conf_as_confirmation.js';
+import { scriptFromChainAddress } from './script_from_chain_address.js';
 
 const defaultMinConfirmations = 1;
 const dummyTxId = Buffer.alloc(32).toString('hex');
@@ -47,7 +47,7 @@ const type = 'chain';
 
   @event 'reorg'
 */
-export default args => {
+const subscribeToChainAddress = args => {
   let outputScript = args.output_script;
 
   if (!isLnd({method, type, lnd: args.lnd})) {
@@ -124,3 +124,5 @@ export default args => {
 
   return eventEmitter;
 };
+
+export { subscribeToChainAddress }

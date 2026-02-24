@@ -1,8 +1,9 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { channelEdgeAsChannel, rpcNodeAsNode } from '../../lnd_responses/index.js';
-import { isLnd } from '../../lnd_requests/index.js';
+import { channelEdgeAsChannel } from '../../lnd_responses/channel_edge_as_channel.js';
+import { rpcNodeAsNode } from '../../lnd_responses/rpc_node_as_node.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const {isArray} = Array;
 const method = 'describeGraph';
@@ -55,7 +56,7 @@ const type = 'default';
     }]
   }
 */
-export default ({lnd}, cbk) => {
+const getNetworkGraph = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -143,3 +144,5 @@ export default ({lnd}, cbk) => {
     returnResult({reject, resolve, of: 'graph'}, cbk));
   });
 };
+
+export { getNetworkGraph }

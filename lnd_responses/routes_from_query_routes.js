@@ -1,7 +1,7 @@
 import BN from 'bn.js';
 import { chanFormat } from 'bolt07';
 
-import { safeTokens } from '../bolt00/index.js';
+import { safeTokens } from '../bolt00/safe_tokens.js';
 
 const {isArray} = Array;
 const {keys} = Object;
@@ -65,7 +65,7 @@ const successDenominator = 1e6;
     }]
   }
 */
-export default ({response}) => {
+const routesFromQueryRoutes = ({response}) => {
   if (!response) {
     throw new Error('ExpectedResponse');
   }
@@ -151,3 +151,5 @@ export default ({response}) => {
     }),
   };
 };
+
+export { routesFromQueryRoutes }

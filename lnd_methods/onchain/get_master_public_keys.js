@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const {isArray} = Array;
 const method = 'listAccounts';
@@ -32,7 +32,7 @@ const type = 'wallet';
     }]
   }
 */
-export default ({lnd}, cbk) => {
+const getMasterPublicKeys = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -81,3 +81,5 @@ export default ({lnd}, cbk) => {
     returnResult({reject, resolve, of: 'getKeys'}, cbk));
   });
 };
+
+export { getMasterPublicKeys }

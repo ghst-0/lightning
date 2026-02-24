@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getForwardingConfidence } from '../../../index.js';
+import { getForwardingConfidence } from '../../../lnd_methods/offchain/get_forwarding_confidence.js';
 
 const makeLnd = ({err, res}) => {
   return {

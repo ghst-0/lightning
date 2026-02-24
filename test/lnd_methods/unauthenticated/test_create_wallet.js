@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { createWallet } from '../../../lnd_methods/index.js';
+import { createWallet } from '../../../lnd_methods/unauthenticated/create_wallet.js';
 
 const tests = [
   {

@@ -1,5 +1,6 @@
 import grpc from '@grpc/grpc-js';
-import decodeSerialized from './decode_serialized.js';
+
+import { decodeSerialized } from './decode_serialized.js';
 
 const {createSsl} = grpc.credentials;
 
@@ -14,6 +15,8 @@ const {createSsl} = grpc.credentials;
     ssl: <SSL gRPC Object>
   }
 */
-export default ({cert}) => {
+const grpcSsl = ({cert}) => {
   return {ssl: createSsl(decodeSerialized({serialized: cert}).decoded)};
 };
+
+export { grpcSsl }

@@ -1,7 +1,7 @@
 import EventEmitter from 'node:events';
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { proposeChannel } from '../../../lnd_methods/index.js';
+import { proposeChannel } from '../../../lnd_methods/onchain/propose_channel.js';
 
 const makeLnd = ({err, data}) => {
   const lnd = {

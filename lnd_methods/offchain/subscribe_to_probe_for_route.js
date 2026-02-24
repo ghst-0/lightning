@@ -2,10 +2,11 @@ import EventEmitter from 'node:events';
 import asyncAuto from 'async/auto.js';
 import asyncWhilst from 'async/whilst.js';
 
-import { getRouteToDestination, getIdentity } from '../info/index.js';
-import { isLnd } from '../../lnd_requests/index.js';
-import { mtokensAmount } from '../../bolt00/index.js';
-import subscribeToPayViaRoutes from './subscribe_to_pay_via_routes.js';
+import { getRouteToDestination } from '../info/get_route_to_destination.js';
+import { getIdentity } from '../info/get_identity.js'
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { mtokensAmount } from '../../bolt00/mtokens_amount.js';
+import { subscribeToPayViaRoutes } from './subscribe_to_pay_via_routes.js';
 
 const defaultPathTimeoutMs = 1000 * 60;
 const defaultProbeTimeoutMs = 1000 * 60 * 60 * 24;
@@ -175,7 +176,7 @@ const {nextTick} = process;
     }
   }
 */
-export default args => {
+const subscribeToProbeForRoute = args => {
   if (!isPublicKey(args.destination)) {
     throw new Error('ExpectedDestinationPublicKeyToSubscribeToProbe');
   }
@@ -395,3 +396,5 @@ export default args => {
 
   return emitter;
 };
+
+export { subscribeToProbeForRoute }

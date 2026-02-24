@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const defaultTimeoutSeconds = 60;
 const method = 'estimateRouteFee';
@@ -26,7 +26,7 @@ const type = 'router';
     timeout: <Estimated Minimum Time Lock Block Height Delay Number>
   }
 */
-export default ({lnd, request, timeout}, cbk) => {
+const getRoutingFeeEstimate = ({lnd, request, timeout}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -84,3 +84,5 @@ export default ({lnd, request, timeout}, cbk) => {
     returnResult({reject, resolve, of: 'getEstimate'}, cbk));
   });
 };
+
+export { getRoutingFeeEstimate }

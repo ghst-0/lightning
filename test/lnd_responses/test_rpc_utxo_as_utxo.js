@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcUtxoAsUtxo } from '../../lnd_responses/index.js';
+import { rpcUtxoAsUtxo } from '../../lnd_responses/rpc_utxo_as_utxo.js';
 
 const makeUtxo = override => {
   const utxo = {

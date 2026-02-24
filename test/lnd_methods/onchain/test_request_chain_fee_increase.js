@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { requestChainFeeIncrease } from '../../../lnd_methods/index.js';
+import { requestChainFeeIncrease } from '../../../lnd_methods/onchain/request_chain_fee_increase.js';
 
 const makeLnd = overrides => {
   const res = {};

@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getTowerServerInfo } from '../../../lnd_methods/index.js';
+import { getTowerServerInfo } from '../../../lnd_methods/info/get_tower_server_info.js';
 
 const makeLnd = (err, res) => {
   return {tower_server: {getInfo: ({}, cbk) => cbk(err, res)}};

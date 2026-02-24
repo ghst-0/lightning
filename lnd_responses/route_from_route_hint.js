@@ -34,7 +34,7 @@ const {isArray} = Array;
     public_key: <Forward Edge Public Key Hex String>
   }]
 */
-export default args => {
+const routeFromRouteHint = args => {
   if (!args.destination) {
     throw new Error('ExpectedPaymentRequestDestinationToCalculateRoute');
   }
@@ -78,3 +78,5 @@ export default args => {
 
   return [].concat([{public_key: firstHint.node_id}]).concat(lastHops);
 };
+
+export { routeFromRouteHint }

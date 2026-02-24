@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import subscribeToProbeForRoute from './subscribe_to_probe_for_route.js';
+import { subscribeToProbeForRoute } from './subscribe_to_probe_for_route.js';
 
 const defaultProbeTimeoutMs = 1000 * 60;
 const {isArray} = Array;
@@ -87,7 +87,7 @@ const isHex = n => !(n.length % 2) && /^[0-9A-F]*$/i.test(n);
     }
   }
 */
-export default (args, cbk) => {
+const probeForRoute = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -158,3 +158,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'probe'}, cbk));
   });
 };
+
+export { probeForRoute }

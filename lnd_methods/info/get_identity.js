@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { getPublicKey } from '../address/index.js';
-import getWalletInfo from './get_wallet_info.js';
+import { getPublicKey } from '../address/get_public_key.js';
+import { getWalletInfo } from './get_wallet_info.js';
 
 const family = 6;
 const index = 0;
@@ -22,7 +22,7 @@ const index = 0;
     public_key: <Node Identity Public Key Hex String>
   }
 */
-export default ({lnd}, cbk) => {
+const getIdentity = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -66,3 +66,5 @@ export default ({lnd}, cbk) => {
     returnResult({reject, resolve, of: 'identity'}, cbk));
   });
 };
+
+export { getIdentity }

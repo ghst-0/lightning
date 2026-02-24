@@ -1,6 +1,6 @@
 import { chanFormat } from 'bolt07';
 
-import channelPolicyAsPolicy from './channel_policy_as_policy.js';
+import { channelPolicyAsPolicy } from './channel_policy_as_policy.js';
 
 const separatorChar = ':';
 
@@ -56,7 +56,7 @@ const separatorChar = ':';
     [updated_at]: <Channel Last Updated At ISO 8601 Date String>
   }
 */
-export default args => {
+const channelEdgeAsChannel = args => {
   if (!args.capacity) {
     throw new Error('ExpectedChannelCapacityInChannelEdgeResponse');
   }
@@ -113,3 +113,5 @@ export default args => {
     updated_at: updatedAt,
   };
 };
+
+export { channelEdgeAsChannel }

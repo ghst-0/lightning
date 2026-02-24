@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { signBytes } from '../../../index.js';
+import { signBytes } from '../../../lnd_methods/signer/sign_bytes.js';
 
 const makeLnd = (err, res) => {
   return {signer: {signMessage: ({}, cbk) => cbk(err, res)}};

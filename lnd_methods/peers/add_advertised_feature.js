@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const action = 0;
 const errorUnimplemented = 'unknown service peersrpc.Peers';
@@ -23,7 +23,7 @@ const type = 'peers';
 
   @returns via cbk or Promise
 */
-export default ({feature, lnd}, cbk) => {
+const addAdvertisedFeature = ({feature, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -60,3 +60,5 @@ export default ({feature, lnd}, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { addAdvertisedFeature }

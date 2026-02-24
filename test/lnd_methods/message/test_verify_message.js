@@ -1,6 +1,6 @@
 import { rejects, deepStrictEqual } from 'node:assert/strict'
 import test from 'node:test';
-import { verifyMessage } from '../../../index.js';
+import { verifyMessage } from '../../../lnd_methods/message/verify_message.js';
 
 const tests = [
   {

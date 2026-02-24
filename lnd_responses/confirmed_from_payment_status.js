@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { chanFormat } from 'bolt07';
 
 import constants from './constants.json' with { type: 'json'};
-import { safeTokens } from '../bolt00/index.js';
+import { safeTokens } from '../bolt00/safe_tokens.js';
 
 const { attemptStates } = constants;
 const {confirmed} = attemptStates;
@@ -110,7 +110,7 @@ const sum = arr => arr.reduce((sum, n) => sum + BigInt(n), BigInt(Number()));
     tokens: <Total Tokens Paid Rounded Down Number>
   }
 */
-export default ({htlcs, preimage, route}) => {
+const confirmedFromPaymentStatus = ({htlcs, preimage, route}) => {
   if (!isArray(htlcs)) {
     throw new Error('ExpectedArrayOfHtlcsToDeriveConfirmedFromPaymentStatus');
   }
@@ -172,3 +172,5 @@ export default ({htlcs, preimage, route}) => {
     tokens: safeTokens({mtokens: mtokens.toString()}).tokens,
   };
 };
+
+export { confirmedFromPaymentStatus }

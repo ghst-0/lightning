@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcGroupSessionAsSession } from '../../lnd_responses/index.js';
+import { rpcGroupSessionAsSession } from '../../lnd_responses/rpc_group_session_as_session.js';
 
 const makeArgs = overrides => {
   const args = {

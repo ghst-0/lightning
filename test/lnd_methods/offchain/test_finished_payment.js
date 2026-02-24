@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import method from '../../../lnd_methods/offchain/finished_payment.js';
+import { finishedPayment } from '../../../lnd_methods/offchain/finished_payment.js';
 
 const makeArgs = overrides => {
   const args = {
@@ -135,9 +135,9 @@ const tests = [
 for (const { args, description, error, expected } of tests) {
   test(description, async () => {
     if (error) {
-      await rejects(method(args), error, 'Got expected error');
+      await rejects(finishedPayment(args), error, 'Got expected error');
     } else {
-      deepStrictEqual(await method(args), expected, 'Got expected result');
+      deepStrictEqual(await finishedPayment(args), expected, 'Got expected result');
     }
   });
 }

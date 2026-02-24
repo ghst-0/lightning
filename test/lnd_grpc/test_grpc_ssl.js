@@ -1,6 +1,6 @@
 import { equal } from 'node:assert/strict';
 import test from 'node:test';
-import grpcSsl from '../../lnd_grpc/grpc_ssl.js';
+import { grpcSsl } from '../../lnd_grpc/grpc_ssl.js';
 
 const tests = [
   {

@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcNodeAsNode } from '../../lnd_responses/index.js';
+import { rpcNodeAsNode } from '../../lnd_responses/rpc_node_as_node.js';
 
 const makeInfo = overrides => {
   const details = {

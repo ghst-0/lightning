@@ -1,4 +1,4 @@
-import { rpcRouteAsRoute } from '../lnd_responses/index.js';
+import { rpcRouteAsRoute } from '../lnd_responses/rpc_route_as_route.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 
@@ -53,9 +53,11 @@ const bufferAsHex = buffer => buffer.toString('hex');
     }
   }
 */
-export default args => {
+const payViaRouteRequest = args => {
   return {
     id: bufferAsHex(args.payment_hash),
     route: rpcRouteAsRoute(args.route),
   };
 };
+
+export { payViaRouteRequest }

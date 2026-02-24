@@ -29,7 +29,7 @@ const {isBuffer} = Buffer;
     transaction_vout: <Funding Transaction Output Index Number>
   }
 */
-export default args => {
+const rpcFailedPolicyAsFail = args => {
   if (!args) {
     throw new Error('ExpectedPolicyFailureToDeriveFailureDetails');
   }
@@ -55,3 +55,5 @@ export default args => {
     transaction_vout: args.outpoint.output_index,
   };
 };
+
+export { rpcFailedPolicyAsFail }

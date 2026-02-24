@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { addPeer } from '../peers/index.js';
-import { isLnd } from '../../lnd_requests/index.js';
+import { addPeer } from '../peers/add_peer.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const anchors = 'ANCHORS';
 const defaultChainFeeConfTarget = 6;
@@ -75,7 +75,7 @@ const type = 'default';
     transaction_vout: <Funding Transaction Output Index Number>
   }
 */
-export default (args, cbk) => {
+const openChannel = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -288,3 +288,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'openChannel'}, cbk));
   });
 };
+
+export { openChannel }

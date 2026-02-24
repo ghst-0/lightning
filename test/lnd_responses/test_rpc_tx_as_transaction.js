@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcTxAsTransaction } from '../../lnd_responses/index.js';
+import { rpcTxAsTransaction } from '../../lnd_responses/rpc_tx_as_transaction.js';
 
 const makeTx = override => {
   const tx = {

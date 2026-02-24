@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { rpcWalletStateAsState } from '../../lnd_responses/index.js';
-import { isLnd } from '../../lnd_requests/index.js';
+import { rpcWalletStateAsState } from '../../lnd_responses/rpc_wallet_state_as_state.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const method = 'getState';
 const type = 'status';
@@ -30,7 +30,7 @@ const unsupportedMessage = 'unknown service lnrpc.State';
     [is_waiting]: <Wallet Is Waiting To Start Bool>
   }
 */
-export default ({lnd}, cbk) => {
+const getWalletStatus = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -68,3 +68,5 @@ export default ({lnd}, cbk) => {
     returnResult({reject, resolve, of: 'getState'}, cbk));
   });
 };
+
+export { getWalletStatus }

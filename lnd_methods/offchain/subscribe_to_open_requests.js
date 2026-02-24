@@ -1,7 +1,7 @@
 import EventEmitter from 'node:events';
 
-import { channelAcceptAsOpenRequest } from '../../lnd_responses/index.js';
-import { isLnd } from '../../lnd_requests/index.js';
+import { channelAcceptAsOpenRequest } from '../../lnd_responses/channel_accept_as_open_request.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const channelRequestEvent = 'channel_request';
 const method = 'channelAcceptor';
@@ -66,7 +66,7 @@ const type = 'default';
   @event 'error'
   <Error Object>
 */
-export default ({lnd}) => {
+const subscribeToOpenRequests = ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedLndToSubscribeToChannelRequests');
   }
@@ -154,3 +154,5 @@ export default ({lnd}) => {
 
   return emitter;
 };
+
+export { subscribeToOpenRequests }

@@ -102,7 +102,7 @@ import { returnResult } from 'asyncjs-util';
     tokens: <Tokens Paid Rounded Down Number>
   }
 */
-export default ({confirmed, failed}, cbk) => {
+const finishedPayment = ({confirmed, failed}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Determine if there is an error
@@ -161,3 +161,5 @@ export default ({confirmed, failed}, cbk) => {
     returnResult({reject, resolve, of: 'payment'}, cbk));
   });
 };
+
+export { finishedPayment }

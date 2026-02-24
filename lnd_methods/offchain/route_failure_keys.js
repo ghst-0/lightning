@@ -23,7 +23,7 @@ const notFoundIndex = -1;
     [keys]: [<Public Key Hex String>]
   }
 */
-export default ({failure, route}) => {
+const routeFailureKeys = ({failure, route}) => {
   // Exit early when there is no failure to derive failure keys for
   if (!failure) {
     return {};
@@ -47,3 +47,5 @@ export default ({failure, route}) => {
 
   return {keys: hops.filter(n => !!n).map(hop => hop.public_key)};
 };
+
+export { routeFailureKeys }

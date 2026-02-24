@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { infoAsWalletInfo } from '../../lnd_responses/index.js';
+import { infoAsWalletInfo } from '../../lnd_responses/info_as_wallet_info.js';
 
 const makeInfo = overrides => {
   const info = {

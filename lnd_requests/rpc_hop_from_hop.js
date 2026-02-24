@@ -38,7 +38,7 @@ const millitokensAsTokens = n => Number(BigInt(n) / BigInt(1e3));
     [tlv_payload]: <Has Extra TLV Data Bool>
   }
 */
-export default args => {
+const rpcHopFromHop = args => {
   if (!isNumber(args.channel_capacity)) {
     throw new Error('ExpectedNumericChannelCapacityToMapRpcHopFromHop');
   }
@@ -77,3 +77,5 @@ export default args => {
 
   return hop;
 };
+
+export { rpcHopFromHop }

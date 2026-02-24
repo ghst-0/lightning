@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcChannelAsChannel } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcChannelAsChannel } from '../../lnd_responses/rpc_channel_as_channel.js';
 
 const {isArray} = Array;
 const method = 'listChannels';
@@ -86,7 +86,7 @@ const type = 'default';
     }]
   }
 */
-export default (args, cbk) => {
+const getChannels = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -140,3 +140,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'getChannels'}, cbk));
   });
 };
+
+export { getChannels }

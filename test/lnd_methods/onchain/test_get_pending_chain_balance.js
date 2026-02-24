@@ -1,6 +1,6 @@
 import { strictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getPendingChainBalance } from '../../../lnd_methods/index.js';
+import { getPendingChainBalance } from '../../../lnd_methods/onchain/get_pending_chain_balance.js';
 
 const makeLnd = ({pendingChannels, walletBalance}) => {
   const defaultBalance = ({}, cbk) => cbk(null, {unconfirmed_balance: '2'});

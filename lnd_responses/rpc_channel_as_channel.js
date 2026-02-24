@@ -1,8 +1,8 @@
 import { chanFormat } from 'bolt07';
 
 import constants from './constants.json' with { type: 'json'};
-import parseThawHeight from './parse_thaw_height.js';
-import rpcHtlcAsPayment from './rpc_htlc_as_payment.js';
+import { parseThawHeight } from './parse_thaw_height.js';
+import { rpcHtlcAsPayment } from './rpc_htlc_as_payment.js';
 
 const { channelTypes } = constants;
 const {isArray} = Array;
@@ -125,7 +125,7 @@ const outpointDelimiter = ':';
     unsettled_balance: <Unsettled Balance Tokens Number>
   }
 */
-export default args => {
+const rpcChannelAsChannel = args => {
   if (args.active === undefined) {
     throw new Error('ExpectedChannelActiveStateInChannelMessage');
   }
@@ -278,3 +278,5 @@ export default args => {
     unsettled_balance: Number(args.unsettled_balance),
   };
 };
+
+export { rpcChannelAsChannel }

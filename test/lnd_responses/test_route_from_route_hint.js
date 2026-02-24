@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import routeFromHint from '../../lnd_responses/route_from_route_hint.js';
+import { routeFromRouteHint } from '../../lnd_responses/route_from_route_hint.js';
 
 const makeHopHint = overrides => {
   const hint = {
@@ -136,9 +136,9 @@ const tests = [
 for (const { args, description, error, expected } of tests) {
   test(description, (t, end) => {
     if (error) {
-      throws(() => routeFromHint(args), new Error(error), 'Got error');
+      throws(() => routeFromRouteHint(args), new Error(error), 'Got error');
     } else {
-      deepStrictEqual(routeFromHint(args), expected.route, 'Got route');
+      deepStrictEqual(routeFromRouteHint(args), expected.route, 'Got route');
     }
 
     return end();

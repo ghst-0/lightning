@@ -32,7 +32,7 @@ const isBoolean = n => n === false || n === true;
     tokens: <Payment Tokens Number>
   }
 */
-export default args => {
+const rpcHtlcAsPayment = args => {
   if (!args) {
     throw new Error('ExpectedHtlcInHtlcMessage');
   }
@@ -81,3 +81,5 @@ export default args => {
     tokens: Number(args.amount),
   };
 };
+
+export { rpcHtlcAsPayment }

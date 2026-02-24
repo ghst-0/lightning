@@ -1,5 +1,5 @@
 import { featureFlagDetails } from 'bolt09';
-import htlcAsPayment from './htlc_as_payment.js';
+import { htlcAsPayment } from './htlc_as_payment.js';
 
 const dateFrom = epoch => new Date(1e3 * epoch).toISOString();
 const emptyHash = Buffer.alloc(32).toString('hex');
@@ -119,7 +119,7 @@ const mtokensPerToken = BigInt(1e3);
     tokens: <Tokens Number>
   }
 */
-export default args => {
+const rpcInvoiceAsInvoice = args => {
   if (!args) {
     throw new Error('ExpectedResponseWhenLookingUpInvoice');
   }
@@ -217,3 +217,5 @@ export default args => {
     tokens: Number(args.value),
   };
 };
+
+export { rpcInvoiceAsInvoice }

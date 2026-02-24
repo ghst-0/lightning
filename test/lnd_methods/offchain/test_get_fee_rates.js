@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getFeeRates } from '../../../index.js';
+import { getFeeRates } from '../../../lnd_methods/offchain/get_fee_rates.js';
 
 const tests = [
   {

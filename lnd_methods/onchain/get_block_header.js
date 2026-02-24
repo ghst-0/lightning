@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const errorNotFound = '-5: Block not found';
@@ -32,7 +32,7 @@ const type = 'blocks';
     header: <Raw Block Header Bytes Hex String>
   }
 */
-export default ({height, id, lnd}, cbk) => {
+const getBlockHeader = ({height, id, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -147,3 +147,5 @@ export default ({height, id, lnd}, cbk) => {
     returnResult({reject, resolve, of: 'getBlockHeader'}, cbk));
   });
 };
+
+export { getBlockHeader }

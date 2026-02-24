@@ -1,7 +1,8 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getInfoResponse } from '../fixtures/index.js';
-import { getRouteConfidence } from '../../../index.js';
+
+import { getRouteConfidence } from '../../../lnd_methods/generic/get_route_confidence.js';
+import getInfoResponse from '../fixtures/get_info_response.json' with { type: 'json' };
 
 const makeLnd = ({err, res}) => {
   return {

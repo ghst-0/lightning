@@ -1,6 +1,6 @@
 import { deepStrictEqual,throws } from 'node:assert/strict';
 import test from 'node:test';
-import { routeHintFromRoute } from '../../lnd_requests/index.js';
+import { routeHintFromRoute } from '../../lnd_requests/route_hint_from_route.js';
 
 const tests = [
   {

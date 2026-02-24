@@ -2,7 +2,7 @@ import EventEmitter from 'node:events';
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import { promisify } from 'node:util';
 import test from 'node:test';
-import { subscribeToGraph } from '../../../index.js';
+import { subscribeToGraph } from '../../../lnd_methods/info/subscribe_to_graph.js';
 
 const nextTick = promisify(process.nextTick);
 

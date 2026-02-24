@@ -2,9 +2,9 @@ import asyncAuto from 'async/auto.js';
 import asyncReduce from 'async/reduce.js';
 import { returnResult } from 'asyncjs-util';
 
-import getForwardingConfidence from '../offchain/get_forwarding_confidence.js';
-import getForwardingReputations from '../offchain/get_forwarding_reputations.js';
-import getIdentity from '../info/get_identity.js';
+import { getForwardingConfidence } from '../offchain/get_forwarding_confidence.js';
+import { getForwardingReputations } from '../offchain/get_forwarding_reputations.js';
+import { getIdentity } from '../info/get_identity.js';
 
 const combine = (a, b) => Math.round(a / 1e6 * b / 1e6);
 const decBase = 10;
@@ -35,7 +35,7 @@ const unimplemented = 'QueryProbabilityNotImplemented';
     confidence: <Confidence Score Out Of One Million Number>
   }
 */
-export default ({from, hops, lnd}, cbk) => {
+const getRouteConfidence = ({from, hops, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -165,3 +165,5 @@ export default ({from, hops, lnd}, cbk) => {
     returnResult({reject, resolve, of: 'odds'}, cbk));
   });
 };
+
+export { getRouteConfidence }

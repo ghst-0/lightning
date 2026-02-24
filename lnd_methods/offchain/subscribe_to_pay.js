@@ -3,10 +3,11 @@ import asyncAuto from 'async/auto.js';
 import { chanNumber } from 'bolt07';
 import { parsePaymentRequest } from 'invoices';
 
-import emitPayment from './emit_payment.js';
-import { getHeight } from '../generic/index.js';
-import { isLnd, routeHintFromRoute } from '../../lnd_requests/index.js';
-import { paymentAmounts } from '../../bolt00/index.js';
+import { emitPayment } from './emit_payment.js';
+import { getHeight } from '../generic/get_height.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { routeHintFromRoute } from '../../lnd_requests/route_hint_from_route.js';
+import { paymentAmounts } from '../../bolt00/payment_amounts.js';
 
 const asTimePreference = n => n === undefined ? n : ((n * 2) - 1e6) / 1e6;
 const cltvBuf = 3;
@@ -200,7 +201,7 @@ const unsupportedFeatures = new Set([30, 31]);
     }
   }
 */
-export default args => {
+const subscribeToPay = args => {
   if (args.cltv_delta && args.request) {
     throw new Error('UnexpectedCltvDeltaWhenSubscribingToPayPaymentRequest');
   }
@@ -457,3 +458,5 @@ export default args => {
 
   return emitter;
 };
+
+export { subscribeToPay }

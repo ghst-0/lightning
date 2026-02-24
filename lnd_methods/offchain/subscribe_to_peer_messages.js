@@ -1,7 +1,8 @@
 import EventEmitter from 'node:events';
-import { emitSubscriptionError, handleRemoveListener } from '../../grpc/index.js';
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcPeerMessageAsMessage } from '../../lnd_responses/index.js';
+import { emitSubscriptionError } from '../../grpc/emit_subscription_error.js';
+import { handleRemoveListener } from '../../grpc/handle_remove_listener.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcPeerMessageAsMessage } from '../../lnd_responses/rpc_peer_message_as_message.js';
 
 const events = ['message_received'];
 const method = 'SubscribeCustomMessages';
@@ -28,7 +29,7 @@ const type = 'default';
     type: <Message Type Number>
   }
 */
-export default ({lnd}) => {
+const subscribeToPeerMessages = ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedLndToSubscribeToPeerMessages');
   }
@@ -56,3 +57,5 @@ export default ({lnd}) => {
 
   return emitter;
 };
+
+export { subscribeToPeerMessages }

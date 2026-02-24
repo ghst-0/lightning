@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { signChainAddressMessage } from '../../../index.js';
+import { signChainAddressMessage } from '../../../lnd_methods/onchain/sign_chain_address_message.js';
 
 const makeArgs = override => {
   const args = {

@@ -34,7 +34,7 @@ const msPerSec = 1e3;
     updated_at: <Updated At ISO 8601 Date String>
   }
 */
-export default ({key, keys, update}) => {
+const policyFromChannelUpdate = ({key, keys, update}) => {
   if (!update) {
     throw new Error('ExpectedChannelUpdateToDerivePolicy');
   }
@@ -84,3 +84,5 @@ export default ({key, keys, update}) => {
     updated_at: new Date(update.timestamp * msPerSec).toISOString(),
   };
 };
+
+export { policyFromChannelUpdate }

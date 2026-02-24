@@ -60,7 +60,7 @@ const minTime = n => n < 1 ? 0 : n;
     tokens_sent: <Amount Sent Tokens Number>
   }
 */
-export default peer => {
+const rpcPeerAsPeer = peer => {
   if (!peer) {
     throw new Error('ExpectedRpcPeerToDerivePeerDetails');
   }
@@ -134,3 +134,5 @@ export default peer => {
     tokens_sent: Number(peer.sat_sent),
   };
 };
+
+export { rpcPeerAsPeer }

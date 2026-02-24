@@ -1,8 +1,9 @@
 import EventEmitter from 'node:events';
 
-import emitPayment from './emit_payment.js';
-import { emitSubscriptionError, handleRemoveListener } from '../../grpc/index.js';
-import { isLnd } from '../../lnd_requests/index.js';
+import { emitPayment } from './emit_payment.js';
+import { emitSubscriptionError } from '../../grpc/emit_subscription_error.js';
+import { handleRemoveListener } from '../../grpc/handle_remove_listener.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const events = ['confirmed', 'failed', 'paying'];
 const method = 'trackPayments';
@@ -100,7 +101,7 @@ const type = 'router';
     tokens: <Total Tokens Pending Rounded Down Number>
   }
 */
-export default ({lnd}) => {
+const subscribeToPayments = ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToCurrentPayments');
   }
@@ -118,3 +119,5 @@ export default ({lnd}) => {
 
   return emitter;
 };
+
+export { subscribeToPayments }

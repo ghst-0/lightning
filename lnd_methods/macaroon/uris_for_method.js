@@ -1,7 +1,7 @@
 import methods from './methods.json' with { type: 'json' };
-import { packageTypes, serviceTypes } from '../../grpc/index.js';
+import grpc_services from '../../grpc/grpc_services.json' with { type: 'json' };
 
-
+const { packageTypes, serviceTypes } = grpc_services;
 const flatten = arr => arr.flat(Infinity);
 const type = n => [methods[n]].concat((methods[n].depends_on || []).map(type));
 const uriForMethod = (rpc, service, method) => `/${rpc}.${service}/${method}`;
@@ -20,7 +20,7 @@ const uriForMethod = (rpc, service, method) => `/${rpc}.${service}/${method}`;
     uris: [<Permission URI String>]
   }
 */
-export default ({method}) => {
+const urisForMethod = ({method}) => {
   if (!method) {
     throw new Error('ExpectedMethodNameToDeriveMacaroonUris');
   }
@@ -49,3 +49,5 @@ export default ({method}) => {
 
   return {uris};
 };
+
+export { urisForMethod }

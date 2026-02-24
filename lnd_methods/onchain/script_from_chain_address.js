@@ -24,7 +24,7 @@ const p2wshAddressLength = 32;
     [script]: <Output Script Hex String>
   }
 */
-export default args => {
+const scriptFromChainAddress = args => {
   if (!args.bech32_address && !args.p2pkh_address && !args.p2sh_address) {
     return {};
   }
@@ -34,7 +34,7 @@ export default args => {
       const {hash} = decodeBase58Address({address: args.p2pkh_address});
 
       return {script: bufferAsHex(p2pkhOutputScript({hash}).script)};
-    } catch (err) {
+    } catch {
       return {};
     }
   }
@@ -44,7 +44,7 @@ export default args => {
       const {hash} = decodeBase58Address({address: args.p2sh_address});
 
       return {script: bufferAsHex(p2shOutputScript({hash}).script)};
-    } catch (err) {
+    } catch {
       return {};
     }
   }
@@ -68,9 +68,11 @@ export default args => {
     default:
       break;
     }
-  } catch (err) {
+  } catch {
     // Ignore errors
   }
 
   return {};
 };
+
+export { scriptFromChainAddress }

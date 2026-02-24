@@ -1,6 +1,7 @@
 import BN from 'bn.js';
 import { chanFormat } from 'bolt07';
-import { safeTokens } from '../bolt00/index.js';
+
+import { safeTokens } from '../bolt00/safe_tokens.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const {isBuffer} = Buffer;
@@ -49,7 +50,7 @@ const numberAsChannelId = number => chanFormat({number}).channel;
     tokens: <Tokens to Forward to Next Peer Rounded Down Number>
   }
 */
-export default forward => {
+const rpcForwardAsForwardRequest = forward => {
   if (!forward) {
     throw new Error('ExpectedRpcForwardRequestToMapToForwardRequest');
   }
@@ -130,3 +131,5 @@ export default forward => {
     tokens: safeTokens({mtokens: forward.outgoing_amount_msat}).tokens,
   };
 };
+
+export { rpcForwardAsForwardRequest }

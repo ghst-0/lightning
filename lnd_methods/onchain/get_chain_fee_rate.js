@@ -1,6 +1,6 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const defaultConfirmationTarget = 6;
 const method = 'estimateFee';
@@ -24,7 +24,7 @@ const weightPerVByte = 4;
     tokens_per_vbyte: <Tokens Per Virtual Byte Number>
   }
 */
-export default (args, cbk) => {
+const getChainFeeRate = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -64,3 +64,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'getRate'}, cbk));
   });
 };
+
+export { getChainFeeRate }

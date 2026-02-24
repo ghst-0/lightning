@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcFailedPolicyAsFail } from '../../lnd_responses/index.js';
+import { rpcFailedPolicyAsFail } from '../../lnd_responses/rpc_failed_policy_as_fail.js';
 
 const makeArgs = override => {
   const args = {

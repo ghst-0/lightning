@@ -1,8 +1,9 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import test from 'node:test';
-import { getHeight } from '../../../index.js';
-import { getInfoResponse } from '../fixtures/index.js';
+
+import { getHeight } from '../../../lnd_methods/generic/get_height.js';
+import getInfoResponse from '../fixtures/get_info_response.json' with { type: 'json' };
 
 const makeLnd = overrides => {
   const data = {hash: Buffer.alloc(32), height: 1};

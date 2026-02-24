@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import listPayments from './list_payments.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { listPayments } from './list_payments.js';
 
 const method = 'listPayments';
 const type = 'default';
@@ -100,7 +100,7 @@ const type = 'default';
     [next]: <Next Opaque Paging Token String>
   }
 */
-export default (args, cbk) => {
+const getPayments = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -131,3 +131,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'listPayments'}, cbk));
   });
 };
+
+export { getPayments }

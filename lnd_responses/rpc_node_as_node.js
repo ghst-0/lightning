@@ -46,7 +46,7 @@ const msPerSec = 1e3;
     [updated_at]: <Last Known Update ISO 8601 Date String>
   }
 */
-export default args => {
+const rpcNodeAsNode = args => {
   if (!args) {
     throw new Error('ExpectedNodeDetailsToMapRpcNodeToNode');
   }
@@ -110,3 +110,5 @@ export default args => {
     updated_at: updated ? updated.toISOString() : undefined,
   };
 };
+
+export { rpcNodeAsNode }

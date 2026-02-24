@@ -3,8 +3,9 @@ import asyncAuto from 'async/auto.js';
 import { parsePaymentRequest } from 'invoices';
 import { returnResult } from 'asyncjs-util';
 
-import { createChainAddress } from '../address/index.js';
-import { isLnd, routeHintFromRoute } from '../../lnd_requests/index.js';
+import { createChainAddress } from '../address/create_chain_address.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { routeHintFromRoute } from '../../lnd_requests/route_hint_from_route.js';
 
 const hexAsBuffer = hex => hex ? Buffer.from(hex, 'hex') : undefined;
 const {isArray} = Array;
@@ -61,7 +62,7 @@ const type = 'invoices';
     tokens: <Tokens Number>
   }
 */
-export default (args, cbk) => {
+const createHodlInvoice = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -201,3 +202,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'invoice'}, cbk));
   });
 };
+
+export { createHodlInvoice }

@@ -3,9 +3,10 @@ import { randomBytes } from 'node:crypto';
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { emitSubscriptionError, handleRemoveListener } from '../../grpc/index.js';
-import handleRpcRequestUpdate from './handle_rpc_request_update.js';
-import { isLnd } from '../../lnd_requests/index.js';
+import { emitSubscriptionError } from '../../grpc/emit_subscription_error.js';
+import { handleRemoveListener } from '../../grpc/handle_remove_listener.js';
+import { handleRpcRequestUpdate } from './handle_rpc_request_update.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const makeId = () => randomBytes(32).toString('hex');
 const method = 'RegisterRPCMiddleware';
@@ -129,7 +130,7 @@ const type = 'default';
     [uri]: <RPC URI String>
   }
 */
-export default (args, cbk) => {
+const subscribeToRpcRequests = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -224,3 +225,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'intercept'}, cbk));
   });
 };
+
+export { subscribeToRpcRequests }

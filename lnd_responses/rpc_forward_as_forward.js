@@ -32,7 +32,7 @@ const msPerSec = 1e3;
     tokens: <Forwarded Tokens Number>
   }
 */
-export default forward => {
+const rpcForwardAsForward = forward => {
   if (!forward) {
     throw new Error('ExpectedRpcForwardToDeriveForward');
   }
@@ -90,3 +90,5 @@ export default forward => {
     tokens: Number(forward.amt_out),
   };
 };
+
+export { rpcForwardAsForward }

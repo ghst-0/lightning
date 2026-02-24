@@ -1,4 +1,4 @@
-import rpcHopAsHop from './rpc_hop_as_hop.js';
+import { rpcHopAsHop } from './rpc_hop_as_hop.js';
 
 const {isArray} = Array;
 const millitokensPerToken = BigInt(1e3);
@@ -51,7 +51,7 @@ const millitokensPerToken = BigInt(1e3);
     [total_mtokens]: <Total Payment Millitokens String>
   }
 */
-export default route => {
+const rpcRouteAsRoute = route => {
   if (!route) {
     throw new Error('ExpectedRpcRouteToDeriveRouteDetailsFor');
   }
@@ -83,3 +83,5 @@ export default route => {
     total_mtokens: !!mpp.total_amt_msat ? mpp.total_amt_msat : undefined,
   };
 };
+
+export { rpcRouteAsRoute }

@@ -1,7 +1,7 @@
 import { deepStrictEqual, equal } from 'node:assert/strict';
 import { join } from 'node:path';
 import test from 'node:test';
-import { authenticatedLndGrpc } from '../../index.js';
+import { authenticatedLndGrpc } from '../../lnd_grpc/authenticated_lnd_grpc.js';
 
 const expectedServices = [
   'autopilot',

@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { verifyAccess } from '../../../lnd_methods/index.js';
+import { verifyAccess } from '../../../lnd_methods/macaroon/verify_access.js';
 
 const makeArgs = overrides => {
   const args = {

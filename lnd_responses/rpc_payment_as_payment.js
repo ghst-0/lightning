@@ -1,6 +1,7 @@
 import { parsePaymentRequest } from 'invoices';
-import rpcAttemptHtlcAsAttempt from './rpc_attempt_htlc_as_attempt.js';
-import { safeTokens } from '../bolt00/index.js';
+
+import { rpcAttemptHtlcAsAttempt } from './rpc_attempt_htlc_as_attempt.js';
+import { safeTokens } from '../bolt00/safe_tokens.js';
 
 const emptyHash = Buffer.alloc(32).toString('hex');
 const {isArray} = Array;
@@ -152,7 +153,7 @@ const routePublicKeys = route => route.hops.map(n => n.public_key);
     tokens: <Rounded Down Tokens Sent to Destination Number>
   }
 */
-export default payment => {
+const rpcPaymentAsPayment = payment => {
   if (!payment) {
     throw new Error('ExpectedPaymentInRpcResponse');
   }
@@ -271,3 +272,5 @@ export default payment => {
     tokens: safeTokens({mtokens: payment.value_msat}).tokens,
   };
 };
+
+export { rpcPaymentAsPayment }

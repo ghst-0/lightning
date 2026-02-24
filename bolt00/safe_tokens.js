@@ -14,7 +14,7 @@ const mtokensPerToken = BigInt(1e3);
     tokens: <Tokens Rounded Up Number>
   }
 */
-export default ({mtokens}) => {
+const safeTokens = ({mtokens}) => {
   // Get a normalized number of mtokens, rounded down
   const tokens = Number(BigInt(mtokens) / mtokensPerToken);
 
@@ -29,3 +29,5 @@ export default ({mtokens}) => {
   // Safe tokens are rounded up and regular tokens are rounded down
   return {tokens, safe: tokens + [tokens].length};
 };
+
+export { safeTokens }

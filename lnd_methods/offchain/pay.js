@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import payViaPaymentRequest from './pay_via_payment_request.js';
-import payViaRoutes from './pay_via_routes.js';
+import { payViaPaymentRequest } from './pay_via_payment_request.js';
+import { payViaRoutes } from './pay_via_routes.js';
 
 /** Make a payment.
 
@@ -100,7 +100,7 @@ import payViaRoutes from './pay_via_routes.js';
     tokens: <Total Tokens Sent Number>
   }
 */
-export default (args, cbk) => {
+const pay = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -190,3 +190,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'payment'}, cbk));
   });
 };
+
+export { pay }

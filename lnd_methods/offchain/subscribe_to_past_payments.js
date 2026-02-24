@@ -1,10 +1,10 @@
 import { createHash } from 'node:crypto';
 import EventEmitter from 'node:events';
 
-import { emitSubscriptionError } from '../../grpc/index.js';
-import { forwardFromHtlcEvent } from '../../lnd_responses/index.js';
-import getPayment from './get_payment.js';
-import { isLnd } from '../../lnd_requests/index.js';
+import { emitSubscriptionError } from '../../grpc/emit_subscription_error.js';
+import { forwardFromHtlcEvent } from '../../lnd_responses/forward_from_htlc_event.js';
+import { getPayment } from './get_payment.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const event = 'payment';
@@ -64,7 +64,7 @@ const type = 'router';
     tokens: <Total Tokens Paid Rounded Down Number>
   }
 */
-export default ({lnd}) => {
+const subscribeToPastPayments = ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToPayments');
   }
@@ -118,3 +118,5 @@ export default ({lnd}) => {
 
   return emitter;
 };
+
+export { subscribeToPastPayments }

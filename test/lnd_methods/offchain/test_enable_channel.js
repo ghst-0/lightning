@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { enableChannel } from '../../../lnd_methods/index.js';
+import { enableChannel } from '../../../lnd_methods/offchain/enable_channel.js';
 
 const makeLnd = err => {
   return {router: {updateChanStatus: ({}, cbk) => cbk(err)}};

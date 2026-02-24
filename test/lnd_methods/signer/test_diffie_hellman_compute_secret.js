@@ -1,6 +1,6 @@
 import { strictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { diffieHellmanComputeSecret } from '../../../index.js';
+import { diffieHellmanComputeSecret } from '../../../lnd_methods/signer/diffie_hellman_compute_secret.js';
 
 const makeLnd = (err, res) => {
   return {signer: {deriveSharedKey: ({}, cbk) => cbk(err, res)}};

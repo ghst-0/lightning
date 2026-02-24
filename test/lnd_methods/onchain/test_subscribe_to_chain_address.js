@@ -1,7 +1,7 @@
 import EventEmitter from 'node:events';
 import { strictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { subscribeToChainAddress } from '../../../lnd_methods/index.js';
+import { subscribeToChainAddress } from '../../../lnd_methods/onchain/subscribe_to_chain_address.js';
 
 const emptyTx = '01000000000000000000';
 

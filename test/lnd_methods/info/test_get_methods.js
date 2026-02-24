@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getMethods } from '../../../index.js';
+import { getMethods } from '../../../lnd_methods/info/get_methods.js';
 
 const makeLnd = ({err, res}) => {
   const response = {

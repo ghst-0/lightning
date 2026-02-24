@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getForwardingReputations } from '../../../index.js';
+import { getForwardingReputations } from '../../../lnd_methods/offchain/get_forwarding_reputations.js';
 
 const makeLnd = ({err, res}) => {
   return {

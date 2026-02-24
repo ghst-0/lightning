@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getPayments } from '../../../index.js';
+import { getPayments } from '../../../lnd_methods/offchain/get_payments.js';
 
 const makeLnd = args => {
   return {

@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { updateRoutingFees } from '../../../index.js';
+import { updateRoutingFees } from '../../../lnd_methods/offchain/update_routing_fees.js';
 
 const makeLnd = ({err, policy}) => {
   return {

@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const method = 'estimateFee';
 const target = 6;
@@ -26,7 +26,7 @@ const weightPerVByte = 4;
     tokens_per_vbyte: <Minimum Relayable Tokens Per Virtual Byte Number>
   }
 */
-export default (args, cbk) => {
+const getMinimumRelayFee = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -64,3 +64,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'getRate'}, cbk));
   });
 };
+
+export { getMinimumRelayFee }

@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { getPublicKey } from '../address/index.js';
-import { isLnd } from '../../lnd_requests/index.js';
+import { getPublicKey } from '../address/get_public_key.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const family = 0;
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
@@ -38,7 +38,7 @@ const type = 'default';
 
   @returns via cbk or Promise
 */
-export default (args, cbk) => {
+const proposeChannel = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -157,3 +157,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'openChannel'}, cbk));
   });
 };
+
+export { proposeChannel }

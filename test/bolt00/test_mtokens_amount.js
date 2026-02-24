@@ -1,6 +1,7 @@
 import { deepEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { mtokensAmount } from '../../bolt00/index.js';
+
+import { mtokensAmount } from '../../bolt00/mtokens_amount.js';
 
 const tests = [
   {
@@ -44,7 +45,6 @@ for (const { args, description, error, expected } of tests) {
   test(description, (t, end) => {
     if (error) {
       throws(() => {
-        console.log('mtokensAmount(args)')
         mtokensAmount(args)
       }, new Error(error), 'Got expected err');
     } else {

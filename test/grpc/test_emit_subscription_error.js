@@ -1,5 +1,5 @@
 import test from 'node:test';
-import { emitSubscriptionError } from '../../grpc/index.js';
+import { emitSubscriptionError } from '../../grpc/emit_subscription_error.js';
 
 const tests = [
   {

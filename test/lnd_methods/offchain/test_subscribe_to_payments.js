@@ -1,9 +1,9 @@
 import { throws, deepStrictEqual } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import test from 'node:test';
-import { subscribeToPayments } from '../../../index.js';
+import { subscribeToPayments } from '../../../lnd_methods/offchain/subscribe_to_payments.js';
 
-const tick = () => new Promise(resolve => process.nextTick(resolve));
+const tick = () => new Promise(resolve => {process.nextTick(resolve)});
 
 const tests = [
   {

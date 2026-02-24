@@ -15,7 +15,7 @@ const tokensAsMtokens = tokens => (BigInt(tokens) * BigInt(1e3)).toString();
     [mtokens]: <Millitokens String>
   }
 */
-export default ({mtokens, tokens}) => {
+const mtokensAmount = ({mtokens, tokens}) => {
   // Exit early when no tokens are specified
   if (!mtokens && tokens === undefined) {
     return {};
@@ -42,3 +42,5 @@ export default ({mtokens, tokens}) => {
 
   return {mtokens};
 };
+
+export { mtokensAmount }

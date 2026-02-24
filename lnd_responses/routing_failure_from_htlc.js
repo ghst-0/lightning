@@ -1,5 +1,5 @@
-import paymentFailure from './payment_failure.js';
-import rpcRouteAsRoute from './rpc_route_as_route.js';
+import { paymentFailure } from './payment_failure.js';
+import { rpcRouteAsRoute } from './rpc_route_as_route.js';
 
 /** Derive routing failure details from an HTLC
 
@@ -82,7 +82,7 @@ import rpcRouteAsRoute from './rpc_route_as_route.js';
     }
   }
 */
-export default htlc => {
+const routingFailureFromHtlc = htlc => {
   const from = htlc.route.hops[htlc.failure.failure_source_index - 1] || {};
 
   const failure = paymentFailure({
@@ -103,3 +103,5 @@ export default htlc => {
     reason: failure.message,
   };
 };
+
+export { routingFailureFromHtlc }

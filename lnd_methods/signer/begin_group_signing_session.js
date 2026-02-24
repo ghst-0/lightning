@@ -2,9 +2,9 @@ import asyncAuto from 'async/auto.js';
 import asyncReflect from 'async/reflect.js';
 import { returnResult } from 'asyncjs-util';
 
-import getPublicKey from '../address/get_public_key.js';
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcGroupSessionAsSession } from '../../lnd_responses/index.js';
+import { getPublicKey } from '../address/get_public_key.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcGroupSessionAsSession } from '../../lnd_responses/rpc_group_session_as_session.js';
 
 const defaultVersion = 'MUSIG2_VERSION_V100RC2';
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
@@ -45,7 +45,7 @@ const xOnlyPublicKey = hexKey => hexKey.slice(2);
     nonce: <Session Compound Nonces Hex String>
   }
 */
-export default (args, cbk) => {
+const beginGroupSigningSession = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -193,3 +193,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'finalCreate'}, cbk));
   });
 };
+
+export { beginGroupSigningSession }

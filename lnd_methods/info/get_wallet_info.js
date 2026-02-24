@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { infoAsWalletInfo } from '../../lnd_responses/index.js';
-import { isLnd } from '../../lnd_requests/index.js';
+import { infoAsWalletInfo } from '../../lnd_responses/info_as_wallet_info.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const cannotConnectMessage = 'failed to connect to all addresses';
 const connectFailMessage = '14 UNAVAILABLE: channel is in state TRANSIENT_FAILURE';
@@ -42,7 +42,7 @@ const noConnectionMessage = 'No connection established';
     version: <LND Version String>
   }
 */
-export default ({lnd}, cbk) => {
+const getWalletInfo = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -92,3 +92,5 @@ export default ({lnd}, cbk) => {
     returnResult({reject, resolve, of: 'getWalletInfo'}, cbk));
   });
 };
+
+export { getWalletInfo }

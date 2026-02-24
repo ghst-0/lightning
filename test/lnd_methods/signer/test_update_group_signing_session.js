@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { updateGroupSigningSession } from '../../../index.js';
+import { updateGroupSigningSession } from '../../../lnd_methods/signer/update_group_signing_session.js';
 
 const makeLnd = ({noncesErr, noncesRes, signErr, signRes}) => {
   return {

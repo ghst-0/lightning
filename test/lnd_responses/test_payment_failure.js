@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { paymentFailure } from '../../lnd_responses/index.js';
+import { paymentFailure } from '../../lnd_responses/payment_failure.js';
 
 const makeFailure = ({fail, overrides}) => {
   const failure = {

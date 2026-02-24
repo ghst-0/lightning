@@ -1,7 +1,7 @@
 import { deepStrictEqual, strictEqual } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import test from 'node:test';
-import { subscribeToPeers } from '../../../lnd_methods/index.js';
+import { subscribeToPeers } from '../../../lnd_methods/peers/subscribe_to_peers.js';
 
 const makeLnd = overrides => {
   const data = {

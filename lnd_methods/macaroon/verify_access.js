@@ -1,6 +1,6 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const accessDeniedMessage = 'permission denied';
 const asPermission = n => ({action: n.split(':')[1], entity: n.split(':')[0]});
@@ -28,7 +28,7 @@ const type = 'default';
     is_valid: <Access Token is Valid For Described Permissions Bool>
   }
 */
-export default ({lnd, macaroon, permissions}, cbk) => {
+const verifyAccess = ({lnd, macaroon, permissions}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -82,3 +82,5 @@ export default ({lnd, macaroon, permissions}, cbk) => {
     returnResult({reject, resolve, of: 'check'}, cbk));
   });
 };
+
+export { verifyAccess }

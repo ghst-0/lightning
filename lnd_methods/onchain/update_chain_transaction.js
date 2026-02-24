@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const isHash = n => !!n && /^[0-9A-F]{64}$/i.test(n);
 const method = 'labelTransaction';
@@ -23,7 +23,7 @@ const unknownTransactionErr = 'cannot label transaction not known to wallet';
 
   @returns via cbk or Promise
 */
-export default ({description, id, lnd}, cbk) => {
+const updateChainTransaction = ({description, id, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -70,3 +70,5 @@ export default ({description, id, lnd}, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { updateChainTransaction }

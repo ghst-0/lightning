@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getRoutingFeeEstimate } from '../../../index.js';
+import { getRoutingFeeEstimate } from '../../../lnd_methods/offchain/get_routing_fee_estimate.js';
 
 const makeLnd = ({err, res}) => {
   const r = {

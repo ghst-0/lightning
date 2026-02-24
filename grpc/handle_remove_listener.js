@@ -8,7 +8,7 @@ const sumOf = arr => arr.reduce((sum, n) => sum + n, Number());
     subscription: <gRPC Subscription Object>
   }
 */
-export default ({emitter, events, subscription}) => {
+const handleRemoveListener = ({emitter, events, subscription}) => {
   // Cancel the subscription when all listeners are removed
   emitter.on('removeListener', () => {
     const counts = events.map(n => emitter.listenerCount(n));
@@ -21,3 +21,5 @@ export default ({emitter, events, subscription}) => {
     subscription.cancel();
   });
 };
+
+export { handleRemoveListener }

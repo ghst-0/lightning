@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const method = 'signMessage';
 const utf8AsBuffer = utf8 => Buffer.from(utf8, 'utf8');
@@ -21,7 +21,7 @@ const type = 'default';
     signature: <Signature String>
   }
 */
-export default ({lnd, message}, cbk) => {
+const signMessage = ({lnd, message}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -59,3 +59,5 @@ export default ({lnd, message}, cbk) => {
     returnResult({reject, resolve, of: 'sign'}, cbk));
   });
 };
+
+export { signMessage }

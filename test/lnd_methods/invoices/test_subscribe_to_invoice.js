@@ -1,8 +1,9 @@
 import { deepStrictEqual, strictEqual, throws } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import test from 'node:test';
-import { lookupInvoiceResponse } from '../fixtures/index.js';
-import { subscribeToInvoice } from '../../../index.js';
+
+import { lookupInvoiceResponse } from '../fixtures/lookup_invoice_response.js';
+import { subscribeToInvoice } from '../../../lnd_methods/invoices/subscribe_to_invoice.js';
 
 const emitter = new EventEmitter();
 

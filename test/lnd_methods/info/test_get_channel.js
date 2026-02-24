@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getChannel } from '../../../index.js';
+import { getChannel } from '../../../lnd_methods/info/get_channel.js';
 
 const tests = [
   {

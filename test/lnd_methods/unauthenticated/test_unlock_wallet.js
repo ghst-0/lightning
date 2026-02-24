@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { unlockWallet } from '../../../lnd_methods/index.js';
+import { unlockWallet } from '../../../lnd_methods/unauthenticated/unlock_wallet.js';
 
 const details = 'invalid passphrase for master public key';
 

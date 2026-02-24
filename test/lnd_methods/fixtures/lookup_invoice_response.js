@@ -56,7 +56,7 @@
     value_msat: <Millitokens Value String>
   }
 */
-export default ({}) => {
+const lookupInvoiceResponse = ({}) => {
   return {
     add_index: '1',
     amt_paid_msat: '0',
@@ -84,3 +84,5 @@ export default ({}) => {
     value_msat: '1000',
   };
 };
+
+export { lookupInvoiceResponse }

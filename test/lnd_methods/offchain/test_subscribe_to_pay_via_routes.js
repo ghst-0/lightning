@@ -1,6 +1,6 @@
 import { deepStrictEqual, strictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { subscribeToPayViaRoutes } from '../../../index.js';
+import { subscribeToPayViaRoutes } from '../../../lnd_methods/offchain/subscribe_to_pay_via_routes.js';
 
 const deletePayment = ({}, cbk) => cbk();
 

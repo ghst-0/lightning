@@ -1,9 +1,9 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import finishedPayment from './finished_payment.js';
-import { isLnd } from '../../lnd_requests/index.js';
-import subscribeToPayViaDetails from './subscribe_to_pay_via_details.js';
+import { finishedPayment } from './finished_payment.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { subscribeToPayViaDetails } from './subscribe_to_pay_via_details.js';
 
 const isPublicKey = n => !!n && /^[0-9A-F]{66}$/i.test(n);
 const method = 'sendPaymentV2';
@@ -91,7 +91,7 @@ const type = 'router';
     tokens: <Total Tokens Paid Rounded Down Number>
   }
 */
-export default (args, cbk) => {
+const payViaPaymentDetails = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -155,3 +155,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'pay'}, cbk));
   });
 };
+
+export { payViaPaymentDetails }

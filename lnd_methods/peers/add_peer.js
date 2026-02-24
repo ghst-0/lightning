@@ -2,8 +2,8 @@ import asyncAuto from 'async/auto.js';
 import asyncRetry from 'async/retry.js';
 import { returnResult } from 'asyncjs-util';
 
-import getPeers from './get_peers.js';
-import { isLnd } from '../../lnd_requests/index.js';
+import { getPeers } from './get_peers.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const connectedErrMsg = /already.connected.to/;
 const defaultInterval = retryCount => 50 * 2 ** retryCount;
@@ -33,7 +33,7 @@ const type = 'default';
 
   @returns via cbk or Promise
 */
-export default (args, cbk) => {
+const addPeer = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -107,3 +107,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { addPeer }

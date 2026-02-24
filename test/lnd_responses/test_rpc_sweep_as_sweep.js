@@ -1,6 +1,6 @@
 import { deepEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcSweepAsSweep } from '../../lnd_responses/index.js';
+import { rpcSweepAsSweep } from '../../lnd_responses/rpc_sweep_as_sweep.js';
 
 const makeArgs = overrides => {
   const response = {

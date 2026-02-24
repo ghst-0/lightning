@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcForwardAsForwardRequest } from '../../lnd_responses/index.js';
+import { rpcForwardAsForwardRequest } from '../../lnd_responses/rpc_forward_as_forward_request.js';
 
 const makeForward = override => {
   const forward = {

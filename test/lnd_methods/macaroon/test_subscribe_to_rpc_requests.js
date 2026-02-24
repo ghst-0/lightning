@@ -2,7 +2,7 @@ import EventEmitter from 'node:events';
 import { promisify } from 'node:util';
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { subscribeToRpcRequests } from '../../../lnd_methods/index.js';
+import { subscribeToRpcRequests } from '../../../lnd_methods/macaroon/subscribe_to_rpc_requests.js';
 
 const nextTick = promisify(process.nextTick);
 

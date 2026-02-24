@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcResolutionAsResolution } from '../../lnd_responses/index.js';
+import { rpcResolutionAsResolution } from '../../lnd_responses/rpc_resolution_as_resolution.js';
 
 const makeArgs = overrides => {
   const args = {

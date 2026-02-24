@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcSweepAsSweep } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcSweepAsSweep } from '../../lnd_responses/rpc_sweep_as_sweep.js';
 
 const {isArray} = Array;
 const method = 'pendingSweeps';
@@ -36,7 +36,7 @@ const type = 'wallet';
     }]
   }
 */
-export default ({lnd}, cbk) => {
+const getPendingSweeps = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -76,3 +76,5 @@ export default ({lnd}, cbk) => {
     returnResult({reject, resolve, of: 'getSweeps'}, cbk));
   });
 };
+
+export { getPendingSweeps }

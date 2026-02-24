@@ -1,9 +1,9 @@
 import EventEmitter from 'node:events';
 import asyncDoUntil from 'async/doUntil.js';
 
-import { forwardFromHtlcEvent } from '../../lnd_responses/index.js';
-import { handleRemoveListener } from '../../grpc/index.js';
-import { isLnd } from '../../lnd_requests/index.js';
+import { forwardFromHtlcEvent } from '../../lnd_responses/forward_from_htlc_event.js';
+import { handleRemoveListener } from '../../grpc/handle_remove_listener.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const event = 'forward';
 const events = ['error', 'forward'];
@@ -52,7 +52,7 @@ const unknownFailureMessage = '2 UNKNOWN: unknown failure detail type: <nil>';
     [tokens]: <Sending Tokens Number>
   }
 */
-export default ({lnd}) => {
+const subscribeToForwards = ({lnd}) => {
   if (!isLnd({lnd, method, type})) {
     throw new Error('ExpectedAuthenticatedLndToSubscribeToForwards');
   }
@@ -135,3 +135,5 @@ export default ({lnd}) => {
 
   return emitter;
 };
+
+export { subscribeToForwards }

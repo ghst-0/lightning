@@ -25,7 +25,7 @@ const hashAsTxId = hash => hash.slice().reverse().toString('hex');
     transaction_vout: <Transaction Output Index Number>
   }
 */
-export default args => {
+const closeChannelRequest = args => {
   return {
     address: args.delivery_address || undefined,
     is_force_close: args.force || undefined,
@@ -36,3 +36,5 @@ export default args => {
     transaction_vout: args.channel_point.output_index,
   };
 };
+
+export { closeChannelRequest }

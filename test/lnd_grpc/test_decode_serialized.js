@@ -1,6 +1,6 @@
 import { equal } from 'node:assert/strict';
 import test from 'node:test';
-import decodeSerialized from '../../lnd_grpc/decode_serialized.js';
+import { decodeSerialized } from '../../lnd_grpc/decode_serialized.js';
 
 const tests = [
   {

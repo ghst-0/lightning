@@ -1,7 +1,7 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import test from 'node:test';
-import { isDestinationPayable } from '../../../index.js';
+import { isDestinationPayable } from '../../../lnd_methods/offchain/is_destination_payable.js';
 
 const makePaymentData = overrides => {
   const data = {

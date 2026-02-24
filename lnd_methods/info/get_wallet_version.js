@@ -1,10 +1,11 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import { packageTypes } from '../../grpc/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 import constants from './constants.json' with { type: 'json'};
+import grpc_services from '../../grpc/grpc_services.json' with { type: 'json' };
 
+const { packageTypes } = grpc_services;
 const { versions } = constants;
 const hasTag = (res, tag) => res.build_tags.includes(tag);
 const {isArray} = Array;
@@ -38,7 +39,7 @@ const unknownServiceErr = 'unknown service verrpc.Versioner';
     [version]: <Recognized LND Version String>
   }
 */
-export default ({lnd}, cbk) => {
+const getWalletVersion = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -100,3 +101,5 @@ export default ({lnd}, cbk) => {
     returnResult({reject, resolve, of: 'getWalletVersion'}, cbk));
   });
 };
+
+export { getWalletVersion }

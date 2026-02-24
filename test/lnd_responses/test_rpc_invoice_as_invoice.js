@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcInvoiceAsInvoice } from '../../lnd_responses/index.js';
+import { rpcInvoiceAsInvoice } from '../../lnd_responses/rpc_invoice_as_invoice.js';
 
 const makeInput = overrides => {
   const response = {

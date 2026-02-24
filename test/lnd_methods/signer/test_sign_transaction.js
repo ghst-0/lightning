@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { signTransaction } from '../../../index.js';
+import { signTransaction } from '../../../lnd_methods/signer/sign_transaction.js';
 
 const makeLnd = (err, res) => {
   return {signer: {signOutputRaw: ({}, cbk) => cbk(err, res)}};

@@ -52,7 +52,7 @@ const weightPerVByte = 4;
     [type]: <Channel Commitment Transaction Type String>
   }
 */
-export default data => {
+const channelAcceptAsOpenRequest = data => {
   if (!data) {
     throw new Error('ExpectedRequestDataForChannelRequest');
   }
@@ -137,3 +137,5 @@ export default data => {
     type: channelTypes[data.commitment_type],
   };
 };
+
+export { channelAcceptAsOpenRequest }

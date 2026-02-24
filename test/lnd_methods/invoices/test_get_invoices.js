@@ -1,7 +1,8 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getInvoices } from '../../../index.js';
-import { lookupInvoiceResponse } from '../fixtures/index.js';
+
+import { getInvoices } from '../../../lnd_methods/invoices/get_invoices.js';
+import { lookupInvoiceResponse } from '../fixtures/lookup_invoice_response.js';
 
 
 const tests = [

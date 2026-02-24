@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import method from '../../../lnd_methods/macaroon/uris_for_method.js';
+import { urisForMethod } from '../../../lnd_methods/macaroon/uris_for_method.js';
 import methods from '../../../lnd_methods/macaroon/methods.json' with { type: 'json' };
 
 const tests = [
@@ -29,16 +29,16 @@ const tests = [
 for (const { args, description, error, expected } of tests) {
   test(description, (t, end) => {
     if (error) {
-      throws(() => method(args), new Error(error), 'Got expected error');
+      throws(() => urisForMethod(args), new Error(error), 'Got expected error');
     } else {
-      const res = method(args);
+      const res = urisForMethod(args);
 
       deepStrictEqual(res, expected, 'Got expected result');
     }
 
     // Run through all the methods to make sure they can be derived
     for (const n of Object.keys(methods)) {
-      method({ method: n })
+      urisForMethod({ method: n })
     }
 
     return end();

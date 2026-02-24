@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const base64AsHex = base64 => Buffer.from(base64, 'base64').toString('hex');
 const notSupportedError = 'unknown method SignMessageWithAddr for service walletrpc.WalletKit';
@@ -28,7 +28,7 @@ const type = 'wallet';
     signature: <Hex Encoded Signature String>
   }
 */
-export default ({address, lnd, message}, cbk) => {
+const signChainAddressMessage = ({address, lnd, message}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -78,3 +78,5 @@ export default ({address, lnd, message}, cbk) => {
     returnResult({reject, resolve, of: 'sign'}, cbk));
   });
 };
+
+export { signChainAddressMessage }

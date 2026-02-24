@@ -1,6 +1,6 @@
 import { strictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getPendingSweeps } from '../../../lnd_methods/index.js';
+import { getPendingSweeps } from '../../../lnd_methods/onchain/get_pending_sweeps.js';
 
 const tests = [
   {

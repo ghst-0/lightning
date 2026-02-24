@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getRouteThroughHops } from '../../../index.js';
+import { getRouteThroughHops } from '../../../lnd_methods/offchain/get_route_through_hops.js';
 
 const makeExpected = overrides => {
   const route = {

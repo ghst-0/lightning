@@ -1,7 +1,7 @@
 import EventEmitter from 'node:events';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcInvoiceAsInvoice } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcInvoiceAsInvoice } from '../../lnd_responses/rpc_invoice_as_invoice.js';
 
 const isHex = n => !(n.length % 2) && /^[0-9A-F]*$/i.test(n);
 const updateEvent = 'invoice_updated';
@@ -73,7 +73,7 @@ const updateEvent = 'invoice_updated';
     tokens: <Tokens Number>
   }
 */
-export default ({id, lnd}) => {
+const subscribeToInvoice = ({id, lnd}) => {
   if (!id || !isHex(id)) {
     throw new Error('ExpectedIdOfInvoiceToSubscribeTo');
   }
@@ -127,3 +127,5 @@ export default ({id, lnd}) => {
 
   return eventEmitter;
 };
+
+export { subscribeToInvoice }

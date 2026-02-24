@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getSettlementStatus } from '../../../index.js';
+import { getSettlementStatus } from '../../../lnd_methods/offchain/get_settlement_status.js';
 
 const makeLnd = ({err, res}) => {
   const result = res === undefined ? {offchain: true, settled: true} : res;

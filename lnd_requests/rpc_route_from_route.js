@@ -1,4 +1,4 @@
-import rpcHopFromHop from './rpc_hop_from_hop.js';
+import { rpcHopFromHop } from './rpc_hop_from_hop.js';
 
 const isNumber = n => !isNaN(n);
 
@@ -60,7 +60,7 @@ const isNumber = n => !isNaN(n);
     total_time_lock: <Route Total Timelock Number>
   }
 */
-export default args => {
+const rpcRouteFromRoute = args => {
   if (!isNumber(args.fee)) {
     throw new Error('ExpectedFeeNumberToMapRouteToRpcRoute');
   }
@@ -105,3 +105,5 @@ export default args => {
     total_time_lock: args.timeout,
   };
 };
+
+export { rpcRouteFromRoute }

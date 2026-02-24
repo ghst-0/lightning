@@ -2,7 +2,7 @@ import { throws, deepStrictEqual } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import { promisify } from 'node:util';
 import test from 'node:test';
-import { subscribeToOpenRequests } from '../../../index.js';
+import { subscribeToOpenRequests } from '../../../lnd_methods/offchain/subscribe_to_open_requests.js';
 
 const nextTick = promisify(process.nextTick);
 

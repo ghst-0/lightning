@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { sendToChainOutputScripts } from '../../../lnd_methods/index.js';
+import { sendToChainOutputScripts } from '../../../lnd_methods/onchain/send_to_chain_output_scripts.js';
 
 const emptyTx = '01000000000000000000';
 

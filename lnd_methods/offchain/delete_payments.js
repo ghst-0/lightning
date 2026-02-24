@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const method = 'deleteAllPayments';
 const type = 'default';
@@ -16,7 +16,7 @@ const type = 'default';
 
   @returns via cbk or Promise
 */
-export default ({lnd}, cbk) => {
+const deletePayments = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -42,3 +42,5 @@ export default ({lnd}, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { deletePayments }

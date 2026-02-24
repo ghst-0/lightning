@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getEphemeralChannelIds } from '../../../lnd_methods/index.js';
+import { getEphemeralChannelIds } from '../../../lnd_methods/offchain/get_ephemeral_channel_ids.js';
 
 const makeLnd = ({err, res}) => {
   const response = {alias_maps: [{aliases: ['1', '2'], base_scid: '1'}]};

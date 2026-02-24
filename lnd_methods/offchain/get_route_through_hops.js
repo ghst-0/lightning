@@ -2,7 +2,7 @@ import asyncAuto from 'async/auto.js';
 import { chanNumber } from 'bolt07';
 import { returnResult } from 'asyncjs-util';
 
-import { routesFromQueryRoutes } from '../../lnd_responses/index.js';
+import { routesFromQueryRoutes } from '../../lnd_responses/routes_from_query_routes.js';
 
 const defaultFinalCltvDelta = 144;
 const defaultMtokens = '1000000';
@@ -60,7 +60,7 @@ const unknownServiceMessage = 'unknown service routerrpc.Router';
     }
   }
 */
-export default (args, cbk) => {
+const getRouteThroughHops = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -139,3 +139,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'getRoute'}, cbk));
   });
 };
+
+export { getRouteThroughHops }

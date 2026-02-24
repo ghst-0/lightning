@@ -1,7 +1,7 @@
 import { throws, deepStrictEqual } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import test from 'node:test';
-import { subscribeToPastPayments } from '../../../lnd_methods/index.js';
+import { subscribeToPastPayments } from '../../../lnd_methods/offchain/subscribe_to_past_payments.js';
 
 const nextTick = () => new Promise(cbk => process.nextTick(() => cbk()));
 

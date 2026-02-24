@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { chanNumber } from 'bolt07';
 import { returnResult } from 'asyncjs-util';
-import { channelEdgeAsChannel } from '../../lnd_responses/index.js';
-import { isLnd } from '../../lnd_requests/index.js';
+import { channelEdgeAsChannel } from '../../lnd_responses/channel_edge_as_channel.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const edgeIsZombieErrorMessage = 'edge marked as zombie';
 const edgeNotFoundErrorMessage = 'edge not found';
@@ -51,7 +51,7 @@ const type = 'default';
     [updated_at]: <Channel Last Updated At ISO 8601 Date String>
   }
 */
-export default (args, cbk) => {
+const getChannel = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -117,3 +117,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'getChannel'}, cbk));
   });
 };
+
+export { getChannel }

@@ -1,6 +1,6 @@
 import { equal, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getPublicKey } from '../../../index.js';
+import { getPublicKey } from '../../../lnd_methods/address/get_public_key.js';
 
 const tests = [
   {

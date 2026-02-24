@@ -1,9 +1,8 @@
-import {
-  confirmedFromPayment,
-  failureFromPayment,
-  pendingFromPayment,
-  routingFailureFromHtlc
-} from '../../lnd_responses/index.js';
+import { confirmedFromPayment } from '../../lnd_responses/confirmed_from_payment.js';
+import { failureFromPayment } from '../../lnd_responses/failure_from_payment.js';
+import { pendingFromPayment } from '../../lnd_responses/pending_from_payment.js';
+import { routingFailureFromHtlc } from '../../lnd_responses/routing_failure_from_htlc.js';
+
 import payment_states from './payment_states.json' with { type: 'json' };
 
 const { states } = payment_states;
@@ -19,7 +18,7 @@ const {isArray} = Array;
     emitter: <EventEmitter Object>
   }
 */
-export default ({data, emitter}) => {
+const emitPayment = ({data, emitter}) => {
   try {
     switch (data.status) {
     case states.confirmed:
@@ -59,3 +58,5 @@ export default ({data, emitter}) => {
     return emitter.emit('error', [503, err.message]);
   }
 };
+
+export { emitPayment }

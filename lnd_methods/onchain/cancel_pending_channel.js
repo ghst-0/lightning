@@ -15,7 +15,7 @@ const type = 'default';
 
   @returns via cbk or Promise
 */
-export default ({id, lnd}, cbk) => {
+const cancelPendingChannel = ({id, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -48,3 +48,5 @@ export default ({id, lnd}, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { cancelPendingChannel }

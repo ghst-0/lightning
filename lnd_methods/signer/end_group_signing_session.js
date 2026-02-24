@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
@@ -29,7 +29,7 @@ const type = 'signer';
     [signature]: <Combined Signature Hex String>
   }
 */
-export default ({id, lnd, signatures}, cbk) => {
+const endGroupSigningSession = ({id, lnd, signatures}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -100,3 +100,5 @@ export default ({id, lnd, signatures}, cbk) => {
     returnResult({reject, resolve, of: 'updateSignatures'}, cbk));
   });
 };
+
+export { endGroupSigningSession }

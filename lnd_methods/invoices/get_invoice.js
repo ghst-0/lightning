@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcInvoiceAsInvoice } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcInvoiceAsInvoice } from '../../lnd_responses/rpc_invoice_as_invoice.js';
 
 const isHash = n => /^[0-9A-F]{64}$/i.test(n);
 
@@ -68,7 +68,7 @@ const isHash = n => /^[0-9A-F]{64}$/i.test(n);
     tokens: <Tokens Number>
   }
 */
-export default ({id, lnd}, cbk) => {
+const getInvoice = ({id, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -105,3 +105,5 @@ export default ({id, lnd}, cbk) => {
     returnResult({reject, resolve, of: 'getInvoice'}, cbk));
   });
 };
+
+export { getInvoice }

@@ -1,9 +1,9 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { addPeer } from '../peers/index.js';
-import { getChannel } from '../info/index.js';
-import { isLnd } from '../../lnd_requests/index.js';
+import { addPeer } from '../peers/add_peer.js';
+import { getChannel } from '../info/get_channel.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const defaultConfTarget = 6;
 const method = 'closeChannel';
@@ -45,7 +45,7 @@ const type = 'default';
     transaction_vout: <Closing Transaction Vout Number>
   }
 */
-export default (args, cbk) => {
+const closeChannel = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -208,3 +208,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'closeChannel'}, cbk));
   });
 };
+
+export { closeChannel }

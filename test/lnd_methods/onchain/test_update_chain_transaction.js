@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { updateChainTransaction } from '../../../lnd_methods/index.js';
+import { updateChainTransaction } from '../../../lnd_methods/onchain/update_chain_transaction.js';
 
 const makeLnd = ({err}) => {
   return {

@@ -1,8 +1,9 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import test from 'node:test';
-import { getInfoResponse } from '../fixtures/index.js';
-import { getRouteToDestination } from '../../../index.js';
+
+import { getRouteToDestination } from '../../../lnd_methods/info/get_route_to_destination.js';
+import getInfoResponse from '../fixtures/get_info_response.json' with { type: 'json' };
 
 const customRecords = {};
 

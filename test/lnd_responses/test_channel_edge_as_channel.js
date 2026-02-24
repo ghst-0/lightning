@@ -1,6 +1,6 @@
 import test from 'node:test';
 import { deepStrictEqual, throws } from 'node:assert/strict';
-import { channelEdgeAsChannel } from '../../lnd_responses/index.js';
+import { channelEdgeAsChannel } from '../../lnd_responses/channel_edge_as_channel.js';
 
 const makeKey = n => Buffer.alloc(33, n).toString('hex');
 

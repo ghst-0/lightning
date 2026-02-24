@@ -49,7 +49,7 @@ const mtokensPerToken = BigInt(1e3);
     [total_mtokens]: <Total Millitokens String>
   }
 */
-export default args => {
+const htlcAsPayment = args => {
   if (!args.accept_height) {
     throw new Error('ExpectedAcceptHeightInResponseHtlc');
   }
@@ -115,3 +115,5 @@ export default args => {
     total_mtokens: totalMtokens === '0' ? undefined : totalMtokens,
   };
 };
+
+export { htlcAsPayment }

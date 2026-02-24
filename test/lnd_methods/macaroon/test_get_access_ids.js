@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getAccessIds } from '../../../index.js';
+import { getAccessIds } from '../../../lnd_methods/macaroon/get_access_ids.js';
 
 const unknown = {
   details: 'unknown method ListMacaroonIDs for service lnrpc.Lightning'

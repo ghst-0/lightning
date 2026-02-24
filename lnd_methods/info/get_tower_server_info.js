@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const inactiveTowerErr = '2 UNKNOWN: watchtower not active';
 const {isArray} = Array;
@@ -27,7 +27,7 @@ const pubKeyLength = 33;
     }
   }
 */
-export default ({lnd}, cbk) => {
+const getTowerServerInfo = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -87,3 +87,5 @@ export default ({lnd}, cbk) => {
     returnResult({reject, resolve, of: 'getInfo'}, cbk));
   });
 };
+
+export { getTowerServerInfo }

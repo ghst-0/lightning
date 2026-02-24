@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcAttemptHtlcAsAttempt } from '../../lnd_responses/index.js';
+import { rpcAttemptHtlcAsAttempt } from '../../lnd_responses/rpc_attempt_htlc_as_attempt.js';
 
 const route = {
   hops: [{

@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const bufferAsHex = buffer => buffer.toString('hex');
 const hexAsBase64 = hex => Buffer.from(hex, 'hex').toString('base64');
@@ -32,7 +32,7 @@ const type = 'wallet';
     signed_by: <Public Key Hex String>
   }
 */
-export default ({address, lnd, message, signature}, cbk) => {
+const verifyChainAddressMessage = ({address, lnd, message, signature}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -91,3 +91,5 @@ export default ({address, lnd, message, signature}, cbk) => {
     returnResult({reject, resolve, of: 'verify'}, cbk));
   });
 };
+
+export { verifyChainAddressMessage }

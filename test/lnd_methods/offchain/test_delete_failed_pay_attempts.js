@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { deleteFailedPayAttempts } from '../../../lnd_methods/index.js';
+import { deleteFailedPayAttempts } from '../../../lnd_methods/offchain/delete_failed_pay_attempts.js';
 
 const tests = [
   {

@@ -1,6 +1,7 @@
 import grpc from '@grpc/grpc-js';
-import decodeSerialized from './decode_serialized.js';
-import grpcSsl from './grpc_ssl.js';
+
+import { decodeSerialized } from './decode_serialized.js';
+import { grpcSsl } from './grpc_ssl.js';
 
 const {combineChannelCredentials} = grpc.credentials;
 const {createFromMetadataGenerator} = grpc.credentials;
@@ -34,7 +35,7 @@ const generate = macaroon => {
     credentials: <gRPC Credentials Object>
   }
 */
-export default ({cert, macaroon}) => {
+const grpcCredentials = ({cert, macaroon}) => {
   if (!macaroon) {
     return {credentials: grpcSsl({cert}).ssl};
   }
@@ -52,3 +53,5 @@ export default ({cert, macaroon}) => {
 
   return {credentials: combineChannelCredentials(ssl, creds)};
 };
+
+export { grpcCredentials }

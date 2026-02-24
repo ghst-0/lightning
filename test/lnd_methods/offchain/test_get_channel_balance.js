@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getChannelBalance } from '../../../index.js';
+import { getChannelBalance } from '../../../lnd_methods/offchain/get_channel_balance.js';
 
 const makeLnd = overrides => {
   const res = {

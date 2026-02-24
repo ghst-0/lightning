@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { partiallySignPsbt } from '../../../lnd_methods/index.js';
+import { partiallySignPsbt } from '../../../lnd_methods/onchain/partially_sign_psbt.js';
 
 const makeLnd = overrides => {
   const res = {signed_psbt: Buffer.alloc(2)};

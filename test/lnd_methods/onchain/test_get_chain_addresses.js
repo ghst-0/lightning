@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getChainAddresses } from '../../../lnd_methods/index.js';
+import { getChainAddresses } from '../../../lnd_methods/onchain/get_chain_addresses.js';
 
 const makeLnd = ({err, res}) => {
   return {

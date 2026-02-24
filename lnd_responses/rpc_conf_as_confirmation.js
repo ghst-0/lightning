@@ -24,7 +24,7 @@ const typeReorg = 'reorg';
     [type]: <Event Type String>
   }
 */
-export default args => {
+const rpcConfAsConfirmation = args => {
   if (!args) {
     throw new Error('ExpectedDataForConfEvent');
   }
@@ -60,3 +60,5 @@ export default args => {
     },
   };
 };
+
+export { rpcConfAsConfirmation }

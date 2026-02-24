@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { prepareForChannelProposal } from '../../../lnd_methods/index.js';
+import { prepareForChannelProposal } from '../../../lnd_methods/onchain/prepare_for_channel_proposal.js';
 
 const makeArgs = overrides => {
   const args = {

@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getClosedChannels } from '../../../index.js';
+import { getClosedChannels } from '../../../lnd_methods/offchain/get_closed_channels.js';
 
 const makeLnd = (err, override, response) => {
   const channel = {

@@ -1,7 +1,7 @@
 import EventEmitter from 'node:events';
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { requestBatchedFeeIncrease } from '../../../lnd_methods/index.js';
+import { requestBatchedFeeIncrease } from '../../../lnd_methods/onchain/request_batched_fee_increase.js';
 
 const makeLnd = overrides => {
   const res = {status: 'status'};

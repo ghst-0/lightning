@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const defaultKeyFamily = 6;
 const defaultKeyIndex = 0;
@@ -31,7 +31,7 @@ const unimplementedError = 'unknown service signrpc.Signer';
     secret: <Shared Secret Hex String>
   }
 */
-export default (args, cbk) => {
+const diffieHellmanComputeSecret = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -84,3 +84,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'deriveKey'}, cbk));
   });
 };
+
+export { diffieHellmanComputeSecret }

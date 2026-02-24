@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcNetworkAsNetworkInfo } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcNetworkAsNetworkInfo } from '../../lnd_responses/rpc_network_as_network_info.js';
 
 const method = 'getNetworkInfo';
 const type = 'default';
@@ -27,7 +27,7 @@ const type = 'default';
     total_capacity: <Total Capacity Number>
   }
 */
-export default ({lnd}, cbk) => {
+const getNetworkInfo = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -57,3 +57,5 @@ export default ({lnd}, cbk) => {
     returnResult({reject, resolve, of: 'getInfo'}, cbk));
   });
 };
+
+export { getNetworkInfo }

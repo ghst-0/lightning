@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getUtxos } from '../../../lnd_methods/index.js';
+import { getUtxos } from '../../../lnd_methods/onchain/get_utxos.js';
 
 const makeExpected = overrides => {
   const utxo = {

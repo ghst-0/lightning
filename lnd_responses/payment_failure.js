@@ -1,6 +1,6 @@
 import { chanFormat } from 'bolt07';
 
-import policyFromChannelUpdate from './policy_from_channel_update.js';
+import { policyFromChannelUpdate } from './policy_from_channel_update.js';
 
 /** Derive payment failure from raw API failure
 
@@ -60,7 +60,7 @@ import policyFromChannelUpdate from './policy_from_channel_update.js';
     message: <Error Message String>
   }
 */
-export default ({channel, failure, index, key, keys}) => {
+const paymentFailure = ({channel, failure, index, key, keys}) => {
   if (!failure) {
     return {code: 500, message: 'ExpectedFailureToDerivePaymentFailure'};
   }
@@ -180,3 +180,5 @@ export default ({channel, failure, index, key, keys}) => {
     return {details, code: 500, message: 'UnexpectedPayViaRoutesFailure'};
   }
 };
+
+export { paymentFailure }

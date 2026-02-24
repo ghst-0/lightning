@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import method from '../../../lnd_methods/macaroon/accept_rpc_request.js';
+import { acceptRpcRequest } from '../../../lnd_methods/macaroon/accept_rpc_request.js';
 
 const tests = [
   {
@@ -27,9 +27,9 @@ const tests = [
 for (const { args, description, error, expected } of tests) {
   test(description, async () => {
     if (error) {
-      await rejects(() => method(args), error, 'Got expected error');
+      await rejects(() => acceptRpcRequest(args), error, 'Got expected error');
     } else {
-      await method(args);
+      await acceptRpcRequest(args);
     }
   });
 }

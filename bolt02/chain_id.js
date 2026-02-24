@@ -14,7 +14,7 @@ const { chains } = ids;
     [chain]: <Chain Id Hex String>
   }
 */
-export default ({chain, network}) => {
+const chainId = ({chain, network}) => {
   if (!chain || !network) {
     return {};
   }
@@ -27,3 +27,5 @@ export default ({chain, network}) => {
 
   return {chain: Buffer.from(id, 'hex').reverse().toString('hex')};
 };
+
+export { chainId }

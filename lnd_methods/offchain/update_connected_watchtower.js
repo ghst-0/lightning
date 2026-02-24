@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const hexAsBuffer = hex => Buffer.from(hex, 'hex');
 const unimplementedError = '12 UNIMPLEMENTED: unknown service wtclientrpc.WatchtowerClient';
@@ -22,7 +22,7 @@ const type = 'tower_client';
 
   @returns via cbk or Promise
 */
-export default (args, cbk) => {
+const updateConnectedWatchtower = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check argument
@@ -89,3 +89,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { updateConnectedWatchtower }

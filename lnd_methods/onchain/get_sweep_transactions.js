@@ -2,8 +2,8 @@ import asyncAuto from 'async/auto.js';
 import { componentsOfTransaction } from '@alexbosworth/blockchain';
 import { returnResult } from 'asyncjs-util';
 
-import getChainTransactions from './get_chain_transactions.js';
-import { isLnd } from '../../lnd_requests/index.js';
+import { getChainTransactions } from './get_chain_transactions.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const {isArray} = Array;
 const method = 'listSweeps';
@@ -46,7 +46,7 @@ const type = 'wallet';
     }]
   }
 */
-export default ({after, lnd}, cbk) => {
+const getSweepTransactions = ({after, lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -152,3 +152,5 @@ export default ({after, lnd}, cbk) => {
     returnResult({reject, resolve, of: 'sweeps'}, cbk));
   });
 };
+
+export { getSweepTransactions }

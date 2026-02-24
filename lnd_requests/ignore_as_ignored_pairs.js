@@ -21,7 +21,7 @@ const {isArray} = Array;
     }]
   }
 */
-export default ({ignore}) => {
+const ignoreAsIgnoredPairs = ({ignore}) => {
   if (!ignore) {
     return {};
   }
@@ -39,3 +39,5 @@ export default ({ignore}) => {
 
   return {ignored};
 };
+
+export { ignoreAsIgnoredPairs }

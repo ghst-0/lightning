@@ -1,8 +1,9 @@
 import { equal, strictEqual, deepStrictEqual } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import test from 'node:test';
-import { getInfoResponse } from '../fixtures/index.js';
-import { pay } from '../../../index.js';
+
+import { pay } from '../../../lnd_methods/offchain/pay.js';
+import getInfoResponse from '../fixtures/get_info_response.json' with { type: 'json' };
 
 const getInfo = ({}, cbk) => cbk(null, getInfoResponse);
 const preimage = Buffer.alloc(32);

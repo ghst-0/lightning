@@ -1,6 +1,7 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { openChannelRequest } from '../../lnd_messages/index.js';
+
+import { openChannelRequest } from '../../lnd_messages/open_channel_request.js';
 
 const makeArgs = overrides => {
   const args = {

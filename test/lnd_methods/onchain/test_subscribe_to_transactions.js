@@ -1,7 +1,7 @@
 import { deepStrictEqual } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import test from 'node:test';
-import { subscribeToTransactions } from '../../../lnd_methods/index.js';
+import { subscribeToTransactions } from '../../../lnd_methods/onchain/subscribe_to_transactions.js';
 
 const makeLnd = overrides => {
   const data = {

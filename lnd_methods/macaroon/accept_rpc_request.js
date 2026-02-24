@@ -12,7 +12,7 @@ const feedback = {replace_response: false};
 
   @returns via cbk or Promise
 */
-export default ({id, subscription}, cbk) => {
+const acceptRpcRequest = ({id, subscription}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -42,3 +42,5 @@ export default ({id, subscription}, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { acceptRpcRequest }

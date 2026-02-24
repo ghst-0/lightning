@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import method from '../../../lnd_methods/macaroon/handle_rpc_request_update.js';
+import { handleRpcRequestUpdate } from '../../../lnd_methods/macaroon/handle_rpc_request_update.js';
 
 const tests = [
   {
@@ -220,9 +220,9 @@ const tests = [
 for (const { args, description, error, expected } of tests) {
   test(description, async () => {
     if (error) {
-      throws(() => method(args), new Error(error), 'Got expected error');
+      throws(() => handleRpcRequestUpdate(args), new Error(error), 'Got expected error');
     } else {
-      const res = method(args);
+      const res = handleRpcRequestUpdate(args);
 
       const {accept, id, macaroon, reject, request, uri} = res.data;
 

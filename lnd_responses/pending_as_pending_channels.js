@@ -126,7 +126,7 @@ const outpointSeparator = ':';
     }]
   }
 */
-export default args => {
+const pendingAsPendingChannels = args => {
   if (!args) {
     throw new Error('ExpectedPendingChannelResponse');
   }
@@ -340,3 +340,5 @@ export default args => {
 
   return {pending_channels: pendingChannels};
 };
+
+export { pendingAsPendingChannels }

@@ -18,7 +18,7 @@ const bufferFromHex = hex => Buffer.from(hex, 'hex');
     }
   }
 */
-export default args => {
+const destinationCustomRecords = args => {
   const tlv = (args.messages || []).reduce((sum, {type, value}) => {
     sum[type] = bufferFromHex(value);
 
@@ -28,3 +28,5 @@ export default args => {
 
   return {tlv};
 };
+
+export { destinationCustomRecords }

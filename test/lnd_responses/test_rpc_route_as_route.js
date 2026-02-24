@@ -1,6 +1,6 @@
 import { strictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcRouteAsRoute } from '../../lnd_responses/index.js';
+import { rpcRouteAsRoute } from '../../lnd_responses/rpc_route_as_route.js';
 
 const makeRoute = override => {
   const route = {

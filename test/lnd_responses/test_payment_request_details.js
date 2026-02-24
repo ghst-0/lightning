@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { paymentRequestDetails } from '../../lnd_responses/index.js';
+import { paymentRequestDetails } from '../../lnd_responses/payment_request_details.js';
 
 const makeDetails = overrides => {
   const details = {

@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
-import { rpcPaymentAsPayment } from '../../lnd_responses/index.js';
-import { sortBy } from '../../arrays/index.js';
+import { rpcPaymentAsPayment } from '../../lnd_responses/rpc_payment_as_payment.js';
+import { sortBy } from '../../arrays/sort_by.js';
 
 const asStart = n => n ? Math.floor(new Date(n).getTime() / 1e3) : undefined;
 const asEnd = n => n ? Math.ceil(new Date(n).getTime() / 1e3) : undefined;
@@ -105,7 +105,7 @@ const type = 'default';
     [next]: <Next Opaque Paging Token String>
   }
 */
-export default (args, cbk) => {
+const listPayments = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -214,3 +214,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'payments'}, cbk));
   });
 };
+
+export { listPayments }

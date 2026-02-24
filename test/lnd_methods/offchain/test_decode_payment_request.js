@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { decodePaymentRequest } from '../../../index.js';
+import { decodePaymentRequest } from '../../../lnd_methods/offchain/decode_payment_request.js';
 
 const tests = [
   {

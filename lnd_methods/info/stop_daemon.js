@@ -2,8 +2,8 @@ import asyncAuto from 'async/auto.js';
 import asyncRetry from 'async/retry.js';
 import { returnResult } from 'asyncjs-util';
 
-import getWalletInfo from './get_wallet_info.js';
-import { isLnd } from '../../lnd_requests/index.js';
+import { getWalletInfo } from './get_wallet_info.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const interval = retryCount => 10 * 2 ** retryCount;
 const method = 'stopDaemon';
@@ -20,7 +20,7 @@ const type = 'default';
 
   @returns via cbk or Promise
 */
-export default ({lnd}, cbk) => {
+const stopDaemon = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -66,3 +66,5 @@ export default ({lnd}, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { stopDaemon }

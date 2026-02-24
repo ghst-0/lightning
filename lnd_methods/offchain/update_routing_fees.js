@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import { rpcFailedPolicyAsFail } from '../../lnd_responses/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { rpcFailedPolicyAsFail } from '../../lnd_responses/rpc_failed_policy_as_fail.js';
 
 const defaultBaseFee = 1;
 const defaultCltvDelta = 144;
@@ -54,7 +54,7 @@ const type = 'default';
     }]
   }
 */
-export default (args, cbk) => {
+const updateRoutingFees = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -162,3 +162,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'updateFees'}, cbk));
   });
 };
+
+export { updateRoutingFees }

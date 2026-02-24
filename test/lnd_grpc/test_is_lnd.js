@@ -1,6 +1,6 @@
 import { equal } from 'node:assert/strict';
 import test from 'node:test';
-import { isLnd } from '../../lnd_grpc/index.js';
+import { isLnd } from '../../lnd_grpc/is_lnd.js';
 
 const tests = [
   {

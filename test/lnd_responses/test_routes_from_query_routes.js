@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { routesFromQueryRoutes } from '../../lnd_responses/index.js';
+import { routesFromQueryRoutes } from '../../lnd_responses/routes_from_query_routes.js';
 
 const recordType = '11903';
 const {stringify} = JSON;

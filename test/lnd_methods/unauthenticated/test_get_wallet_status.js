@@ -1,7 +1,8 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getStatusResponse } from '../fixtures/index.js';
-import { getWalletStatus } from '../../../index.js';
+
+import { getWalletStatus } from '../../../lnd_methods/unauthenticated/get_wallet_status.js';
+import getStatusResponse from '../fixtures/get_status_response.json' with { type: 'json' };
 
 const makeLnd = ({err, res}) => {
   return {status: {getState: ({}, cbk) => cbk(err, res)}};

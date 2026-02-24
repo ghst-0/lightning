@@ -29,7 +29,7 @@ const isString = n => typeof n === 'string';
     total_capacity: <Total Capacity Number>
   }
 */
-export default networkInfo => {
+const rpcNetworkAsNetworkInfo = networkInfo => {
   if (!networkInfo) {
     throw new Error('ExpectedRpcNetworkInfo');
   }
@@ -77,3 +77,5 @@ export default networkInfo => {
     total_capacity: Number(networkInfo.total_network_capacity),
   };
 };
+
+export { rpcNetworkAsNetworkInfo }

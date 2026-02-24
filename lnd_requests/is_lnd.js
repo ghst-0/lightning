@@ -9,6 +9,8 @@
   @returns
   <Is Expected LND Object Bool>
 */
-export default ({lnd, method, type}) => {
+const isLnd = ({lnd, method, type}) => {
   return !!lnd && !!lnd[type] && !!lnd[type][method];
 };
+
+export { isLnd }

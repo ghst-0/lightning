@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { policyFromChannelUpdate } from '../../lnd_responses/index.js';
+import { policyFromChannelUpdate } from '../../lnd_responses/policy_from_channel_update.js';
 
 const makeInput = ({overrides, update}) => {
   const response = {

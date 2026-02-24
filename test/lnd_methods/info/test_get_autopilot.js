@@ -1,6 +1,6 @@
 import { equal } from 'node:assert/strict';
 import test from 'node:test';
-import { getAutopilot } from '../../../index.js';
+import { getAutopilot } from '../../../lnd_methods/info/get_autopilot.js';
 
 const tests = [
   {

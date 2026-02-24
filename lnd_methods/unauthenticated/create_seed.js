@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const connectionFailure = '14 UNAVAILABLE: Connect Failed';
 const expectedMnemonicLength = 24;
@@ -24,7 +24,7 @@ const utf8AsBuffer = utf8 => Buffer.from(utf8, 'utf8');
     seed: <Cipher Seed Mnemonic String>
   }
 */
-export default ({lnd, passphrase}, cbk) => {
+const createSeed = ({lnd, passphrase}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -68,3 +68,5 @@ export default ({lnd, passphrase}, cbk) => {
     returnResult({reject, resolve, of: 'createSeed'}, cbk));
   });
 };
+
+export { createSeed }

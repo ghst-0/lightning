@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcAddressesAsAddresses } from '../../lnd_responses/index.js';
+import { rpcAddressesAsAddresses } from '../../lnd_responses/rpc_addresses_as_addresses.js';
 
 const makeAddress = overrides => {
   const args = {address: 'address', balance: '0', is_internal: false};

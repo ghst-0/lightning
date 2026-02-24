@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getSweepTransactions } from '../../../lnd_methods/index.js';
+import { getSweepTransactions } from '../../../lnd_methods/onchain/get_sweep_transactions.js';
 
 const emptyTx = '01000000000000000000';
 

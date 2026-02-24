@@ -1,8 +1,8 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
-import subscribeToPayViaRoutes from './subscribe_to_pay_via_routes.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
+import { subscribeToPayViaRoutes } from './subscribe_to_pay_via_routes.js';
 
 const {isArray} = Array;
 const isHash = n => /^[0-9A-F]{64}$/i.test(n);
@@ -88,7 +88,7 @@ const notFound = -1;
     }
   ]
 */
-export default (args, cbk) => {
+const payViaRoutes = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -183,3 +183,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'payViaRoutes'}, cbk));
   });
 };
+
+export { payViaRoutes }

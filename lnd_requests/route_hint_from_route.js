@@ -30,7 +30,7 @@ const firstHopOffset = 1;
     }]
   }
 */
-export default ({route}) => {
+const routeHintFromRoute = ({route}) => {
   if (!isArray(route) || !route.length) {
     throw new Error('ExpectedRouteArrayToDeriveHints');
   }
@@ -47,3 +47,5 @@ export default ({route}) => {
 
   return {hops};
 };
+
+export { routeHintFromRoute }

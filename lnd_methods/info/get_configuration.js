@@ -1,6 +1,6 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const asOptions = o => Object.keys(o).map(type => ({type, value: o[type]}));
 const errNotFound = 'unknown method GetDebugInfo for service lnrpc.Lightning';
@@ -31,7 +31,7 @@ const {values} = Object;
     }]
   }
 */
-export default ({lnd}, cbk) => {
+const getConfiguration = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -81,3 +81,5 @@ export default ({lnd}, cbk) => {
     returnResult({reject, resolve, of: 'getInfo'}, cbk));
   });
 };
+
+export { getConfiguration }

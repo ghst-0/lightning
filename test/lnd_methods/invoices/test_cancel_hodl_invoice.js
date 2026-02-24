@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { cancelHodlInvoice } from '../../../index.js';
+import { cancelHodlInvoice } from '../../../lnd_methods/invoices/cancel_hodl_invoice.js';
 
 const makeLnd = ({err}) => {
   return {invoices: {cancelInvoice: ({}, cbk) => cbk(err)}};

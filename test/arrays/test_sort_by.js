@@ -1,6 +1,6 @@
 import { deepEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { sortBy } from '../../arrays/index.js';
+import { sortBy } from '../../arrays/sort_by.js';
 
 const tests = [
   {

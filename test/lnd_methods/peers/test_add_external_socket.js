@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { addExternalSocket } from '../../../index.js';
+import { addExternalSocket } from '../../../lnd_methods/peers/add_external_socket.js';
 
 const makeLnd = ({err}) => {
   return {peers: {updateNodeAnnouncement: (args, cbk) => cbk(err)}};

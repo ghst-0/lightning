@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getNetworkCentrality } from '../../../index.js';
+import { getNetworkCentrality } from '../../../lnd_methods/info/get_network_centrality.js';
 
 const makeLnd = ({err, res}) => {
   const response = {

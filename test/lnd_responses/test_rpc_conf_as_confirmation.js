@@ -1,6 +1,6 @@
 import { deepStrictEqual, throws } from 'node:assert/strict';
 import test from 'node:test';
-import { rpcConfAsConfirmation } from '../../lnd_responses/index.js';
+import { rpcConfAsConfirmation } from '../../lnd_responses/rpc_conf_as_confirmation.js';
 
 const makeArgs = overrides => {
   const conf = {

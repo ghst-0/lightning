@@ -3,7 +3,7 @@ import asyncMap from 'async/map.js';
 import { returnResult } from 'asyncjs-util';
 
 import constants from './constants.json' with { type: 'json'};
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const {
   externalType,
@@ -44,7 +44,7 @@ const type = 'autopilot';
     }]
   }
 */
-export default (args, cbk) => {
+const getAutopilot = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -194,3 +194,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve, of: 'autopilot'}, cbk));
   });
 };
+
+export { getAutopilot }

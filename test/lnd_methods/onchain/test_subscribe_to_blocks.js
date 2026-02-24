@@ -1,7 +1,7 @@
 import { deepStrictEqual, strictEqual } from 'node:assert/strict';
 import EventEmitter from 'node:events';
 import test from 'node:test';
-import { subscribeToBlocks } from '../../../lnd_methods/index.js';
+import { subscribeToBlocks } from '../../../lnd_methods/onchain/subscribe_to_blocks.js';
 
 const makeLnd = overrides => {
   const data = {hash: Buffer.alloc(32), height: 1};

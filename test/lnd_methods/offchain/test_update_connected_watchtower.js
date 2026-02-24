@@ -1,6 +1,6 @@
 import { rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { updateConnectedWatchtower } from '../../../lnd_methods/index.js';
+import { updateConnectedWatchtower } from '../../../lnd_methods/offchain/update_connected_watchtower.js';
 
 const makeLnd = err => {
   return {

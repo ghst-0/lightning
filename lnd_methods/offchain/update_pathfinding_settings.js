@@ -1,7 +1,7 @@
 import asyncAuto from 'async/auto.js';
 import { returnResult } from 'asyncjs-util';
 
-import { isLnd } from '../../lnd_requests/index.js';
+import { isLnd } from '../../lnd_requests/is_lnd.js';
 
 const asFloat = n => n / 1e6;
 const getMethod = 'getMissionControlConfig';
@@ -27,7 +27,7 @@ const type = 'router';
 
   @returns via cbk or Promise
 */
-export default (args, cbk) => {
+const updatePathfindingSettings = (args, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
@@ -173,3 +173,5 @@ export default (args, cbk) => {
     returnResult({reject, resolve}, cbk));
   });
 };
+
+export { updatePathfindingSettings }

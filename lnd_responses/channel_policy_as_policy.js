@@ -36,7 +36,7 @@ const inverse = rate => rate ? -rate : 0;
     updated_at: <Policy Last Updated At ISO 8601 Date String>
   }
 */
-export default args => {
+const channelPolicyAsPolicy = args => {
   if (!args.public_key) {
     throw new Error('ExpectedPublicKeyForChannelPolicy');
   }
@@ -87,3 +87,5 @@ export default args => {
     updated_at: asDate(args.policy.last_update),
   };
 };
+
+export { channelPolicyAsPolicy }

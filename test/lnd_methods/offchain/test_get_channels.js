@@ -1,6 +1,6 @@
 import { deepStrictEqual, rejects } from 'node:assert/strict';
 import test from 'node:test';
-import { getChannels } from '../../../index.js';
+import { getChannels } from '../../../lnd_methods/offchain/get_channels.js';
 
 const makeExpected = overrides => {
   const expectedChannel = {
