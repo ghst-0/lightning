@@ -71,7 +71,7 @@ const channelEdgeAsChannel = args => {
 
   try {
     chanFormat({number: args.channel_id});
-  } catch (err) {
+  } catch {
     throw new Error('ExpectedNumericFormatChannelIdInChannelEdgeResponse');
   }
 

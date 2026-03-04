@@ -60,39 +60,39 @@ const getNetworkGraph = ({lnd}, cbk) => {
   return new Promise((resolve, reject) => {
     asyncAuto({
       // Check arguments
-      validate: cbk => {
+      validate: _cbk => {
         if (!isLnd({lnd, method, type})) {
-          return cbk([400, 'ExpectedLndForGetNetworkGraphRequest']);
+          return _cbk([400, 'ExpectedLndForGetNetworkGraphRequest']);
         }
 
-        return cbk();
+        return _cbk();
       },
 
       // Get network graph
-      getGraph: ['validate', ({}, cbk) => {
+      getGraph: ['validate', ({}, _cbk) => {
         return lnd[type][method]({}, (err, networkGraph) => {
           if (err) {
-            return cbk([503, 'GetNetworkGraphError', {err}]);
+            return _cbk([503, 'GetNetworkGraphError', {err}]);
           }
 
           if (!networkGraph) {
-            return cbk([503, 'ExpectedNetworkGraph']);
+            return _cbk([503, 'ExpectedNetworkGraph']);
           }
 
           if (!isArray(networkGraph.edges)) {
-            return cbk([503, 'ExpectedNetworkGraphEdges']);
+            return _cbk([503, 'ExpectedNetworkGraphEdges']);
           }
 
           if (!isArray(networkGraph.nodes)) {
-            return cbk([503, 'ExpectedNetworkGraphNodes']);
+            return _cbk([503, 'ExpectedNetworkGraphNodes']);
           }
 
-          return cbk(null, networkGraph);
+          return _cbk(null, networkGraph);
         });
       }],
 
       // Derive the set of channels
-      mapChannels: ['getGraph', ({getGraph}, cbk) => {
+      mapChannels: ['getGraph', ({getGraph}, _cbk) => {
         const connected = {};
 
         try {
@@ -103,27 +103,27 @@ const getNetworkGraph = ({lnd}, cbk) => {
             return channelEdgeAsChannel(edge);
           });
 
-          return cbk(null, {channels, connected});
+          return _cbk(null, {channels, connected});
         } catch (err) {
-          return cbk([503, 'UnexpectedErrorParsingChannelsInGraph', {err}]);
+          return _cbk([503, 'UnexpectedErrorParsingChannelsInGraph', {err}]);
         }
       }],
 
       // Derive the set of nodes
-      mapNodes: ['getGraph', ({getGraph}, cbk) => {
+      mapNodes: ['getGraph', ({getGraph}, _cbk) => {
         try {
           const nodes = getGraph.nodes
             .filter(n => !!n.last_update)
             .map(rpcNodeAsNode);
 
-          return cbk(null, {nodes});
+          return _cbk(null, {nodes});
         } catch (err) {
-          return cbk([503, 'UnexpectedErrorParsingNodesInGraph', {err}]);
+          return _cbk([503, 'UnexpectedErrorParsingNodesInGraph', {err}]);
         }
       }],
 
       // Network graph
-      graph: ['mapChannels', 'mapNodes', ({mapChannels, mapNodes}, cbk) => {
+      graph: ['mapChannels', 'mapNodes', ({mapChannels, mapNodes}, _cbk) => {
         const {channels} = mapChannels;
         const {connected} = mapChannels;
 
@@ -138,7 +138,7 @@ const getNetworkGraph = ({lnd}, cbk) => {
             updated_at: node.updated_at,
           }));
 
-        return cbk(null, {channels, nodes});
+        return _cbk(null, {channels, nodes});
       }],
     },
     returnResult({reject, resolve, of: 'graph'}, cbk));
